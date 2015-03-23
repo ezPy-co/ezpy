@@ -35,3 +35,14 @@ class EnvironmentProfile(models.Model):
                                       blank=True,
                                       null=True)
     prompt = models.ForeignKey(TerminalPrompt, related_name='profile')
+    git_completion = models.BooleanField(default=True)
+
+
+class UserChoice(models.Model):
+    display_name = models.CharField(max_length=63)
+    steps = models.ManyToManyField(Step)
+
+
+class Step(models.Model):
+    step_type = models.CharField(choices=['shell', 'pip', 'system'], max_length=)
+    command = models.CharField(max_length=255)
