@@ -59,8 +59,8 @@ WSGI_APPLICATION = 'installer.wsgi.application'
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
-        'default': dj_database_url.config(
-            default='postgres://{}:@localhost:5432/installer'.format(USER_NAME))
+    'default': dj_database_url.config(
+        default='postgres://{}:@localhost:5432/installer'.format(USER_NAME))
     }
 
 
