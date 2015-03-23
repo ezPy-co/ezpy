@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from installer_config.views import CreateEnvironmentProfile
 
 urlpatterns = patterns('',
-    url(r'/create_env', 'installer_config.views.create_env', name='create_env')
+    url(r'create_env/', CreateEnvironmentProfile.as_view(), name='CreateEnv')
 )

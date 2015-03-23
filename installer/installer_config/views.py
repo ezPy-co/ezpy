@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from django.views.generic import CreateView
+from installer_config.models import EnvironmentProfile
 
 
-def create_env(request):
-    return
+class CreateEnvironmentProfile(CreateView):
+    model = EnvironmentProfile
+    template_name = 'create_env_profile.html'
