@@ -15,7 +15,8 @@ class Base(Settings):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'installer_profile'
+        'installer_profile',
+        'installer_config',
     )
 
     MIDDLEWARE_CLASSES = (
