@@ -13,7 +13,3 @@ class CreateEnvironmentForm(ModelForm):
                   'prompt',
                   'git_completion'
                   )
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(CreateEnvironmentForm, self).form_valid(form)

@@ -8,3 +8,11 @@ class CreateEnvironmentProfile(CreateView):
     model = EnvironmentProfile
     template_name = 'create_env_profile.html'
     form_class = CreateEnvironmentForm
+    success_url= '/'
+
+
+    def form_valid(self, form):
+        # import pdb; pdb.set_trace()
+        form.instance.user = self.request.user
+        return super(CreateEnvironmentProfile, self).form_valid(form)
+
