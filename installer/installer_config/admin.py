@@ -12,10 +12,6 @@ class TerminalPromptAdmin(admin.ModelAdmin):
     list_display = ('display_name', 'install_name', 'description')
 
 
-class EnvironmentProfileAdmin(admin.ModelAdmin):
-    model = EnvironmentProfile
-    list_display = ('user', 'packages', 'prompt')
-
 admin.site.register(Package, PackageAdmin)
 admin.site.register(TerminalPrompt, TerminalPromptAdmin)
-admin.site.register(EnvironmentProfile, EnvironmentProfileAdmin)
+# admin.site.register(EnvironmentProfile, EnvironmentProfileAdmin)
