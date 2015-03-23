@@ -6,7 +6,7 @@ class Package(models.Model):
     """Python Package Manager for pip requirements.txt"""
     display_name = models.CharField(max_length=63)
     install_name = models.CharField(max_length=63)
-    version = models.FloatField(blank=True)
+    version = models.FloatField(null=True, blank=True)
     website = models.URLField()
     description = models.TextField()
 
