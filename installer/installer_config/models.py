@@ -34,7 +34,7 @@ class EnvironmentProfile(models.Model):
                                       related_name='profiles',
                                       blank=True,
                                       null=True)
-    prompt = models.ForeignKey(TerminalPrompt, related_name='profile')
+    prompt = models.ForeignKey(TerminalPrompt, related_name='profile', blank=True, null=True)
     git_completion = models.BooleanField(default=True)
 
 
