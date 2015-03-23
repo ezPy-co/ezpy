@@ -15,6 +15,7 @@ class Base(Settings):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'installer_profile'
     )
 
     MIDDLEWARE_CLASSES = (
@@ -43,6 +44,10 @@ class Base(Settings):
     USE_TZ = True
 
     STATIC_URL = '/static/'
+
+    TEMPLATE_DIRS = (
+        os.path.join(BASE_DIR, "installer/templates/"),
+        )
 
 
 class Dev(Base):
