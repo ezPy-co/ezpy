@@ -6,7 +6,7 @@ class Package(models.Model):
     """Python Package Manager for pip requirements.txt"""
     display_name = models.CharField(max_length=63)
     install_name = models.CharField(max_length=63)
-    version = models.FloatField()
+    version = models.FloatField(blank=True)
     website = models.URLField()
     description = models.TextField()
 
@@ -38,11 +38,11 @@ class EnvironmentProfile(models.Model):
     git_completion = models.BooleanField(default=True)
 
 
-class UserChoice(models.Model):
-    display_name = models.CharField(max_length=63)
-    steps = models.ManyToManyField(Step)
+# class UserChoice(models.Model):
+#     display_name = models.CharField(max_length=63)
+#     steps = models.ManyToManyField(Step)
 
 
-class Step(models.Model):
-    step_type = models.CharField(choices=['shell', 'pip', 'system'], max_length=)
-    command = models.CharField(max_length=255)
+# class Step(models.Model):
+#     step_type = models.CharField(choices=['shell', 'pip', 'system'], max_length=)
+#     command = models.CharField(max_length=255)
