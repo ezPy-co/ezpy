@@ -1,0 +1,18 @@
+{% extends "../../imager/templates/home.html" %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'imager_user/css/profile.css' %}" />
+{% endblock %}
+
+{% block title %}Profile: {{user}}{% endblock %}
+
+{% block body %}
+    <div id="profilePicture">
+        <h3>{{user}}'s Profile</h3>
+    </div>
+    <div id="profileInfo">
+       
+    </div>
+{% endblock %}
+
