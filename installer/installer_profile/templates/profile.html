@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{% static 'imager_user/css/profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'installer_profile/profile.css' %}" />
 {% endblock %}
 
 {% block title %}Profile: {{user}}{% endblock %}
@@ -12,7 +12,7 @@
         <h3>{{user}}'s Profile</h3>
     </div>
     <div id="profileInfo">
-       
+       <a href="{% url 'installer_config:CreateEnv' %}">Create a New Environment Profile</a>
     </div>
 {% endblock %}
 

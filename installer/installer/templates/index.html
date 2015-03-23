@@ -2,16 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'imager/normalize.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'imager/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'installer/normalize.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'installer/style.css' %}" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
     {% block stylesheets %}{% endblock %}
-    <title>{% block title %}Installer{% endblock %}</title>
+    <title>{% block title %}ezPy{% endblock %}</title>
 </head>
 
 <body>
     <header>
-        <h2 id="headerTitle"><a href="{% url 'index' %}">Installer</a></h2>
+        <h2 id="headerTitle"><a href="{% url 'index' %}">ezPy</a></h2>
         <nav>
             <ul>
                 <li><a href="{% url 'index' %}">Home</a></li>
@@ -23,6 +23,7 @@
     </div>
     <div id="content">
         {% block body %}
+            <a id="quickStart">Get Started Here</a>
         {% endblock %}
     </div>
 </body>
