@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
     url(r'^profile/', include('installer_profile.urls', namespace='profile')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('installer_config.urls', namespace='installer_config'))
 )
