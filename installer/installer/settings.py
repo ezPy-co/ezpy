@@ -54,6 +54,12 @@ class Base(Settings):
         os.path.join(BASE_DIR, "installer/templates/"),
         )
 
+    ACCOUNT_ACTIVATION_DAYS = 7
+    REGISTRATION_AUTO_LOGIN = True
+    REGISTRATION_OPEN = True
+    LOGIN_URL = '/accounts/login/'
+    LOGIN_REDIRECT_URL = '/profile/'
+
 
 class Dev(Base):
     DEBUG = True
