@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView, DeleteView
 from installer_config.models import EnvironmentProfile, UserChoice, Step
 from installer_config.forms import EnvironmentForm
-
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
 class CreateEnvironmentProfile(CreateView):
     model = EnvironmentProfile
@@ -14,6 +15,16 @@ class CreateEnvironmentProfile(CreateView):
         form.instance.user = self.request.user
         return super(CreateEnvironmentProfile, self).form_valid(form)
 
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = form_class(request.POST)
+        if form.is_valid():
+            config_profile = form.save(commit=False)
+            config_profile.user = request.user
+            config_profile.save()
+            return HttpResponseRedirect(reverse('profile:profile'))
+        return self.render_to_response({'form': form})
 
 class UpdateEnvironmentProfile(UpdateView):
     model = EnvironmentProfile
