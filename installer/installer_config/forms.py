@@ -1,11 +1,11 @@
 from django import forms
 from django.forms.models import ModelForm
-from installer_config.models import EnvironmentProfile, Package, TerminalPrompt
+from installer_config.models import EnvironmentProfile, UserChoice
  
 
 class EnvironmentForm(ModelForm):
     packages = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                              queryset=Package.objects.all())
+                                              queryset=UserChoice.objects.all())
 
     class Meta:
         model = EnvironmentProfile
