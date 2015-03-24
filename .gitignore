@@ -59,3 +59,6 @@ target/
 # Dbase Passwords
 secret.py
 secret2.py
+
+# Django Migrations
+migrations/
