@@ -8,7 +8,7 @@ class CreateEnvironmentProfile(CreateView):
     model = EnvironmentProfile
     template_name = 'env_profile_form.html'
     form_class = EnvironmentForm
-    success_url = '/'
+    success_url = '/profile'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -19,9 +19,9 @@ class UpdateEnvironmentProfile(UpdateView):
     model = EnvironmentProfile
     template_name = 'env_profile_form.html'
     form_class = EnvironmentForm
-    success_url = '/'
+    success_url = '/profile'
 
 
 class DeleteEnvironmentProfile(DeleteView):
     model = EnvironmentProfile
-    success_url = '/'
+    success_url = '/profile'
