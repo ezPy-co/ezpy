@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView, DeleteView
-from installer_config.models import EnvironmentProfile
+from installer_config.models import EnvironmentProfile, UserChoice, Step
 from installer_config.forms import EnvironmentForm
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -37,3 +37,8 @@ class UpdateEnvironmentProfile(UpdateView):
 class DeleteEnvironmentProfile(DeleteView):
     model = EnvironmentProfile
     success_url = '/profile'
+
+
+def download_profile_view(request, **kwargs):
+    choices = UserChoice.objects.filter(profiles=kwargs['pk']).all()
+    return render(request, 'installer_template.py', {'choices': choices})

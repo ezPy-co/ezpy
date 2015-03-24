@@ -59,7 +59,6 @@ class Step(models.Model):
         return str(self.step_type) + " " + str(self.args)
 
 
-
 @python_2_unicode_compatible
 class EnvironmentProfile(models.Model):
     """Unique environment profile created by a user"""
@@ -69,8 +68,6 @@ class EnvironmentProfile(models.Model):
                                      related_name='profiles',
                                      blank=True,
                                      null=True)
-    # prompt = models.ForeignKey(TerminalPrompt, related_name='profile', blank=True, null=True)
-    # git_completion = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.description)
