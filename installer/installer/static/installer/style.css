@@ -1,6 +1,6 @@
 a {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 ul {
@@ -9,30 +9,30 @@ ul {
 
 body {
     font-family: 'Open Sans', sans-serif;
+    color: white;
+    background-color: #ff9a00;
 }
 
 header {
-    margin-bottom: 3em;
     display: block;
-    height: 8em;
-    background-color: #ff9a00;
-    color: white;
+    height: 6em;
+    background-color: white;
 }
 
 #headerTitle {
     float: left;
     margin-left: 2%;
+    font-size: 2em;
 }
 
 #headerTitle a {
-    color: white;
+    color: #ff9a00;
 }
-
 
 nav {
     float: right;
     text-decoration: none;
-    margin-right: 2%;
+    margin: 2% 2% 0 0;
 }
 
 nav li {
@@ -41,13 +41,17 @@ nav li {
 }
 
 nav li a {
-    color: white;
+    color: #ff9a00;
+}
+
+#page {
+    min-height: 90vh;
+    padding-top: 3em
 }
 
 #content {
     max-width: 90%;
-
-    margin: auto
+    margin: auto;
 }
 
 #text {
