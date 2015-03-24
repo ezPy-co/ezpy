@@ -34,6 +34,9 @@ class TerminalPrompt(models.Model):
 class UserChoice(models.Model):
     description = models.CharField(max_length=63)
 
+    def __str__(self):
+        return str(self.description)
+
 
 @python_2_unicode_compatible
 class Step(models.Model):
@@ -52,6 +55,8 @@ class Step(models.Model):
     dependency = models.CharField(max_length=63, blank=True, null=True)
     user_choice = models.ForeignKey(UserChoice, related_name='Choice')
 
+    def __str__(self):
+        return str(self.step_type) + " " + str(self.args)
 
 
 @python_2_unicode_compatible
