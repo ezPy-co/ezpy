@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import ModelForm
-from installer_config.models import EnvironmentProfile, Package,TerminalPrompt
+from installer_config.models import EnvironmentProfile, Package, TerminalPrompt
  
 
 class CreateEnvironmentForm(ModelForm):
@@ -9,7 +9,4 @@ class CreateEnvironmentForm(ModelForm):
 
     class Meta:
         model = EnvironmentProfile
-        fields = ('packages',
-                  'prompt',
-                  'git_completion'
-                  )
+        exclude = ('user',)
