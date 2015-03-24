@@ -2,8 +2,15 @@
 
 
 {% block body %}
-<form action="" method="post">{% csrf_token %}
+
+<form action="" method="POST">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Create" />
 </form>
+{% if profile %}
+    <form action="{% url 'installer_config:DeleteEnv' profile.id %}" method="POST">{% csrf_token %}
+        <input type="submit" value="Delete Profile" />
+    </form>
+{% endif %}
+
 {% endblock %}
