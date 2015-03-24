@@ -32,7 +32,7 @@ class TerminalPrompt(models.Model):
 
 @python_2_unicode_compatible
 class UserChoice(models.Model):
-    pass
+    description = models.CharField(max_length=63)
 
 
 @python_2_unicode_compatible
@@ -45,7 +45,6 @@ class Step(models.Model):
         ('env', 'Set environment variable'),
         ('exec', 'Run a shell command')
         )
-
 
     step_type = models.CharField(max_length=63, choices=STEP_TYPE_CHOICES)
     url = models.CharField(max_length=63, blank=True, null=True)
