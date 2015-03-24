@@ -18,8 +18,14 @@ class EnvironmentProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'description',)
 
 
+class ChoiceInline(admin.TabularInline):
+    model = Step
+    extra = 2
+
+
 class UserChoiceAdmin(admin.ModelAdmin):
     model = UserChoice
+    inlines = [ChoiceInline]
     list_display = ('id', 'description')
 
 
