@@ -18,7 +18,10 @@
         <h3>My current environments</h3>
         <ul>
             {% for profile in profiles %}
-                <li><a href="{% url 'installer_config:UpdateEnv' profile.id %}">{{ profile.description }}</a></li>
+                <li>
+                    <a href="{% url 'installer_config:UpdateEnv' profile.id %}">{{ profile.description }}</a>
+                    <small><a href="{% url 'installer_config:download_profile' profile.id %}">Download</a></small>
+                </li>
             {% endfor %}
         </ul>
     </div>
