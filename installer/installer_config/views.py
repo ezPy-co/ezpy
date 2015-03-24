@@ -16,16 +16,6 @@ class CreateEnvironmentProfile(CreateView):
         return super(CreateEnvironmentProfile, self).form_valid(form)
 
 
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = form_class(request.POST)
-        if form.is_valid():
-            config_profile = form.save(commit=False)
-            config_profile.user = request.user
-            config_profile.save()
-            return HttpResponseRedirect(reverse('profile:profile'))
-        return self.render_to_response({'form': form})
-
 class UpdateEnvironmentProfile(UpdateView):
     model = EnvironmentProfile
     context_object_name = 'profile'
