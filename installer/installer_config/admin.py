@@ -14,6 +14,7 @@ class TerminalPromptAdmin(admin.ModelAdmin):
 
 class EnvironmentProfileAdmin(admin.ModelAdmin):
     model = EnvironmentProfile
+    list_display = ('id', 'user', 'description',)
 
 
 admin.site.register(Package, PackageAdmin)
