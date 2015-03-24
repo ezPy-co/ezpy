@@ -5,14 +5,22 @@
 <link rel="stylesheet" type="text/css" href="{% static 'installer_profile/profile.css' %}" />
 {% endblock %}
 
-{% block title %}Profile: {{user}}{% endblock %}
+{% block title %}Profile: {{ user }}{% endblock %}
 
 {% block body %}
-    <div id="profilePicture">
-        <h3>{{user}}'s Profile</h3>
+    <div>
+        <h3>{{ user }}'s Profile</h3>
     </div>
-    <div id="profileInfo">
+    <div>
        <a href="{% url 'installer_config:CreateEnv' %}">Create a New Environment Profile</a>
+    </div>
+    <div>
+        <h3>My current environments</h3>
+        <ul>
+            {% for profile in profiles %}
+                <li><a href="{% url 'installer_config:UpdateEnv' profile.id %}">{{ profile.description }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}
 

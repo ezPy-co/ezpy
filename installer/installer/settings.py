@@ -7,7 +7,7 @@ from secret import DATABASE_SETTINGS
 class Base(Settings):
     USER_NAME = os.environ.get('USER', '')
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['*']
 
     INSTALLED_APPS = (
         'django.contrib.admin',
