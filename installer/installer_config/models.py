@@ -31,6 +31,31 @@ class TerminalPrompt(models.Model):
 
 
 @python_2_unicode_compatible
+class UserChoice(models.Model):
+    pass
+
+
+@python_2_unicode_compatible
+class Step(models.Model):
+    STEP_TYPE_CHOICES = (
+        ('dl', 'Download'),
+        ('pip', 'Install with Pip'),
+        ('edprof', 'Edit a profile'),
+        ('edfile', 'Edit a file'),
+        ('env', 'Set environment variable'),
+        ('exec', 'Run a shell command')
+        )
+
+
+    step_type = models.CharField(max_length=63, choices=STEP_TYPE_CHOICES)
+    url = models.CharField(max_length=63, blank=True, null=True)
+    args = models.CharField(max_length=63, blank=True, null=True)
+    dependency = models.CharField(max_length=63, blank=True, null=True)
+    user_choice = models.ForeignKey(UserChoice, related_name='Choice')
+
+
+
+@python_2_unicode_compatible
 class EnvironmentProfile(models.Model):
     """Unique environment profile created by a user"""
     user = models.ForeignKey(User, related_name='profile')
