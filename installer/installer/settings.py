@@ -6,7 +6,7 @@ from configurations import Settings
 class Base(Settings):
     USER_NAME = os.environ.get('USER', '')
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['*']
 
     INSTALLED_APPS = (
         'django.contrib.admin',
@@ -71,3 +71,4 @@ class Prod(Base):
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    ALLOWED_HOSTS = ['localhost']
