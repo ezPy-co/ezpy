@@ -42,4 +42,8 @@ class DeleteEnvironmentProfile(DeleteView):
 
 def download_profile_view(request, **kwargs):
     choices = UserChoice.objects.filter(profiles=kwargs['pk']).all()
-    return render_to_response('installer_template.py', {'choices': choices}, content_type='application')
+    # import pdb; pdb.set_trace()
+    response = render_to_response('installer_template.py', {'choices': choices},
+        content_type='application')
+    response['Content-Disposition'] = 'attachment; filename=something.py'
+    return response
