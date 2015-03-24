@@ -1,6 +1,7 @@
 import os
 import dj_database_url
 from configurations import Settings
+from secret import DATABASE_SETTINGS
 
 
 class Base(Settings):
@@ -68,6 +69,10 @@ class Dev(Base):
 
 
 class Prod(Base):
+
+    DATABASES = DATABASE_SETTINGS
+
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    ALLOWED_HOSTS = ['.ec2-54-149-69-177.us-west-2.compute.amazonaws.com']
