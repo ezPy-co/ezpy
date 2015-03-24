@@ -3,7 +3,7 @@ from django.forms.models import ModelForm
 from installer_config.models import EnvironmentProfile, Package, TerminalPrompt
  
 
-class CreateEnvironmentForm(ModelForm):
+class EnvironmentForm(ModelForm):
     packages = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                               queryset=Package.objects.all())
 
