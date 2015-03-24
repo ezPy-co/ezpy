@@ -5,7 +5,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'installer/normalize.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'installer/style.css' %}" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
-    {% block stylesheets %}{% endblock %}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    {% block stylesheets %}
+    {% endblock %}
     <title>{% block title %}ezPy{% endblock %}</title>
 </head>
 
@@ -25,12 +27,12 @@
             </ul>
         </nav>
     </header>
-    <div id="sidebar">
-    </div>
-    <div id="content">
-        {% block body %}
-            <a id="quickStart">Get Started Here</a>
-        {% endblock %}
+    <div id="page">
+        <div id="content">
+            {% block body %}
+                <a id="quickStart">Get Started Here</a>
+            {% endblock %}
+        </div>
     </div>
 </body>
 </html>
