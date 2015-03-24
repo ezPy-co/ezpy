@@ -4,12 +4,12 @@ from installer_config.models import Package, TerminalPrompt, EnvironmentProfile
 
 class PackageAdmin(admin.ModelAdmin):
     model = Package
-    list_display = ('display_name', 'version', 'website')
+    list_display = ('id', 'display_name', 'version', 'website')
 
 
 class TerminalPromptAdmin(admin.ModelAdmin):
     model = TerminalPrompt
-    list_display = ('display_name', 'install_name', 'description')
+    list_display = ('id', 'display_name', 'install_name', 'description')
 
 
 class EnvironmentProfileAdmin(admin.ModelAdmin):
