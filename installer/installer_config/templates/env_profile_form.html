@@ -5,7 +5,11 @@
 
 <form action="" method="POST">{% csrf_token %}
     {{ form.as_p }}
+    {% if profile %}
+    <input type="submit" value="Save" />
+    {% else %}
     <input type="submit" value="Create" />
+    {% endif %}
 </form>
 {% if profile %}
     <form action="{% url 'installer_config:DeleteEnv' profile.id %}" method="POST">{% csrf_token %}
