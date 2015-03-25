@@ -26,7 +26,7 @@ header {
 
 #headerTitle {
     float: left;
-    margin-left: 2%;
+    margin-left: -1%;
     font-size: 2em;
 }
 
@@ -68,4 +68,10 @@ nav li a {
     display: block;
 }
 
+#id_description {
+    color: #ff9a00;
+}
 
+.button {
+    color: #ff9a00;
+}
