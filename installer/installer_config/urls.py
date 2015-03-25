@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
 from installer_config.views import (CreateEnvironmentProfile,
                                     UpdateEnvironmentProfile,
                                     DeleteEnvironmentProfile,
@@ -8,15 +9,15 @@ urlpatterns = patterns(
     '',
 
     url(r'^create_env/$',
-        CreateEnvironmentProfile.as_view(),
+        login_required(CreateEnvironmentProfile.as_view()),
         name='CreateEnv'),
 
     url(r'^update_env/(?P<pk>\d+)/$',
-        UpdateEnvironmentProfile.as_view(),
+        login_required(UpdateEnvironmentProfile.as_view()),
         name='UpdateEnv'),
 
     url(r'^delete_env/(?P<pk>\d+)/$',
-        DeleteEnvironmentProfile.as_view(),
+        login_required(DeleteEnvironmentProfile.as_view()),
         name='DeleteEnv'),
 
     url(r'^download/(?P<pk>\d+)/$',

@@ -1,13 +1,14 @@
 {% extends 'index.html' %}
 
+
 {% block body %}
 
 <h1>This is the registration form</h1>
 
 <form method="POST" action="">
-{% csrf_token %}
-{{ form.as_p }}
-<input class="button" type="submit">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="button" type="submit">
 </form>
 
 {% endblock %}
