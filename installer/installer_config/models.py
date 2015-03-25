@@ -32,8 +32,14 @@ from django.utils.encoding import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class UserChoice(models.Model):
+    PRIORITY = (
+        (1, 'High'),
+        (2, 'Normal'),
+        (3, 'Low'),
+    )
+
     description = models.CharField(max_length=63)
-    display_order = models.IntegerField(default=100)
+    display_order = models.IntegerField('Priority', choices=PRIORITY, default=2)
     
     def __str__(self):
         return str(self.description)
@@ -47,8 +53,8 @@ class Step(models.Model):
         ('edprof', 'Edit a profile'),
         ('edfile', 'Edit a file'),
         ('env', 'Set environment variable'),
-        ('exec', 'Run a shell command')
-        )
+        ('exec', 'Run a shell command'),
+    )
 
     step_type = models.CharField(max_length=63, choices=STEP_TYPE_CHOICES)
     url = models.CharField(max_length=63, blank=True, null=True)
