@@ -4,7 +4,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from installer_config.models import EnvironmentProfile, UserChoice, Step
 from installer_config.forms import EnvironmentForm
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+
 
 class CreateEnvironmentProfile(CreateView):
     model = EnvironmentProfile
@@ -16,16 +16,6 @@ class CreateEnvironmentProfile(CreateView):
         form.instance.user = self.request.user
         return super(CreateEnvironmentProfile, self).form_valid(form)
 
-
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = form_class(request.POST)
-        if form.is_valid():
-            config_profile = form.save(commit=False)
-            config_profile.user = request.user
-            config_profile.save()
-            return HttpResponseRedirect(reverse('profile:profile'))
-        return self.render_to_response({'form': form})
 
 class UpdateEnvironmentProfile(UpdateView):
     model = EnvironmentProfile
@@ -42,8 +32,7 @@ class DeleteEnvironmentProfile(DeleteView):
 
 def download_profile_view(request, **kwargs):
     choices = UserChoice.objects.filter(profiles=kwargs['pk']).all()
-    # import pdb; pdb.set_trace()
     response = render_to_response('installer_template.py', {'choices': choices},
-        content_type='application')
+                                  content_type='application')
     response['Content-Disposition'] = 'attachment; filename=something.py'
     return response

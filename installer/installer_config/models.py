@@ -33,7 +33,8 @@ from django.utils.encoding import python_2_unicode_compatible
 @python_2_unicode_compatible
 class UserChoice(models.Model):
     description = models.CharField(max_length=63)
-
+    display_order = models.IntegerField(default=100)
+    
     def __str__(self):
         return str(self.description)
 
@@ -68,6 +69,5 @@ class EnvironmentProfile(models.Model):
                                      related_name='profiles',
                                      blank=True,
                                      null=True)
-
     def __str__(self):
         return str(self.description)

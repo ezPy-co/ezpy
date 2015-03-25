@@ -13,6 +13,11 @@ body {
     background-color: #ff9a00;
 }
 
+#pythonlogo {
+    padding: 1em;
+    float: left;
+}
+
 header {
     display: block;
     height: 6em;
