@@ -18,10 +18,14 @@ import os
         else:
             run_file = './'+file_name
             call([run_file])
-
     {% endif %}
 
     {% if step.step_type == 'edprof' %}
+    profile_name = os.path.expanduser('~/')+'.profile'
+    with open(profile_name, 'a') as f:
+        f.write("\n"+{{step.args}})
+
+
     print 'profile change\n'
     {% endif %}
 
