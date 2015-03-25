@@ -5,8 +5,8 @@ from installer_config.models import EnvironmentProfile, UserChoice
 
 class EnvironmentForm(ModelForm):
     choices = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-        queryset=UserChoice.objects.all().order_by('display_order'),
-        help_text="Check all wanted options.")
+        queryset=UserChoice.objects.all().order_by('category', 'priority')
+    )
 
     class Meta:
         model = EnvironmentProfile
