@@ -5,6 +5,10 @@ import os
 import sys
 import re
 
+CACHED_PATHS = {}
+
+
+
 def scan(target_name):
     """
     Return the full file path to a file, including file_name.
@@ -12,27 +16,33 @@ def scan(target_name):
     If the file is not found, print 'File or directory not found'
     to the console and return None.
     """
-    extension = os.path.splitext(target_name)[1]
-    if os.environ.get('OS'):
-        # Assumes the drive letter is C
-        walker = os.walk('C:/')
+
+    if CACHED_PATHS[target_name]:
+        return CACHED_PATHS[target_name]
     else:
-        walker = os.walk('/')
-    if extension:
-            # Search for a file
-        for directory, sub_dir, files in walker:
-            for each_file in files:
-                if re.match(target_name, each_file):
-                    return directory + target_name
-    else:
-        # Search for a directory
-        for directory, sub_dir, files in walker:
-            if re.search("/{}".format(target_name), directory):
-                return directory
-    # If the whole directory has been scanned with
-    # no result...
-    print 'File or directory not found'
-    return None
+        extension = os.path.splitext(target_name)[1]
+        if os.environ.get('OS'):
+            # Assumes the drive letter is C
+            walker = os.walk('C:/')
+        else:
+            walker = os.walk('/')
+        if extension:
+                # Search for a file
+            for directory, sub_dir, files in walker:
+                for each_file in files:
+                    if re.match(target_name, each_file):
+                        CACHED_PATHS[target_name] = directory
+                        return directory + target_name
+        else:
+            # Search for a directory
+            for directory, sub_dir, files in walker:
+                if re.search("/{}".format(target_name), directory):
+                    CACHED_PATHS[target_name] = directory
+                    return directory
+        # If the whole directory has been scanned with
+        # no result...
+        print 'File or directory not found'
+        return None
 
 {% for choice in choices %}
 {% spaceless %}
