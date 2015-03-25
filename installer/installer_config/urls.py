@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from installer_config.views import (CreateEnvironmentProfile,
                                     UpdateEnvironmentProfile,
                                     DeleteEnvironmentProfile,
+                                    ViewEnvironmentProfile,
                                     download_profile_view)
 
 urlpatterns = patterns(
@@ -22,5 +23,9 @@ urlpatterns = patterns(
 
     url(r'^download/(?P<pk>\d+)/$',
         download_profile_view,
-        name='download_profile')
+        name='download_profile'),
+
+    url(r'^env/(?P<pk>\d+)/$',
+        login_required(ViewEnvironmentProfile.as_view()),
+        name='ViewEnv'),
 )

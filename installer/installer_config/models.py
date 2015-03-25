@@ -39,10 +39,14 @@ class UserChoice(models.Model):
     )
 
     description = models.CharField(max_length=63)
-    display_order = models.IntegerField('Priority', choices=PRIORITY, default=2)
+    display_order = models.IntegerField(default=100)
+    priority = models.IntegerField(choices=PRIORITY)
     
     def __str__(self):
         return str(self.description)
+
+    class Meta:
+        ordering = ['display_order']
 
 
 @python_2_unicode_compatible

@@ -1,0 +1,18 @@
+{% extends "../../installer/templates/index.html" %}
+{% load staticfiles %}
+
+
+{% block title %}{{ profile.description }}{% endblock %}
+
+{% block body %}
+<h1>{{ profile.description }}</h1><a href="{% url 'installer_config:download_profile' profile.id %}"><i class="fa fa-download"></i></a>
+<h4>Created by {{ profile.user }}</h4>
+
+<h3>Environment attributes:</h3>
+<ul>
+{% for choice in profile.choices.all %}
+    <li>{{ choice }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
