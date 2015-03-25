@@ -18,6 +18,7 @@ class Base(Settings):
         'django.contrib.staticfiles',
         'installer_profile',
         'installer_config',
+        'registration',
     )
 
     MIDDLEWARE_CLASSES = (
@@ -66,7 +67,7 @@ class Dev(Base):
     DEBUG = True
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = 'secret'
-
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 class Prod(Base):
 
