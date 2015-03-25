@@ -18,6 +18,7 @@ class Base(Settings):
         'django.contrib.staticfiles',
         'installer_profile',
         'installer_config',
+        'django_jinja',
     )
 
     MIDDLEWARE_CLASSES = (
@@ -36,6 +37,7 @@ class Base(Settings):
     DATABASES = {
             'default': dj_database_url.config(
                 default='postgres://{}:@localhost:5432/installer'.format(USER_NAME))
+                # default='postgres://postgres:admin@localhost:5432/installer_dbase')
         }
 
     LANGUAGE_CODE = 'en-us'
@@ -54,6 +56,13 @@ class Base(Settings):
     TEMPLATE_DIRS = (
         os.path.join(BASE_DIR, "installer/templates/"),
         )
+
+    TEMPLATE_LOADERS = (
+        'django_jinja.loaders.FileSystemLoader',
+        'django_jinja.loaders.AppLoader',
+    )
+
+    DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja2'
 
     ACCOUNT_ACTIVATION_DAYS = 7
     REGISTRATION_AUTO_LOGIN = True
