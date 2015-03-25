@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from installer_config.models import EnvironmentProfile, UserChoice, Step
 from installer_config.forms import EnvironmentForm
 from django.core.urlresolvers import reverse
@@ -36,6 +36,12 @@ class DeleteEnvironmentProfile(DeleteView):
     def get_queryset(self):
         qs = super(UpdateEnvironmentProfile, self).get_queryset()
         return qs.filter(user=self.request.user)
+
+
+class ViewEnvironmentProfile(DetailView):
+    model = EnvironmentProfile
+    context_object_name = 'profile'
+    template_name = 'env_profile.html'
         
 
 def download_profile_view(request, **kwargs):
