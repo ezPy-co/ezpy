@@ -1,7 +1,9 @@
 import os
 import dj_database_url
 from configurations import Settings
-from secret import DATABASE_SETTINGS
+from secret import (DATABASE_SETTINGS,
+                    HOST_USER,
+                    HOST_PASSWORD)
 
 
 class Base(Settings):
@@ -77,3 +79,13 @@ class Prod(Base):
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
     ALLOWED_HOSTS = ['.ec2-54-149-69-177.us-west-2.compute.amazonaws.com']
+
+
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = HOST_USER
+    EMAIL_HOST_PASSWORD = HOST_PASSWORD
+    DEFAULT_FROM_EMAIL = HOST_USER
+
