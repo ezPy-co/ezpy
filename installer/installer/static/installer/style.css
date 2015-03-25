@@ -11,7 +11,7 @@ body {
     text-align: center;
     font-family: 'Open Sans', sans-serif;
     color: white;
-    background-color: #90EE90;
+    background-color: #43CD80;
 }
 
 #pythonlogo {
@@ -32,7 +32,7 @@ header {
 }
 
 #headerTitle a {
-    color: #ff9a00;
+    color: #43CD80;
 }
 
 nav {
@@ -47,7 +47,7 @@ nav li {
 }
 
 nav li a {
-    color: #ff9a00;
+    color: #43CD80;
 }
 
 #page {
@@ -109,7 +109,7 @@ nav li a {
     border:1px solid #dcdcdc;
     display:inline-block;
     cursor:pointer;
-    color:#666666;
+    color:#3CB371;
     font-family:arial;
     font-size:20px;
     font-weight:bold;
