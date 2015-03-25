@@ -5,29 +5,30 @@ import os
 import sys
 import re
 
-def scan(a_name):
+def scan(target_name):
     """
     Return the full file path to a file, including file_name.
 
     If the file is not found, print 'File or directory not found'
     to the console and return None.
     """
-    extension = os.path.splitext(a_name)[1]
+    extension = os.path.splitext(target_name)[1]
     if os.environ.get('OS'):
         # Assumes the drive letter is C
         walker = os.walk('C:/')
     else:
         walker = os.walk('/')
-        if extension:
+    if extension:
             # Search for a file
-            for directory, sub_dir, files in walker:
-                if a_name in files:
-                    return directory + a_name
-        else:
-            # Search for a directory
-            for directory, sub_dir, files in walker:
-                if a_name in directory:
-                    return directory
+        for directory, sub_dir, files in walker:
+            for each_file in files:
+                if re.match(target_name, each_file):
+                    return directory + target_name
+    else:
+        # Search for a directory
+        for directory, sub_dir, files in walker:
+            if re.search("/{}".format(target_name), directory):
+                return directory
     # If the whole directory has been scanned with
     # no result...
     print 'File or directory not found'
