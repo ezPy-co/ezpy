@@ -26,7 +26,7 @@ header {
 
 #headerTitle {
     float: left;
-    margin-left: 2%;
+    margin-left: -1%;
     font-size: 2em;
 }
 
@@ -66,6 +66,27 @@ nav li a {
 
 #quickStart {
     display: block;
+}
+
+#id_description {
+    color: #ff9a00;
+}
+
+.button {
+    color: #ff9a00;
+}
+
+.required {
+    color: #ff9a00;
+}
+
+#id_password {
+    color: #ff9a00;
+}
+
+
+#id_username {
+    color: #ff9a00;
 }
 
 
