@@ -38,15 +38,25 @@ class UserChoice(models.Model):
         (3, 'Low'),
     )
 
+    DISPLAY_CATEGORY = (
+        ('core', 'Core Dependencies'),
+        ('env', 'Virtual Environment'),
+        ('git', 'Git'),
+        ('prompt', 'Terminal Prompt'),
+        ('subl', 'Sublime'),
+        ('pkg', 'Pip Packages'),
+        ('other', 'Other'),
+    )
+
     description = models.CharField(max_length=63)
-    display_order = models.IntegerField(default=100)
+    category = models.CharField(max_length=7, choices=DISPLAY_CATEGORY)
     priority = models.IntegerField(choices=PRIORITY)
     
     def __str__(self):
         return str(self.description)
 
     class Meta:
-        ordering = ['display_order']
+        ordering = ['category']
 
 
 @python_2_unicode_compatible
