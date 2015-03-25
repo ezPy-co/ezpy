@@ -60,13 +60,6 @@ class Base(Settings):
         os.path.join(BASE_DIR, "installer/templates/"),
         )
 
-    TEMPLATE_LOADERS = (
-        'django_jinja.loaders.FileSystemLoader',
-        'django_jinja.loaders.AppLoader',
-    )
-
-    DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
-
     ACCOUNT_ACTIVATION_DAYS = 7
     REGISTRATION_AUTO_LOGIN = True
     REGISTRATION_OPEN = True
