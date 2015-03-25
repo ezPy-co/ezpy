@@ -4,7 +4,8 @@ from configurations import Settings
 from secret import (DATABASE_SETTINGS,
                     HOST_USER,
                     HOST_PASSWORD)
-
+# import django
+# django.setup()
 
 class Base(Settings):
     USER_NAME = os.environ.get('USER', '')
