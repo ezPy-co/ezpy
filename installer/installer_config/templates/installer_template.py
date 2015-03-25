@@ -6,7 +6,6 @@ from subprocess import call
 # For a straight pip install with no setup
     {% for step in choice.step.all %}
 
-    
     {% if step.step_type == 'dl' %}
     print {{step.url}}
     {% endif %}
@@ -19,6 +18,7 @@ from subprocess import call
     # call(['pip', 'install', option.package_name])
     print 'file change\n'
     {% endif %}
+
     {% if step.step_type == 'env' %}
     print 'set a thing\n'
     {% endif %}

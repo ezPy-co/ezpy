@@ -1,9 +1,10 @@
 from django.shortcuts import render
+from django.shortcuts import render_to_response
 from django.views.generic import CreateView, UpdateView, DeleteView
 from installer_config.models import EnvironmentProfile, UserChoice, Step
 from installer_config.forms import EnvironmentForm
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+
 
 class CreateEnvironmentProfile(CreateView):
     model = EnvironmentProfile
@@ -31,4 +32,7 @@ class DeleteEnvironmentProfile(DeleteView):
 
 def download_profile_view(request, **kwargs):
     choices = UserChoice.objects.filter(profiles=kwargs['pk']).all()
-    return render(request, 'installer_template.py', {'choices': choices})
+    response = render_to_response('installer_template.py', {'choices': choices},
+                                  content_type='application')
+    response['Content-Disposition'] = 'attachment; filename=something.py'
+    return response
