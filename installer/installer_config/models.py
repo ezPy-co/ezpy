@@ -21,12 +21,13 @@ class UserChoice(models.Model):
         ('other', 'Other'),
     )
 
-    description = models.CharField(max_length=63)
+    name = models.CharField(max_length=63)
+    description = models.CharField(max_length=255, blank=True)
     category = models.CharField(max_length=7, choices=DISPLAY_CATEGORY)
     priority = models.IntegerField(choices=PRIORITY)
 
     def __str__(self):
-        return str(self.description)
+        return str(self.name)
 
     class Meta:
         ordering = ['category']

@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 
 class CreateEnvironmentProfile(CreateView):
     model = EnvironmentProfile
+    context_object_name = 'profile'
     template_name = 'env_profile_form.html'
     form_class = EnvironmentForm
     success_url = '/profile'

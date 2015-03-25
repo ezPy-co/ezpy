@@ -15,7 +15,7 @@
     <h4>Core Dependencies</h4><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'core' %}
-            <li>{{ choice }} / {{ choice.priority }}</li>
+            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
@@ -23,7 +23,7 @@
     <h4>Virtual Environment Set Up</h4><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'env' %}
-            <li>{{ choice }} / {{ choice.priority }}</li>
+            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
@@ -31,7 +31,7 @@
     <h4>Git / Git Customization</h4><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'git' %}
-            <li>{{ choice }} / {{ choice.priority }}</li>
+            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
@@ -39,7 +39,7 @@
     <h4>Terminal Prompt Customization</h4><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'prompt' %}
-            <li>{{ choice }} / {{ choice.priority }}</li>
+            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
@@ -47,7 +47,7 @@
     <h4>Sublime Customization</h4><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'subl' %}
-            <li>{{ choice }} / {{ choice.priority }}</li>
+            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
@@ -55,7 +55,7 @@
     <h4>Pip Packages</h4><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'pkg' %}
-            <li>{{ choice }} / {{ choice.priority }}</li>
+            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
@@ -63,7 +63,7 @@
     <h4>Other</h4><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'other' %}
-            <li>{{ choice }} / {{ choice.priority }}</li>
+            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>

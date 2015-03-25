@@ -26,7 +26,7 @@ class ChoiceInline(admin.TabularInline):
 class UserChoiceAdmin(admin.ModelAdmin):
     model = UserChoice
     inlines = [ChoiceInline]
-    list_display = ('id', 'description', 'category', 'priority')
+    list_display = ('name', 'description', 'category', 'priority')
 
 
 # class StepAdmin(admin.ModelAdmin):
