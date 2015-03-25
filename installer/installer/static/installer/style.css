@@ -7,6 +7,10 @@ ul {
     list-style: none;
 }
 
+li {
+    font-size: 1.3em;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     color: white;
