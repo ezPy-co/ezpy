@@ -62,7 +62,7 @@ class Base(Settings):
         'django_jinja.loaders.AppLoader',
     )
 
-    DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja2'
+    DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
     ACCOUNT_ACTIVATION_DAYS = 7
     REGISTRATION_AUTO_LOGIN = True
