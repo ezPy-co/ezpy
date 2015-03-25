@@ -10,37 +10,62 @@
 <h1>{{ profile.description }} <a href="{% url 'installer_config:download_profile' profile.id %}"><i class="fa fa-download"></i></a></h1>
 <h4>Created by {{ profile.user }}</h4>
 
-<h3>Environment attributes sorted by priority</h3>
+<h3>Environment attributes:</h3>
 
-    <h4>High Priority</h4><ul>
+    <h4>Core Dependencies</h4><ul>
     {% for choice in profile.choices.all %}
-        {% if choice.priority == 1 %}
-            <li>{{ choice }}</li>
+        {% if choice.category == 'core' %}
+            <li>{{ choice }} / {{ choice.priority }}</li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Normal Priority</h4><ul>
+    <h4>Virtual Environment Set Up</h4><ul>
     {% for choice in profile.choices.all %}
-        {% if choice.priority == 2 %}
-            <li>{{ choice }}</li>
+        {% if choice.category == 'env' %}
+            <li>{{ choice }} / {{ choice.priority }}</li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Low Priority</h4><ul>
+    <h4>Git / Git Customization</h4><ul>
     {% for choice in profile.choices.all %}
-        {% if choice.priority == 3 %}
-            <li>{{ choice }}</li>
+        {% if choice.category == 'git' %}
+            <li>{{ choice }} / {{ choice.priority }}</li>
         {% endif %}
     {% endfor %}
     </ul>
 
-<h3>Environment attributes sorted by (default) display order</h3>
-<ul>
-{% for choice in profile.choices.all %}
-    <li>{{ choice }}</li>
-{% endfor %}
-</ul>
+    <h4>Terminal Prompt Customization</h4><ul>
+    {% for choice in profile.choices.all %}
+        {% if choice.category == 'prompt' %}
+            <li>{{ choice }} / {{ choice.priority }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h4>Sublime Customization</h4><ul>
+    {% for choice in profile.choices.all %}
+        {% if choice.category == 'subl' %}
+            <li>{{ choice }} / {{ choice.priority }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h4>Pip Packages</h4><ul>
+    {% for choice in profile.choices.all %}
+        {% if choice.category == 'pkg' %}
+            <li>{{ choice }} / {{ choice.priority }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h4>Other</h4><ul>
+    {% for choice in profile.choices.all %}
+        {% if choice.category == 'other' %}
+            <li>{{ choice }} / {{ choice.priority }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
 
 {% endblock %}
