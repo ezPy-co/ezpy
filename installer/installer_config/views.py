@@ -24,11 +24,19 @@ class UpdateEnvironmentProfile(UpdateView):
     form_class = EnvironmentForm
     success_url = '/profile'
 
+    def get_queryset(self):
+        qs = super(UpdateEnvironmentProfile, self).get_queryset()
+        return qs.filter(user=self.request.user)
+
 
 class DeleteEnvironmentProfile(DeleteView):
     model = EnvironmentProfile
     success_url = '/profile'
 
+    def get_queryset(self):
+        qs = super(UpdateEnvironmentProfile, self).get_queryset()
+        return qs.filter(user=self.request.user)
+        
 
 def download_profile_view(request, **kwargs):
     choices = UserChoice.objects.filter(profiles=kwargs['pk']).all()
