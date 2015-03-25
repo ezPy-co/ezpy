@@ -49,5 +49,5 @@ def download_profile_view(request, **kwargs):
     # import pdb; pdb.set_trace()
     response = render_to_response('installer_template.py', {'choices': choices},
                                   content_type='application')
-    response['Content-Disposition'] = 'attachment; filename=something.py'
+    response['Content-Disposition'] = 'attachment; filename=ezpy.py'
     return response
