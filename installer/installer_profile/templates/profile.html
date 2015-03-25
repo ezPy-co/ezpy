@@ -1,0 +1,29 @@
+{% extends "../../installer/templates/index.html" %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'installer_profile/profile.css' %}" />
+{% endblock %}
+
+{% block title %}Profile: {{ user }}{% endblock %}
+
+{% block body %}
+    <div>
+        <h3>{{ user }}'s Profile</h3>
+    </div>
+    <div>
+       <a href="{% url 'installer_config:CreateEnv' %}"><i class="fa fa-plus-circle"></i> Create a New Environment Profile</a>
+    </div>
+    <div>
+        <h3>My Envs</h3>
+        <ul>
+            {% for profile in profiles %}
+                <li>
+                    <a href="{% url 'installer_config:UpdateEnv' profile.id %}">{{ profile.description }}</a>
+                    <small><a href="{% url 'installer_config:download_profile' profile.id %}"><i class="fa fa-download"></i></a></small>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+

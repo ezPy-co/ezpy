@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'installer/normalize.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'installer/style.css' %}" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    {% block stylesheets %}
+    {% endblock %}
+    <title>{% block title %}ezPy{% endblock %}</title>
+</head>
+
+<body>
+    <header>
+        <img id ="pythonlogo" src="{% static 'installer/Python-logo.png' %}" alt="" height="42" width="42">
+        <h2 id="headerTitle"><a href="{% url 'index' %}">ezPy</a></h2>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                {% if not user.is_authenticated %}
+                    <li><a href="{% url 'auth_login' %}">Login</a></li>
+                    <li><a href="{% url 'registration_register' %}">Join</a></li>
+                {% else %}
+                    <li><a href="{% url 'profile:profile' %}">{{user}}</a></li>
+                    <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <div id="page">
+        <div id="content">
+            {% block body %}
+                <a id="quickStart">Get Started Here</a>
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

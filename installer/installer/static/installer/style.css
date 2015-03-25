@@ -1,0 +1,77 @@
+a {
+    text-decoration: none;
+    color: white;
+}
+
+ul {
+    list-style: none;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    background-color: #ff9a00;
+}
+
+#pythonlogo {
+    padding: 1em;
+    float: left;
+}
+
+header {
+    display: block;
+    height: 6em;
+    background-color: white;
+}
+
+#headerTitle {
+    float: left;
+    margin-left: -1%;
+    font-size: 2em;
+}
+
+#headerTitle a {
+    color: #ff9a00;
+}
+
+nav {
+    float: right;
+    text-decoration: none;
+    margin: 2% 2% 0 0;
+}
+
+nav li {
+    display: inline-block;
+    margin-left: 1em;
+}
+
+nav li a {
+    color: #ff9a00;
+}
+
+#page {
+    min-height: 90vh;
+    padding-top: 3em
+}
+
+#content {
+    max-width: 90%;
+    margin: auto;
+}
+
+#text {
+    width: 50%;
+    margin: 0 auto 2em;
+}
+
+#quickStart {
+    display: block;
+}
+
+#id_description {
+    color: #ff9a00;
+}
+
+.button {
+    color: #ff9a00;
+}
