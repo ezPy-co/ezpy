@@ -8,7 +8,33 @@
 <h1>{{ profile.description }}</h1><a href="{% url 'installer_config:download_profile' profile.id %}"><i class="fa fa-download"></i></a>
 <h4>Created by {{ profile.user }}</h4>
 
-<h3>Environment attributes:</h3>
+<h3>Environment attributes sorted by priority</h3>
+
+    <h4>High Priority</h4><ul>
+    {% for choice in profile.choices.all %}
+        {% if choice.priority == 1 %}
+            <li>{{ choice }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h4>Normal Priority</h4><ul>
+    {% for choice in profile.choices.all %}
+        {% if choice.priority == 2 %}
+            <li>{{ choice }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h4>Low Priority</h4><ul>
+    {% for choice in profile.choices.all %}
+        {% if choice.priority == 3 %}
+            <li>{{ choice }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+<h3>Environment attributes sorted by (default) display order</h3>
 <ul>
 {% for choice in profile.choices.all %}
     <li>{{ choice }}</li>
