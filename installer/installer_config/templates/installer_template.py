@@ -44,11 +44,14 @@ os.putenv(key, val)
 {% endif %}
 
 {% if step.step_type == 'pip' %}
-call(['pip', 'list'])
+# Pip install, assuming the exact name of the package as used for 'pip install [package]'
+# is given in the args field for a step
+call(['pip', 'install', "{{step.args}}"])
 {% endif %}
 
 {% if step.step_type == 'exec' %}
-print "{{step.args}}"
+command_line = "{{step.args}}".split(',')
+call(command_line)
 {% endif %}
 {% endspaceless %}
 {% endfor %}
