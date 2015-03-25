@@ -4,6 +4,27 @@ import urllib2
 import os
 import sys
 
+def scan(file_name):
+    """
+    Return the full file path to a file, including file_name.
+
+    If the file is not found, print 'File not found' to the console
+    and return None.
+    """
+    if 'Windows' in os.environ.get('OS'):
+        # Assumes the drive letter is C
+        walker = os.walk('C:/')
+    else:
+        walker = os.walk('/')
+    for directory, sub_dir, files in walker:
+        if file_name in files:
+            return directory + file_name
+    else:
+        # If the whole directory has been scanned with
+        # no result...
+        print 'File not found'
+        return None
+
 {% for choice in choices %}
 {% spaceless %}
 # For a straight pip install with no setup
