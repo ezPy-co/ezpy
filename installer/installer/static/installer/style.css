@@ -75,3 +75,18 @@ nav li a {
 .button {
     color: #ff9a00;
 }
+
+.required {
+    color: #ff9a00;
+}
+
+#id_password {
+    color: #ff9a00;
+}
+
+
+#id_username {
+    color: #ff9a00;
+}
+
+
