@@ -3,6 +3,7 @@ from subprocess import call
 import urllib2
 import os
 import sys
+import re
 
 def scan(a_name):
     """
@@ -11,8 +12,8 @@ def scan(a_name):
     If the file is not found, print 'File or directory not found'
     to the console and return None.
     """
-    extension = os.splitext(a_name)[1]
-    if 'Windows' in os.environ.get('OS'):
+    extension = os.path.splitext(a_name)[1]
+    if os.environ.get('OS'):
         # Assumes the drive letter is C
         walker = os.walk('C:/')
     else:
@@ -27,11 +28,10 @@ def scan(a_name):
             for directory, sub_dir, files in walker:
                 if a_name in directory:
                     return directory
-    else:
-        # If the whole directory has been scanned with
-        # no result...
-        print 'File or directory not found'
-        return None
+    # If the whole directory has been scanned with
+    # no result...
+    print 'File or directory not found'
+    return None
 
 {% for choice in choices %}
 {% spaceless %}
