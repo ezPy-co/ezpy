@@ -33,10 +33,6 @@ class DeleteEnvironmentProfile(DeleteView):
     model = EnvironmentProfile
     success_url = '/profile'
 
-    # def get_queryset(self):
-    #     qs = super(UpdateEnvironmentProfile, self).get_queryset()
-    #     return qs.filter(user=self.request.user)
-
 
 class ViewEnvironmentProfile(DetailView):
     model = EnvironmentProfile
