@@ -101,7 +101,19 @@ nav li a {
     margin: 0 auto;
 }
 
-.
+.sys-icons {
+    margin-top: 10%;
+    margin-bottom: 3%;
+    display: block;
+}
+
+.icon {
+    padding-left: 90px;
+    padding-right: 50px;
+    max-width: 18%;
+    display: inline-block;
+    vertical-align: top;
+}
 .profileform {
     margin: auto;
     text-align: right;
