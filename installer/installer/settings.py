@@ -17,7 +17,6 @@ class Base(Settings):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'installer_profile',
         'installer_config',
         'django_jinja',
         'registration',
@@ -37,10 +36,10 @@ class Base(Settings):
     WSGI_APPLICATION = 'installer.wsgi.application'
 
     DATABASES = {
-                'default': dj_database_url.config(
-                default='postgres://{}:@localhost:5432/installer'.format(
-                    USER_NAME))
-                }
+        'default': dj_database_url.config(
+            default='postgres://{}:@localhost:5432/installer'.format(
+                USER_NAME))
+        }
 
     LANGUAGE_CODE = 'en-us'
     TIME_ZONE = 'America/Los_Angeles'
