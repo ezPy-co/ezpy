@@ -5,6 +5,7 @@ a {
 
 ul {
     list-style: none;
+    padding-left: 0;
 }
 
 li {
@@ -144,9 +145,11 @@ nav li a {
     position:relative;
     top:1px;
 }
-}
+
 .required {
-    color: 3CB371;
+
+    color: #3CB371;
+
 }
 
 #id_password {
@@ -236,6 +239,8 @@ nav li a {
     background:linear-gradient(to bottom, #f6f6f6 10%, #ffffff 100%);
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
     background-color:#f6f6f6;
+}
+
 .downloadButton:active {
     position:relative;
     top:1px;
