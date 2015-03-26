@@ -4,6 +4,7 @@ import urllib2
 import os
 import sys
 
+
 def scan(a_name):
     """
     Return the full file path to a file, including file_name.
@@ -65,10 +66,11 @@ else:
 
 {% if step.step_type == 'edprof' %}
 # Edit a profile
-profile_name = os.path.expanduser('~/')+'.profile'
-print "Adding '{{step.args}}' to file at profile_name"
+safe_prompt = "{{step.args|safe}}"
+profile_name = os.path.expanduser('~/')+'.bashrc'
+print "Adding {{step.args|safe}} to ~/.bashrc"
 with open(profile_name, 'a') as f:
-    f.write("\n"+"{{step.args}}")
+    f.write("\nexport " + safe_prompt)
 {% endif %}
 
 {% if step.step_type == 'edfile' %}
