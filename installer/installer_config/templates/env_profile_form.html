@@ -22,7 +22,7 @@
 
 {% if profile %}
     <form action="{% url 'installer_config:DeleteEnv' profile.id %}" method="POST">{% csrf_token %}
-        <input class="button" type="submit" value="Delete Profile" />
+        <input class="button" type="submit" value="Delete Environment" />
     </form>
 {% endif %}
 
