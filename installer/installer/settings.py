@@ -17,7 +17,6 @@ class Base(Settings):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'installer_profile',
         'installer_config',
         'django_jinja',
         'registration',
@@ -42,6 +41,7 @@ class Base(Settings):
                     USER_NAME))
                 # default='postgres://postgres:admin@localhost:5432/installer_dbase')
                 }
+
 
     LANGUAGE_CODE = 'en-us'
     TIME_ZONE = 'America/Los_Angeles'

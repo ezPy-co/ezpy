@@ -10,6 +10,8 @@ env.aws_region = 'us-west-2'
 env.hosts = ['localhost', ]
 env.key_filename = '~/.ssh/pk-ins.pem'
 
+env.myhost = 'ec2-54-149-69-177.us-west-2.compute.amazonaws.com'
+
 # remote app directory
 env.remote_directory = '~/installer'
 
@@ -25,9 +27,13 @@ def active():
         print "No active instance"
 
 
-def ssh():
-    """run an open shell in remote server"""
-    run_command_on_selected_server(open_shell)
+def ssh_installer():
+    ssh(host_=env.myhost)
+
+
+def ssh(host_=None):
+    """run an open shell"""
+    run_command_on_selected_server(open_shell, host_=host_)
 
 
 def host_type():
@@ -36,12 +42,23 @@ def host_type():
 
 def _deploy_app():
     """run this on server to uploading app to server"""
-    rsync_project(env.remote_directory, env.local_directory,)
+    rsync_project(env.remote_directory, env.local_directory,
+                  exclude=['.git/', '*.pyc', 'tests.py', 'migrations/'])
+    sudo('service installer_app restart')
 
 
-def deploy_app():
-    """choose an instance and upload app to server"""
-    run_command_on_selected_server(_deploy_app)
+def deploy_app(host_=None):
+    """choose a in instance and upload app to server """
+    run_command_on_selected_server(_deploy_app, host_=host_)
+
+
+def deploy_installer(l_dir=env.local_directory):
+    """Deploys package installer to our remote location
+    Can set local location by using l_dir='<local path>'
+    """
+    env.local_directory = l_dir
+    deploy_app(host_=env.myhost)
+
 
 
 def _config_nginx():
@@ -67,16 +84,6 @@ def _restart_nginx():
 def restart_nginx():
     """choose an instance and upload app to server"""
     run_command_on_selected_server(_restart_nginx)
-
-    # https://canvas.instructure.com/courses/905313/assignments/3312976
-    # http://docs.fabfile.org/en/1.8/api/contrib/files.html
-    # http://codefellows.github.io/python-dev-accelerator/lectures/day13/simple_wsgi_deployment.html
-    # http://docs.fabfile.org/en/1.10/tutorial.html
-
-    # still have to:
-    # configure and restart nginx
-    # apt-get supervisor
-
 
 
 def get_ec2_connection():
@@ -153,13 +160,18 @@ def select_instance(state='running'):
     print env.active_instance
 
 
-def run_command_on_selected_server(command):
+def run_command_on_selected_server(command, host_=None):
     """run a given command (passed by name as an argument) on the server we select"""
-    select_instance()
-    selected_hosts = [
-        'ubuntu@' + env.active_instance.public_dns_name
-    ]
-    # import pdb; pdb.set_trace()
+    print host_
+    if not host_:
+        select_instance()
+        selected_hosts = [
+            'ubuntu@' + env.active_instance.public_dns_name
+        ]
+    else:
+        selected_hosts = [
+            'ubuntu@' + str(env.myhost)
+        ]
     execute(command, hosts=selected_hosts)
 
 
