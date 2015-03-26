@@ -40,6 +40,7 @@ def scan(a_name):
 {% spaceless %}
 {% if step.step_type == 'dl' %}
 # Download and run {{step}}
+print "Downloading from {{step.url}}"
 response = urllib2.urlopen('{{step.url}}')
 file_name = os.path.basename('{{step.url}}')
 with open(file_name, 'w') as f:
@@ -47,7 +48,11 @@ with open(file_name, 'w') as f:
 if os.path.splitext(file_name)[1] == '.py':
     call(['python', file_name])
 else:
+{% if choice.category == 'git' %}
+# Unpack git for execution
+{% endif %}
     run_file = './'+file_name
+    print "Running file_name"
     call([run_file])
 {% endif %}
 
@@ -56,9 +61,7 @@ else:
 profile_name = os.path.expanduser('~/')+'.profile'
 with open(profile_name, 'a') as f:
     f.write("\n"+"{{step.args}}")
-
-
-print 'profile change\n'
+print "Added '{{step.args}}' to file at profile_name"
 {% endif %}
 
 {% if step.step_type == 'edfile' %}
@@ -82,6 +85,7 @@ call(['pip', 'install', "{{step.args}}"])
 
 {% if step.step_type == 'exec' %}
 command_line = "{{step.args}}".split(',')
+print "Executing " + ' '.join(command_line)
 call(command_line)
 {% endif %}
 {% endspaceless %}
