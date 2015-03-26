@@ -6,11 +6,12 @@
 <div class="profileform">
 <form action="" method="POST">{% csrf_token %}
 
-
     {% for field in form %}
         {% if field|length == 1 %}
-            <p>{{ field.label }}</br>{{ field }}</p>
+            <h3>{{ field.label }}</h3>
+            <p>{{ field }}</p>
         {% else %}
+            <h3>Options</h3>
             <ul>
             {% for choice in field %}
                 <li>{{choice}} / 
