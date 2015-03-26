@@ -38,10 +38,10 @@ class Base(Settings):
     WSGI_APPLICATION = 'installer.wsgi.application'
 
     DATABASES = {
-            'default': dj_database_url.config(
-                default='postgres://{}:@localhost:5432/installer'.format(USER_NAME))
-                # default='postgres://postgres:admin@localhost:5432/installer_dbase')
-        }
+                'default': dj_database_url.config(
+                default='postgres://{}:@localhost:5432/installer'.format(
+                    USER_NAME))
+                }
 
     LANGUAGE_CODE = 'en-us'
     TIME_ZONE = 'America/Los_Angeles'
@@ -75,8 +75,6 @@ class Dev(Base):
 
 
 class Prod(Base):
-
-    DATABASES = DATABASE_SETTINGS
 
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
