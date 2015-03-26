@@ -39,7 +39,15 @@ class ViewEnvironmentProfile(DetailView):
     model = EnvironmentProfile
     context_object_name = 'profile'
     template_name = 'env_profile.html'
-        
+
+    # def get_context_data(self):
+    #     context = super(ViewEnvironmentProfile, self).get_context_data()
+    #     categorized = {}
+    #     for choice in self.object.choices.all():
+    #         categorized.setdefault(choice.category, []).append(choice)
+    #     context.update({'categorized_choices': categorized})
+    #     return context
+
 
 def download_profile_view(request, **kwargs):
     choices = UserChoice.objects.filter(profiles=kwargs['pk'])
