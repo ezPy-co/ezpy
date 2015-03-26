@@ -45,7 +45,7 @@ class Step(models.Model):
     )
 
     step_type = models.CharField(max_length=63, choices=STEP_TYPE_CHOICES)
-    url = models.CharField(max_length=63, blank=True, null=True)
+    url = models.CharField(max_length=255, blank=True, null=True)
     args = models.CharField(max_length=255, blank=True, null=True)
     dependency = models.CharField(max_length=63, blank=True, null=True)
     user_choice = models.ForeignKey(UserChoice, related_name='step')
