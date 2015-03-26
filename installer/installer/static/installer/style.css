@@ -135,6 +135,7 @@ nav li a {
 }
 
 .button {
+    margin: 10px;
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #ffffff));
     background:-moz-linear-gradient(top, #ffffff 5%, #ffffff 100%);
     background:-webkit-linear-gradient(top, #ffffff 5%, #ffffff 100%);
@@ -169,6 +170,7 @@ nav li a {
 }
 
 .button:active {
+
     position:relative;
     top:1px;
 }
