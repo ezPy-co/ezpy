@@ -28,13 +28,13 @@
     {% endfor %}
     </ul>
 
-    <h3>Git / Git Customization</h3><ul>
+<!--     <h3>Git / Git Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'git' %}
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
-    </ul>
+    </ul> -->
 
     <h3>Terminal Prompt Customization</h3><ul>
     {% for choice in profile.choices.all %}
@@ -44,13 +44,13 @@
     {% endfor %}
     </ul>
 
-    <h3>Sublime Customization</h3><ul>
+<!--     <h3>Sublime Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'subl' %}
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
-    </ul>
+    </ul> -->
 
     <h3>Pip Packages</h3><ul>
     {% for choice in profile.choices.all %}
