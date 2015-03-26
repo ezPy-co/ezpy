@@ -20,7 +20,7 @@ body {
 }
 
 #pythonlogo {
-    padding: 1em;
+    margin-right: 0.5em;
     float: left;
 }
 
@@ -37,7 +37,7 @@ footer{
 
 #headerTitle {
     float: left;
-    margin-left: -1%;
+    margin-left: 1em;
     font-size: 2em;
 }
 
