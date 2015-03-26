@@ -4,7 +4,6 @@ import urllib2
 import os
 import sys
 
-
 def scan(a_name):
     """
     Return the full file path to a file, including file_name.
@@ -38,6 +37,7 @@ def scan(a_name):
 # For choice {{choice.name}}
 {% for step in choice.step.all %}
 {% spaceless %}
+
 {% if step.step_type == 'dl' %}
 
 # Download and run {{step}}
@@ -45,18 +45,17 @@ url = '{{step.url}}'
 not_linux = True
 {% if choice.category != 'git' %}
 # Detect OS and change url accordingly...
-{% if 'win' in sys.platform %}
-# The url for git will be the url used for the windows exe
-print 'Windows detected'
-{% elif 'darwin' in sys.platform %}
-print 'Mac detected'
-url = None
-{% elif 'linux' in sys.platform %}
-print 'Linux detected'
-not_linux = False
-{% else %}
-print 'WARNING: Failed to determine OS'
-{% endif %}
+if 'win' in sys.platform:
+    # The url for git will be the url used for the windows exe
+    print 'Windows detected'
+elif 'darwin' in sys.platform:
+    print 'Mac detected'
+    url = None
+elif 'linux' in sys.platform:
+    print 'Linux detected'
+    not_linux = False
+else:
+    print 'WARNING: Failed to determine OS'
 {% endif %}
 
 if not_linux and url:
@@ -81,15 +80,13 @@ else:
     # This will prompt user for sudo password
     call(['sudo', 'apt-get', 'install', 'git'])
 {% endif %}
-{% endif %}
 
 {% if step.step_type == 'edprof' %}
 # Edit a profile
-safe_prompt = "{{step.args|safe}}"
-profile_name = os.path.expanduser('~/')+'.bashrc'
-print "Adding {{step.args|safe}} to ~/.bashrc"
+profile_name = os.path.expanduser('~/')+'.profile'
+print "Adding '{{step.args}}' to file at profile_name"
 with open(profile_name, 'a') as f:
-    f.write("\nexport " + safe_prompt)
+    f.write("\n"+"{{step.args}}")
 {% endif %}
 
 {% if step.step_type == 'edfile' %}
@@ -116,6 +113,7 @@ command_line = "{{step.args}}".split(',')
 print "Executing " + ' '.join(command_line)
 call(command_line)
 {% endif %}
+
 {% endspaceless %}
 {% endfor %}
 
