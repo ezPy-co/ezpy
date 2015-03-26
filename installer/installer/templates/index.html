@@ -22,7 +22,7 @@
                     <li><a href="{% url 'auth_login' %}">Login</a></li>
                     <li><a href="{% url 'registration_register' %}">Join</a></li>
                 {% else %}
-                    <li><a href="{% url 'profile:profile' %}">{{user}}</a></li>
+                    <li><a href="{% url 'profile' %}">{{user}}</a></li>
                     <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
                 {% endif %}
             </ul>
@@ -66,7 +66,6 @@
                 </div>
                 <div>
                 <a href="#" class="downloadButton">Download</a>
-<<<<<<< HEAD
                 </div>
             <div id="install-warn">
                     <h8>Note: Sublime Text 2 and Python 2.7 or greater must be installed.</h8>
@@ -85,11 +84,7 @@
                     <h5>Windows</h5>
                 </div>
             </div>
-=======
-                <div id="install-warn">
-                    <h8>Note:Python 2.7 or greater and Sublime Text 2 must be installed.</h8>
-                </div>
->>>>>>> 1706d661203f9f53eddb50ba3fd8d5b01c979c24
+
             {% endblock %}
         </div>
     </div>

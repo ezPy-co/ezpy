@@ -3,87 +3,76 @@ from subprocess import call
 import urllib2
 import os
 import sys
-import re
 
-CACHED_PATHS = {}
-
-
-
-def scan(target_name):
+def scan(a_name):
     """
     Return the full file path to a file, including file_name.
 
     If the file is not found, print 'File or directory not found'
     to the console and return None.
     """
-
-    if CACHED_PATHS[target_name]:
-        return CACHED_PATHS[target_name]
+    extension = os.splitext(a_name)[1]
+    if 'Windows' in os.environ.get('OS'):
+        # Assumes the drive letter is C
+        walker = os.walk('C:/')
     else:
-        extension = os.path.splitext(target_name)[1]
-        if os.environ.get('OS'):
-            # Assumes the drive letter is C
-            walker = os.walk('C:/')
-        else:
-            walker = os.walk('/')
+        walker = os.walk('/')
         if extension:
-                # Search for a file
+            # Search for a file
             for directory, sub_dir, files in walker:
-                for each_file in files:
-                    if re.match(target_name, each_file):
-                        CACHED_PATHS[target_name] = directory
-                        return directory + target_name
+                if a_name in files:
+                    return directory + a_name
         else:
             # Search for a directory
             for directory, sub_dir, files in walker:
-                if re.search("/{}".format(target_name), directory):
-                    CACHED_PATHS[target_name] = directory
+                if a_name in directory:
                     return directory
-        # If the whole directory has been scanned with
-        # no result...
-        print 'File or directory not found'
-        return None
+    # If the whole directory has been scanned with
+    # no result...
+    print 'File or directory not found'
+    return None
 
 {% for choice in choices %}
 {% spaceless %}
-# For a straight pip install with no setup
+# For choice {{choice.name}}
 {% for step in choice.step.all %}
 {% spaceless %}
 {% if step.step_type == 'dl' %}
 # Download and run {{step}}
+print "Downloading from {{step.url}}"
 response = urllib2.urlopen('{{step.url}}')
-scan_result = None
-{% if step.args %}
-scan_result = scan(target_name)
-
-{% if scan_result %}
-file_name = scan_result + os.path.basename('{{step.url}}')
-{% endif %}
-
-{% else %}
 file_name = os.path.basename('{{step.url}}')
+{% if choice.category != 'git' %}
+with open(file_name, 'w') as f:
+    f.write(response.read())
+{% else %}
+# For git, write the zip file
+# Insurance for windows sensitivity to binary versus text content
+with open(file_name, 'wb') as f:
+    f.write(response.read())
 {% endif %}
+if os.path.splitext(file_name)[1] == '.py':
+    call([sys.executable, file_name])
+else:
+{% if choice.category == 'git' %}
+# Unpack git for execution
 
-if not "{{step.args}}" or scan_result:
-    with open(file_name, 'w') as f:
-        f.write(response.read())
-    if os.path.splitext(file_name)[1] == '.py':
-        call(['python', file_name])
-    else:
-        run_file = './'+file_name
-        call([run_file])
+{% endif %}
+    run_file = './'+file_name
+    print "Running file_name"
+    call([run_file])
 {% endif %}
 
 {% if step.step_type == 'edprof' %}
+# Edit a profile
 profile_name = os.path.expanduser('~/')+'.profile'
+print "Adding '{{step.args}}' to file at profile_name"
 with open(profile_name, 'a') as f:
-    f.write("\n"+"{{step.args|safe}}")
-
-
-print 'profile change\n'
+    f.write("\n"+"{{step.args}}")
 {% endif %}
 
 {% if step.step_type == 'edfile' %}
+# Edit a file, {{step.args}}
 with open(step.file_location)
 # call(['pip', 'install', option.package_name])
 print 'file change\n'
@@ -103,6 +92,7 @@ call(['pip', 'install', "{{step.args}}"])
 
 {% if step.step_type == 'exec' %}
 command_line = "{{step.args}}".split(',')
+print "Executing " + ' '.join(command_line)
 call(command_line)
 {% endif %}
 {% endspaceless %}

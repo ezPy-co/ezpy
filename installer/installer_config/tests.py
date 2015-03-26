@@ -7,13 +7,13 @@ from django.core.urlresolvers import reverse
 from selenium import webdriver
 import factory
 import factory.django
-from installer_config.models import EnvironmentProfile
+from installer_config.models import EnvironmentProfile, UserChoice, Step
 
 from selenium import webdriver
 import os
 
 
-TEST_DOMAIN_NAME = "http://127.0.0.1:8081"
+# TEST_DOMAIN_NAME = "http://127.0.0.1:8081"
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -32,16 +32,78 @@ class EnvironmentProfileFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
 
 
-class UserProfileDetailTestCase(LiveServerTestCase):
-    """This class is for testing user login form"""
+# class UserProfileDetailTestCase(LiveServerTestCase):
+#     """This class is for testing user login form"""
+#     def setUp(self):
+#         self.driver = webdriver.Firefox()
+#         super(UserProfileDetailTestCase, self).setUp
+#         self.user = User(username='user1')
+#         self.user.set_password('pass')
+#         self.user.is_active = True
+
+#     def tearDown(self):
+#         self.driver.refresh()
+#         self.driver.quit()
+#         super(UserProfileDetailTestCase, self).tearDown()
+
+
+class DownloadFileFormationTest(TestCase):
     def setUp(self):
-        self.driver = webdriver.Firefox()
-        super(UserProfileDetailTestCase, self).setUp
-        self.user = User(username='user1')
-        self.user.set_password('pass')
+        self.user = User(username='n00b')
+        self.user.set_password('...')
         self.user.is_active = True
+        self.client = Client()
 
     def tearDown(self):
-        self.driver.refresh()
-        self.driver.quit()
-        super(UserProfileDetailTestCase, self).tearDown()
+        pass
+
+    def test_choice_presence_set1(self):
+        # Verify the presence of the corresponding code in the downloaded
+        # generated python script
+        self.user.save()
+
+        settings = [('important thing', 'core', 1),
+                    ('your env', 'env', 1),
+                    ('get', 'git', 1),
+                    ('bash shenanigannns', 'prompt', 2),
+                    ('text editor', 'subl', 2),
+                    ('a pip package', 'pkg', 3),
+                    ('other', 'other', 3),]
+
+        choices = []
+        for name, category, priority in settings:
+            choices.append(UserChoice(name=name, category=category, priority=priority))
+            choices[-1].save()
+
+        # Set up steps association with choices
+        for choice in UserChoice.objects.filter(priority=1):
+            Step(step_type='dl', user_choice=choice).save()
+            Step(step_type='edfile', user_choice=choice).save()
+            Step(step_type='edprof', user_choice=choice).save()
+        for choice in UserChoice.objects.filter(priority=2):
+            Step(step_type='env', user_choice=choice).save()
+            Step(step_type='exec', user_choice=choice).save()
+            Step(step_type='pip', user_choice=choice).save()
+
+        profiles = [
+            EnvironmentProfile(user=self.user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
+            EnvironmentProfile(user=self.user, description='twos'),#, choices=UserChoice.objects.filter(priority=2)),
+            EnvironmentProfile(user=self.user, description='threes'),#, choices=UserChoice.objects.filter(priority=3)),
+            ]
+
+        for order, profile in enumerate(profiles):
+            profile.save()
+            sub_choices = UserChoice.objects.filter(priority=order+1)
+            for item in sub_choices:
+                profile.choices.add(item)
+
+        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[0].pk}))
+
+        # Check that the steps for choices selected and only choices selected
+        # for a given environment are present in the generated python file
+        self.assertIn('# Download and run', response.content)
+        self.assertIn('# Edit a file', response.content)
+        self.assertIn('# Edit a profile', response.content)
+
+    def test_choice_presence_set2(self):
+        self.user.save()
