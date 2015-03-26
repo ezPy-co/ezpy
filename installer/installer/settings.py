@@ -1,8 +1,7 @@
 import os
 import dj_database_url
 from configurations import Settings
-from secret import (DATABASE_SETTINGS,
-                    HOST_USER,
+from secret import (HOST_USER,
                     HOST_PASSWORD)
 
 
@@ -88,4 +87,3 @@ class Prod(Base):
     EMAIL_HOST_USER = HOST_USER
     EMAIL_HOST_PASSWORD = HOST_PASSWORD
     DEFAULT_FROM_EMAIL = HOST_USER
-
