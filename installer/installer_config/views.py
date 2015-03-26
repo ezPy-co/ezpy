@@ -50,8 +50,11 @@ class ViewEnvironmentProfile(DetailView):
 
 
 def download_profile_view(request, **kwargs):
-    choices = UserChoice.objects.filter(profiles=kwargs['pk'])
+    environment = EnvironmentProfile.objects.get(pk=kwargs['pk'])
+    choices = UserChoice.objects.filter(profiles=environment)
+
     response = render_to_response('installer_template.py', {'choices': choices},
                                   content_type='application')
-    response['Content-Disposition'] = 'attachment; filename=ezpy.py'
+    response['Content-Disposition'] = 'attachment; filename=ezpy__{env_name}__{user}.py'.format(
+        env_name=environment.description.replace(' ', '_'), user=environment.user.username)
     return response
