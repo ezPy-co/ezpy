@@ -52,14 +52,26 @@ def scan(target_name):
 {% if step.step_type == 'dl' %}
 # Download and run {{step}}
 response = urllib2.urlopen('{{step.url}}')
+scan_result = None
+{% if step.args %}
+scan_result = scan(target_name)
+
+{% if scan_result %}
+file_name = scan_result + os.path.basename('{{step.url}}')
+{% endif %}
+
+{% else %}
 file_name = os.path.basename('{{step.url}}')
-with open(file_name, 'w') as f:
-    f.write(response.read())
-if os.path.splitext(file_name)[1] == '.py':
-    call(['python', file_name])
-else:
-    run_file = './'+file_name
-    call([run_file])
+{% endif %}
+
+if not "{{step.args}}" or scan_result:
+    with open(file_name, 'w') as f:
+        f.write(response.read())
+    if os.path.splitext(file_name)[1] == '.py':
+        call(['python', file_name])
+    else:
+        run_file = './'+file_name
+        call([run_file])
 {% endif %}
 
 {% if step.step_type == 'edprof' %}
