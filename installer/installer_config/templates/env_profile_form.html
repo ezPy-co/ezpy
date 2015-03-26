@@ -3,15 +3,16 @@
 
 {% block body %}
 <a href="javascript:history.go(-1)"><h4><i class="fa fa-chevron-circle-left"></i> Back</h4></a>
-
+<div class="profileform">
 <form action="" method="POST">{% csrf_token %}
     {{ form.as_p }}
     {% if profile %}
-    <input class="button" type="submit" value="Save" />
+    <input class="button" type="submit" value="Save Profile" />
     {% else %}
-    <input class="button" type="submit" value="Create" />
+    <input class="button" type="submit" value="Create Profile" />
     {% endif %}
 </form>
+</div>
 {% if profile %}
     <form action="{% url 'installer_config:DeleteEnv' profile.id %}" method="POST">{% csrf_token %}
         <input class="button" type="submit" value="Delete Profile" />

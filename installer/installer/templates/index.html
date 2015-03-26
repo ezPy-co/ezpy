@@ -31,22 +31,21 @@
     <div id="page">
         <div id="content">
             {% block body %}
-                <h1> Prep less, Code more</h1>
+                <h1> Prep Less, Code More</h1>
                 <h3> Create and save a personalized Python programming environment with ezPy</h3>
-                <a href="#" class="myButton">Get Started</a>
+                <a href="{% url 'registration_register' %}" class="myButton">Get Started</a>
                 <h2> Select our basic environment setup or pick and choose what you would like for a customized programming experience</h2>
                 <a href="#" class="myButton">Download</a>
 
             {% endblock %}
         </div>
     </div>
-    <footer class="main-footer">
-        <p> Made by:</p>
-        <p> Alicija Bulota</p>
-        <p> Henry Grantham</p>
-        <p> Henry Howes</p>
-        <p> Mat Lee</p>
-        <p> James Warren</p>
+    <div>
+    <footer>
+        <hr class="main-footer">
+        <p> Creators:</p>
+        <p>Alicija Bulota | Henry Grantham | Henry Howes | Mat Lee | James Warren</p>
     </footer>
+    </div>
 </body>
 </html>
