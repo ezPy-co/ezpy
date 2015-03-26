@@ -11,59 +11,59 @@
 <div class="env-attr">
 <h1>{{ profile.description }} <a href="{% url 'installer_config:download_profile' profile.id %}"><i class="fa fa-download"></i></a></h1>
 
-    <div class="attr-list"
-    <h4>Core Dependencies</h4><ul>
+    <div class="attr-list">
+    <h3>Core Dependencies</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'core' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Virtual Environment Set Up</h4><ul>
+    <h3>Virtual Environment Set Up</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'env' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Git / Git Customization</h4><ul>
+    <h3>Git / Git Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'git' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Terminal Prompt Customization</h4><ul>
+    <h3>Terminal Prompt Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'prompt' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Sublime Customization</h4><ul>
+    <h3>Sublime Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'subl' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Pip Packages</h4><ul>
+    <h3>Pip Packages</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'pkg' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Other</h4><ul>
+    <h3>Other</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'other' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
