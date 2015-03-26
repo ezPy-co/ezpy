@@ -11,11 +11,11 @@
     <div>
         <h1>{{ user }}'s Profile</h1>
     </div>
-    <div>
+    <div class="create-new-env">
        <a href="{% url 'installer_config:CreateEnv' %}"><i class="fa fa-plus-circle"></i> Create a New Environment Profile</a>
     </div>
     <div>
-        <h2>My Envs</h2>
+        <h2>My Environments</h2>
         <ul>
             {% for profile in profiles %}
                 <li>
