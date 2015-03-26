@@ -5,8 +5,10 @@
 
 <h1>Login</h1>
 <form method="post" action=".">
+<div class="login-form">
     {% csrf_token %}
     {{ form.as_p }}
+</div>
     <input class="button" type="submit" value="Log in" />
 </form>
 
