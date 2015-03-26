@@ -46,7 +46,7 @@ file_name = os.path.basename('{{step.url}}')
 with open(file_name, 'w') as f:
     f.write(response.read())
 if os.path.splitext(file_name)[1] == '.py':
-    call(['python', file_name])
+    call([sys.executable, file_name])
 else:
 {% if choice.category == 'git' %}
 # Unpack git for execution
