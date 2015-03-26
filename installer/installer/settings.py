@@ -1,8 +1,7 @@
 import os
 import dj_database_url
 from configurations import Settings
-from secret import (DATABASE_SETTINGS,
-                    HOST_USER,
+from secret import (HOST_USER,
                     HOST_PASSWORD)
 
 
@@ -38,10 +37,10 @@ class Base(Settings):
     WSGI_APPLICATION = 'installer.wsgi.application'
 
     DATABASES = {
-            'default': dj_database_url.config(
-                default='postgres://{}:@localhost:5432/installer'.format(USER_NAME))
-                # default='postgres://postgres:admin@localhost:5432/installer_dbase')
-        }
+                'default': dj_database_url.config(
+                default='postgres://{}:@localhost:5432/installer'.format(
+                    USER_NAME))
+                }
 
     LANGUAGE_CODE = 'en-us'
     TIME_ZONE = 'America/Los_Angeles'
@@ -76,8 +75,6 @@ class Dev(Base):
 
 class Prod(Base):
 
-    DATABASES = DATABASE_SETTINGS
-
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -90,4 +87,3 @@ class Prod(Base):
     EMAIL_HOST_USER = HOST_USER
     EMAIL_HOST_PASSWORD = HOST_PASSWORD
     DEFAULT_FROM_EMAIL = HOST_USER
-
