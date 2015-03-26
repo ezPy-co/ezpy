@@ -7,9 +7,9 @@
 <form action="" method="POST">{% csrf_token %}
     {{ form.as_p }}
     {% if profile %}
-    <input class="button" type="submit" value="Save" />
+    <input class="button" type="submit" value="Save Profile" />
     {% else %}
-    <input class="button" type="submit" value="Create" />
+    <input class="button" type="submit" value="Create Profile" />
     {% endif %}
 </form>
 {% if profile %}
