@@ -28,6 +28,7 @@ header {
     display: block;
     height: 6em;
     background-color: white;
+
 }
 
 footer{
@@ -66,7 +67,7 @@ nav li a {
 }
 
 #content {
-    max-width: 90%;
+    max-width: 750px;
     margin: auto;
 }
 
@@ -83,10 +84,38 @@ nav li a {
     color: #202020;
 }
 
-#install-warn {
-    font-size: 12px;
+.path {
+    max-width: 18%;
+    display: inline-block;
+    vertical-align: top;
 }
 
+.path-group {
+    margin-top: 3%;
+    margin-bottom: 3%;
+    display: block;
+}
+
+#install-warn {
+    max-width:180px;
+    font-size: 12px;
+    display: block;
+    margin: 0 auto;
+}
+
+.sys-icons {
+    margin-top: 10%;
+    margin-bottom: 3%;
+    display: block;
+}
+
+.icon {
+    padding-left: 90px;
+    padding-right: 50px;
+    max-width: 18%;
+    display: inline-block;
+    vertical-align: top;
+}
 .profileform {
     margin: auto;
     text-align: right;
@@ -113,6 +142,22 @@ nav li a {
     margin: auto;
     text-align: left;
     width: 100%;
+}
+
+.login-form {
+    margin: auto;
+    text-align: right;
+    width:400px;
+    padding-right: 140px;
+    padding-bottom: 40px;
+}
+
+.login-form input {
+    color: #202020 !important;
+}
+
+.login-form label {
+    color: white !important;
 }
 
 .reg-form {
@@ -176,6 +221,8 @@ nav li a {
 }
 
 .myButton {
+    margin-top: 1%;
+    margin-bottom: 4%;
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #ffffff));
     background:-moz-linear-gradient(top, #ffffff 5%, #ffffff 100%);
     background:-webkit-linear-gradient(top, #ffffff 5%, #ffffff 100%);
@@ -214,6 +261,7 @@ nav li a {
 }
 
 .downloadButton {
+    margin-top: 2%;
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #ffffff));
     background:-moz-linear-gradient(top, #ffffff 5%, #ffffff 100%);
     background:-webkit-linear-gradient(top, #ffffff 5%, #ffffff 100%);
