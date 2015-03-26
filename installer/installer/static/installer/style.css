@@ -103,6 +103,14 @@ nav li a {
     margin: 1em auto;
 }
 
+.directions {
+    max-width: 470px;
+    display:block;
+    margin: 1em auto;
+
+
+}
+
 .sys-icons {
     margin-top: 10%;
     margin-bottom: 3%;

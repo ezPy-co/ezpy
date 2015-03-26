@@ -13,7 +13,7 @@ from selenium import webdriver
 import os
 
 
-# TEST_DOMAIN_NAME = "http://127.0.0.1:8081"
+TEST_DOMAIN_NAME = "http://127.0.0.1:8081"
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -32,19 +32,127 @@ class EnvironmentProfileFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
 
 
-# class UserProfileDetailTestCase(LiveServerTestCase):
-#     """This class is for testing user login form"""
-#     def setUp(self):
-#         self.driver = webdriver.Firefox()
-#         super(UserProfileDetailTestCase, self).setUp
-#         self.user = User(username='user1')
-#         self.user.set_password('pass')
-#         self.user.is_active = True
+class ChoiceFactory(factory.django.DjangoModelFactory):
 
-#     def tearDown(self):
-#         self.driver.refresh()
-#         self.driver.quit()
-#         super(UserProfileDetailTestCase, self).tearDown()
+    class Meta:
+        model = UserChoice
+
+    name = factory.Sequence(lambda n: u'name%d' % n)
+    description = factory.Sequence(lambda n: u'description%d' % n)
+    category = 'core'
+    priority = 1
+
+class UserProfileDetailTestCase(LiveServerTestCase):
+    """This class is for testing user login form"""
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        super(UserProfileDetailTestCase, self).setUp
+        self.user = User(username='user1')
+        self.user.set_password('pass')
+        self.user.is_active = True
+        self.choice = []
+        for i in range(3):
+            self.choice.append(ChoiceFactory())
+            self.choice[i].save()
+
+    def tearDown(self):
+        self.driver.refresh()
+        self.driver.quit()
+        super(UserProfileDetailTestCase, self).tearDown()
+
+
+    def login_user(self, user, password):
+        """login user"""
+        self.driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
+        username_field = self.driver.find_element_by_id('id_username')
+        username_field.send_keys(user)
+        password_field = self.driver.find_element_by_id('id_password')
+        password_field.send_keys(password)
+        form = self.driver.find_element_by_tag_name('form')
+        form.submit()
+
+    def test_create_profile_all(self):
+        """If all choices selected, all are in the created profile"""
+        # .save() is here instead of setUp to save time
+        self.user.save()
+        self.login_user('user1', 'pass')
+        self.driver.get(TEST_DOMAIN_NAME +
+                        reverse('installer_config:CreateEnv'))
+        self.assertIn("profileform", self.driver.page_source)
+        # fill out form
+        description = "Test description."
+        field = self.driver.find_element_by_id('id_description')
+        field.send_keys(description)
+        for i in range(3):
+            choice = "".join(['id_choices_', str(i)])
+            field = self.driver.find_element_by_id(choice)
+            field.click()
+        form = self.driver.find_element_by_tag_name('form')
+        form.submit()
+        # check if profile is created
+        self.assertIn("userprofile", self.driver.page_source)
+        self.assertIn(description, self.driver.page_source)
+        # check script has the choices
+        link = self.driver.find_elements_by_link_text('Test description.')
+        link[0].click()
+        for i in range(3):
+            self.assertIn(self.choice[i].name, self.driver.page_source)
+            self.assertIn(self.choice[i].description, self.driver.page_source)
+
+
+    def test_create_profile_not_all(self):
+        """If not all choices selected, the right ones are produced"""
+        # .save() is here instead of setUp to save time
+        self.user.save()
+        self.login_user('user1', 'pass')
+        self.driver.get(TEST_DOMAIN_NAME +
+                        reverse('installer_config:CreateEnv'))
+        self.assertIn("profileform", self.driver.page_source)
+        # fill out form
+        description = "Test description."
+        field = self.driver.find_element_by_id('id_description')
+        field.send_keys(description)
+        for i in range(2):
+            choice = "".join(['id_choices_', str(i)])
+            field = self.driver.find_element_by_id(choice)
+            field.click()
+        form = self.driver.find_element_by_tag_name('form')
+        form.submit()
+        # check if profile is created
+        self.assertIn("userprofile", self.driver.page_source)
+        self.assertIn(description, self.driver.page_source)
+        # check script has the choices
+        link = self.driver.find_elements_by_link_text('Test description.')
+        link[0].click()
+        for i in range(2):
+            self.assertIn(self.choice[i].name, self.driver.page_source)
+            self.assertIn(self.choice[i].description, self.driver.page_source)
+        # if not selected, then not in page that displays choices
+        self.assertNotIn(self.choice[2].name, self.driver.page_source)
+        self.assertNotIn(self.choice[2].description, self.driver.page_source)
+
+
+    # def test_update_profile(self):
+    #     # .save() is here instead of setUp to save time
+    #     self.user.save()
+    #     self.login_user('user1', 'pass')
+    #     self.driver.get(TEST_DOMAIN_NAME +
+    #                     reverse('installer_config:UpdateEnv',
+    #                             kwargs={'pk': self.user.pk}))
+    #     self.assertIn("profileform", self.driver.page_source)
+
+
+
+
+
+        # 'UpdateEnv'    kwargs={'pk': self.user.pk}
+
+        # 'DeleteEnv'    kwargs={'pk': self.user.pk}
+
+        # 'download_profile'    kwargs={'pk': self.user.pk}
+
+        # 'ViewEnv'     kwargs={'pk': self.user.pk}
+
 
 
 class DownloadFileFormationTest(TestCase):
@@ -53,6 +161,7 @@ class DownloadFileFormationTest(TestCase):
         self.user.set_password('...')
         self.user.is_active = True
         self.client = Client()
+
 
     def tearDown(self):
         pass
