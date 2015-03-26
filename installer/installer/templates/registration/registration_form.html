@@ -3,15 +3,15 @@
 
 {% block body %}
 
-<h1>Join the Revolution</h1>
+<h1>Join the Revolution!</h1>
 <h4> Once registered, you can create, save and share your environments!</h4>
 
-<form method="POST" action="">
+<form method="post" action=".">
 <div class="reg-form">
     {% csrf_token %}
     {{ form.as_p }}
 </div>
-    <input class="button" type="submit">
+    <input class="button" type="submit" value="Register"/>
 </form>
 
 {% endblock %}
