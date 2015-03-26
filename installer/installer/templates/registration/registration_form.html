@@ -3,11 +3,14 @@
 
 {% block body %}
 
-<h1>This is the registration form</h1>
+<h1>Join the Revolution</h1>
+<h4> Once registered, you can create, save and share your environments!</h4>
 
 <form method="POST" action="">
+<div class="reg-form">
     {% csrf_token %}
     {{ form.as_p }}
+</div>
     <input class="button" type="submit">
 </form>
 
