@@ -33,7 +33,7 @@
     <div id="page">
         <div id="content">
             {% block body %}
-                <h1> Prep less, Code more</h1>
+                <h1> Prep Less, Code More</h1>
                 <h3> Create and save a personalized Python programming environment with ezPy!</h3>
                 <a href="{% if not user.is_authenticated %}{% url 'registration_register' %}{% else %}{% url 'profile' %}{% endif %}" class="myButton">Get Started</a>
                 <h2> Select our Basic Environment setup or pick and choose for a customized programming experience</h2>
