@@ -115,7 +115,6 @@ nav li a {
 }
 
 .reg-form {
-    color: #202020;
     margin: auto;
     text-align: right;
     width:400px;
@@ -123,7 +122,13 @@ nav li a {
     padding-bottom: 40px;
 }
 
+.reg-form input {
+    color: #202020 !important;
+}
 
+.reg-form label {
+    color: white !important;
+}
 
 .back-button {
     text-align: left;
