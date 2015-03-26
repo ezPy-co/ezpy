@@ -8,22 +8,35 @@
 </div>
 <h1>Build An Environment</h1>
 <div class="profileform">
-<form action="" method="POST">{% csrf_token %}</div>
-<div class="build-choices">
-    {{ form.as_p }}
-</div>
-    {% if profile %}
+    <form action="" method="POST">{% csrf_token %}
 
-    <input class="button" type="submit" value="Save" />
+    <div class="build-choices">
+        {% for field in form %}
+            {% if field|length == 1 %}
+                <h3>{{ field.label }}</h3>
+                <p>{{ field }}</p>
+            {% else %}
+                <h3>Options</h3>
+                <ul>
+                {% for choice in field %}
+                    <li>{{choice}} / 
+                    d:{{choice.description}}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% if profile %}
+        <input class="button" type="submit" value="Save Profile" />
     {% else %}
-    <input class="button" type="submit" value="Create" />
+        <input class="button" type="submit" value="Create Profile" />
     {% endif %}
 </form>
-
 {% if profile %}
     <form action="{% url 'installer_config:DeleteEnv' profile.id %}" method="POST">{% csrf_token %}
         <input class="button" type="submit" value="Delete Profile" />
     </form>
 {% endif %}
+</div>
 
 {% endblock %}

@@ -5,6 +5,7 @@ a {
 
 ul {
     list-style: none;
+    padding-left: 0;
 }
 
 li {
@@ -170,12 +171,9 @@ nav li a {
 }
 
 .button:active {
-
     position:relative;
     top:1px;
 }
-
-
 
 .myButton {
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #ffffff));
@@ -199,6 +197,7 @@ nav li a {
     text-decoration:none;
     text-shadow:0px 1px 0px #ffffff;
 }
+
 .myButton:hover {
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #ffffff));
     background:-moz-linear-gradient(top, #ffffff 5%, #ffffff 100%);
