@@ -42,7 +42,9 @@ def host_type():
 
 def _deploy_app():
     """run this on server to uploading app to server"""
-    rsync_project(env.remote_directory, env.local_directory,)
+    rsync_project(env.remote_directory, env.local_directory,
+                  exclude=['.git/', '*.pyc', 'tests.py', 'migrations/'])
+    sudo('service installer_app restart')
 
 
 def deploy_app(host_=None):
@@ -56,6 +58,7 @@ def deploy_installer(l_dir=env.local_directory):
     """
     env.local_directory = l_dir
     deploy_app(host_=env.myhost)
+
 
 
 def _config_nginx():
@@ -81,16 +84,6 @@ def _restart_nginx():
 def restart_nginx():
     """choose an instance and upload app to server"""
     run_command_on_selected_server(_restart_nginx)
-
-    # https://canvas.instructure.com/courses/905313/assignments/3312976
-    # http://docs.fabfile.org/en/1.8/api/contrib/files.html
-    # http://codefellows.github.io/python-dev-accelerator/lectures/day13/simple_wsgi_deployment.html
-    # http://docs.fabfile.org/en/1.10/tutorial.html
-
-    # still have to:
-    # configure and restart nginx
-    # apt-get supervisor
-
 
 
 def get_ec2_connection():
