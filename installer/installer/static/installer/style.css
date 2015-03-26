@@ -20,7 +20,7 @@ body {
 }
 
 #pythonlogo {
-    padding: 1em;
+    margin-right: 0.5em;
     float: left;
 }
 
@@ -37,7 +37,7 @@ footer{
 
 #headerTitle {
     float: left;
-    margin-left: -1%;
+    margin-left: 1em;
     font-size: 2em;
 }
 
@@ -100,7 +100,7 @@ nav li a {
     max-width:180px;
     font-size: 12px;
     display: block;
-    margin: 0 auto;
+    margin: 1em auto;
 }
 
 .sys-icons {
