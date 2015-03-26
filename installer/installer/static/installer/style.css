@@ -143,6 +143,22 @@ nav li a {
     width: 100%;
 }
 
+.login-form {
+    margin: auto;
+    text-align: right;
+    width:400px;
+    padding-right: 140px;
+    padding-bottom: 40px;
+}
+
+.login-form input {
+    color: #202020 !important;
+}
+
+.login-form label {
+    color: white !important;
+}
+
 .reg-form {
     margin: auto;
     text-align: right;
