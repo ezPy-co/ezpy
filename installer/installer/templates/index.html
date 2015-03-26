@@ -32,38 +32,54 @@
         <div id="content">
             {% block body %}
                 <h1> Prep less, Code more</h1>
-                <h3> Create and save a personalized Python programming environment with ezPy</h3>
+                <h3> Create and save a personalized Python programming environment with ezPy!</h3>
                 <a href="{% url 'registration_register' %}" class="myButton">Get Started</a>
+                <h2> Select our Basic Environment setup or pick and choose for a customized programming experience</h2>
                 <div class="path-group">
                 <div class="path">
                     <i class="fa fa-check-square-o fa-5x"></i>
-                    <h4> add installs</h4>
+                    <h4>add installs</h4>
                 </div>
                 <div class="path">
                     <i class="fa fa-long-arrow-right fa-5x"></i>
                 </div>
                 <div class="path">
                     <i class="fa fa-download fa-5x"></i>
-                    <h4> download and run</h4>
+                    <h4>download and run</h4>
                 </div>
                 <div class="path">
                     <i class="fa fa-long-arrow-right fa-5x"></i>
                 </div>
                 <div class="path">
                     <i class="fa fa-code fa-5x"></i>
-                    <h4> start coding!</h4>
+                    <h4>start coding!</h4>
                 </div>
                 </div>
 
                 <div>
-                <h3> Select our basic environment setup or pick and choose for a customized programming experience</h3>
-                <h4> When you download the basic environment, the following programs will be installed:</h4>
-                <h5>Pip</h5>
-                <h5>Git</h5>
+                <h2> Download the Basic Environment Now!</h2>
+                <h4><i class="fa fa-terminal fa-2x"></i> .bashrc</h4>
+                <i class="fa fa-git-square fa-2x"></i>
+                <h4>pip</h4>
+                <h4>Sublime Text 2 plugin/linter</h4>
+                <h4>virtualenv/wrapper</h4>
+                </div>
+                <div>
                 <a href="#" class="downloadButton">Download</a>
                 </div>
             <div id="install-warn">
                     <h8>Note: Sublime Text 2 and Python 2.7 or greater must be installed.</h8>
+            </div>
+            <div class="sys-icons">
+                <div class="icon"></div>
+                    <i class="fa fa-apple fa-3x"></i>
+                    <h4>Mac</h4>
+                <div class="icon"></div>
+                    <i class="fa fa-spinner fa-3x"></i>
+                    <h4>Linux/Ubuntu</h4>
+                <div class="icon"></div>
+                    <i class="fa fa-windows fa-3x"></i>
+                    <h4>Windows</h4>
             </div>
             {% endblock %}
         </div>
