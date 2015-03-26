@@ -82,6 +82,17 @@ nav li a {
     color: #202020;
 }
 
+.path {
+    max-width: 18%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.path-group {
+    margin: 5%;
+    display: block;
+}
+
 #install-warn {
     font-size: 12px;
 }
