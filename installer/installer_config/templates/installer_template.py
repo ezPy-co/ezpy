@@ -27,11 +27,10 @@ def scan(a_name):
             for directory, sub_dir, files in walker:
                 if a_name in directory:
                     return directory
-    else:
-        # If the whole directory has been scanned with
-        # no result...
-        print 'File or directory not found'
-        return None
+    # If the whole directory has been scanned with
+    # no result...
+    print 'File or directory not found'
+    return None
 
 {% for choice in choices %}
 {% spaceless %}
@@ -43,13 +42,21 @@ def scan(a_name):
 print "Downloading from {{step.url}}"
 response = urllib2.urlopen('{{step.url}}')
 file_name = os.path.basename('{{step.url}}')
+{% if choice.category != 'git' %}
 with open(file_name, 'w') as f:
     f.write(response.read())
+{% else %}
+# For git, write the zip file
+# Insurance for windows sensitivity to binary versus text content
+with open(file_name, 'wb') as f:
+    f.write(response.read())
+{% endif %}
 if os.path.splitext(file_name)[1] == '.py':
     call([sys.executable, file_name])
 else:
 {% if choice.category == 'git' %}
 # Unpack git for execution
+
 {% endif %}
     run_file = './'+file_name
     print "Running file_name"
@@ -59,9 +66,9 @@ else:
 {% if step.step_type == 'edprof' %}
 # Edit a profile
 profile_name = os.path.expanduser('~/')+'.profile'
+print "Adding '{{step.args}}' to file at profile_name"
 with open(profile_name, 'a') as f:
     f.write("\n"+"{{step.args}}")
-print "Added '{{step.args}}' to file at profile_name"
 {% endif %}
 
 {% if step.step_type == 'edfile' %}

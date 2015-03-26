@@ -33,7 +33,7 @@
             {% block body %}
                 <h1> Prep Less, Code More</h1>
                 <h3> Create and save a personalized Python programming environment with ezPy</h3>
-                <a href="{% url 'registration_register' %}" class="myButton">Get Started</a>
+                <a href="{% if not user.is_authenticated %}{% url 'registration_register' %}{% else %}{% url 'profile' %}{% endif %}" class="myButton">Get Started</a>
                 <h3> Select our basic environment setup or pick and choose for a customized programming experience</h3>
                 <h4> When you download the basic environment, the following programs will be installed:</h4>
                 <h5>Pip</h5>
