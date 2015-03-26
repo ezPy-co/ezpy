@@ -77,13 +77,13 @@ class DownloadFileFormationTest(TestCase):
 
         # Set up steps association with choices
         for choice in UserChoice.objects.filter(priority=1):
-            Step(step_type='dl', user_choice=choice)
-            Step(step_type='edfile', user_choice=choice)
-            Step(step_type='edprof', user_choice=choice)
+            Step(step_type='dl', user_choice=choice).save()
+            Step(step_type='edfile', user_choice=choice).save()
+            Step(step_type='edprof', user_choice=choice).save()
         for choice in UserChoice.objects.filter(priority=2):
-            Step(step_type='env', user_choice=choice)
-            Step(step_type='exec', user_choice=choice)
-            Step(step_type='pip', user_choice=choice)
+            Step(step_type='env', user_choice=choice).save()
+            Step(step_type='exec', user_choice=choice).save()
+            Step(step_type='pip', user_choice=choice).save()
 
         profiles = [
             EnvironmentProfile(user=self.user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
@@ -97,12 +97,13 @@ class DownloadFileFormationTest(TestCase):
             for item in sub_choices:
                 profile.choices.add(item)
 
-        import pdb; pdb.set_trace()
-
-        # response = self.client.get('/download/'+profiles[0].pk)
         response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[0].pk}))
-        # import pdb; pdb.set_trace()
 
+        # Check that the steps for choices selected and only choices selected
+        # for a given environment are present in the generated python file
+        self.assertIn('# Download and run', response.content)
+        self.assertIn('# Edit a file', response.content)
+        self.assertIn('# Edit a profile', response.content)
 
     def test_choice_presence_set2(self):
         self.user.save()
