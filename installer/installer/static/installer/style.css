@@ -85,19 +85,19 @@ nav li a {
 .profileform {
     margin: auto;
     text-align: left;
-    width:300px;
+    width:400px;
 }
 
 .env-attr {
     margin: auto;
     text-align: left;
-    width:300px;
+    width: 400px;
 }
 
 .attr-list {
     margin: auto;
     text-align: left;
-    width:250px;
+    width: 100%;
 }
 
 .back-button {
