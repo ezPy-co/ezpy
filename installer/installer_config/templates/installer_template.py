@@ -58,10 +58,11 @@ else:
 
 {% if step.step_type == 'edprof' %}
 # Edit a profile
-profile_name = os.path.expanduser('~/')+'.profile'
+safe_prompt = "{{step.args|safe}}"
+profile_name = os.path.expanduser('~/')+'.bashrc'
 with open(profile_name, 'a') as f:
-    f.write("\n"+"{{step.args}}")
-print "Added '{{step.args}}' to file at profile_name"
+    f.write("\nexport " + safe_prompt)
+print "Added %s to your ~/.bashrc file" % safe_prompt
 {% endif %}
 
 {% if step.step_type == 'edfile' %}
