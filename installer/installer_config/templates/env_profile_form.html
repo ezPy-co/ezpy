@@ -2,17 +2,24 @@
 
 
 {% block body %}
+
+<div class="back-button">
 <a href="javascript:history.go(-1)"><h4><i class="fa fa-chevron-circle-left"></i> Back</h4></a>
+</div>
+<h1>Build An Environment</h1>
 <div class="profileform">
-<form action="" method="POST">{% csrf_token %}
+<form action="" method="POST">{% csrf_token %}</div>
+<div class="build-choices">
     {{ form.as_p }}
+</div>
     {% if profile %}
+
     <input class="button" type="submit" value="Save" />
     {% else %}
     <input class="button" type="submit" value="Create" />
     {% endif %}
 </form>
-</div>
+
 {% if profile %}
     <form action="{% url 'installer_config:DeleteEnv' profile.id %}" method="POST">{% csrf_token %}
         <input class="button" type="submit" value="Delete Profile" />
