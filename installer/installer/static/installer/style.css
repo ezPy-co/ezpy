@@ -88,6 +88,21 @@ nav li a {
     width:300px;
 }
 
+.env-attr {
+    margin: auto;
+    text-align: left;
+    width:300px;
+}
+
+.attr-list {
+    margin: auto;
+    text-align: left;
+    width:250px;
+}
+
+.back-button {
+    text-align: left;
+}
 .button {
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -225,4 +240,6 @@ nav li a {
     position:relative;
     top:1px;
 }
+
+
 
