@@ -88,9 +88,19 @@ nav li a {
 
 .profileform {
     margin: auto;
+    text-align: right;
+    width:400px;
+    padding-right: 140px;
+}
+
+.build-choices {
+    margin: auto;
     text-align: left;
     width:400px;
+    padding-left: 140px;
+    padding-bottom: 40px;
 }
+
 
 .env-attr {
     margin: auto;
