@@ -39,29 +39,48 @@ def scan(a_name):
 {% for step in choice.step.all %}
 {% spaceless %}
 {% if step.step_type == 'dl' %}
-# Download and run {{step}}
-print "Downloading from {{step.url}}"
-response = urllib2.urlopen('{{step.url}}')
-file_name = os.path.basename('{{step.url}}')
-{% if choice.category != 'git' %}
-with open(file_name, 'w') as f:
-    f.write(response.read())
-{% else %}
-# For git, write the zip file
-# Insurance for windows sensitivity to binary versus text content
-with open(file_name, 'wb') as f:
-    f.write(response.read())
-{% endif %}
-if os.path.splitext(file_name)[1] == '.py':
-    call([sys.executable, file_name])
-else:
-{% if choice.category == 'git' %}
-# Unpack git for execution
 
+# Download and run {{step}}
+url = '{{step.url}}'
+not_linux = True
+{% if choice.category != 'git' %}
+# Detect OS and change url accordingly...
+{% if 'win' in sys.platform %}
+# The url for git will be the url used for the windows exe
+print 'Windows detected'
+{% elif 'darwin' in sys.platform %}
+print 'Mac detected'
+url = None
+{% elif 'linux' in sys.platform %}
+print 'Linux detected'
+not_linux = False
+{% else %}
+print 'WARNING: Failed to determine OS'
 {% endif %}
-    run_file = './'+file_name
-    print "Running file_name"
-    call([run_file])
+{% endif %}
+
+if not_linux and url:
+    print "Downloading from {}".format(url)
+    response = urllib2.urlopen(url)
+    file_name = os.path.basename(url)
+
+    with open(file_name, 'w') as f:
+        f.write(response.read())
+
+    if os.path.splitext(file_name)[1] == '.py':
+        call([sys.executable, file_name])
+        raw_input('Enter anything to continue when finished installing git.')
+    else:
+        run_file = './'+file_name
+        print "Running file_name"
+        call([run_file])
+elif url is None:
+    call(['xcode-select', '--install'])
+    raw_input('Enter anything to continue when finished installing xcode and git.')
+else:
+    # This will prompt user for sudo password
+    call(['sudo', 'apt-get', 'install', 'git'])
+{% endif %}
 {% endif %}
 
 {% if step.step_type == 'edprof' %}
