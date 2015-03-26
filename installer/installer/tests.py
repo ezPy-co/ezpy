@@ -13,7 +13,6 @@ import factory
 import factory.django
 from installer_config.models import EnvironmentProfile
 
-from selenium import webdriver
 import os
 
 

@@ -62,3 +62,6 @@ secret2.py
 
 # Django Migrations
 migrations/
+
+# Upstart Conf
+installer_app.conf
