@@ -77,7 +77,7 @@ if not "{{step.args}}" or scan_result:
 {% if step.step_type == 'edprof' %}
 profile_name = os.path.expanduser('~/')+'.profile'
 with open(profile_name, 'a') as f:
-    f.write("\n"+"{{step.args}}")
+    f.write("\n"+"{{step.args|safe}}")
 
 
 print 'profile change\n'
