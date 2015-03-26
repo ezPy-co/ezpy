@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from selenium import webdriver
 import factory
 import factory.django
-from installer_config.models import EnvironmentProfile
+from installer_config.models import EnvironmentProfile, UserChoice, Step
 
 from selenium import webdriver
 import os
@@ -45,3 +45,48 @@ class UserProfileDetailTestCase(LiveServerTestCase):
         self.driver.refresh()
         self.driver.quit()
         super(UserProfileDetailTestCase, self).tearDown()
+
+
+class DownloadFileFormationTest(TestCase):
+    def setUp(self):
+        self.user = User(username='n00b')
+        self.user.set_password('...')
+        self.user.is_active = True
+        self.client = Client()
+
+    def tearDown(self):
+        pass
+
+    def test_choice_presence_set1(self):
+        # Verify the presence of the corresponding code in the downloaded
+        # generated python script
+        self.user.save()
+
+        settings = [('important thing', 'core', 1),
+                    ('your env', 'env', 1),
+                    ('get', 'git', 1),
+                    ('bash shenanigannns', 'prompt', 2),
+                    ('text editor', 'subl', 2),
+                    ('a pip package', 'pkg', 3),
+                    ('other', 'other', 3),]
+
+        choices = []
+        for name, category, priority in settings:
+            choices.append(UserChoice(name=name, category=category, priority=priority))
+            choices[-1].save()
+
+        # Set up steps association with choices
+        for choice in UserChoice.objects.filter(priority=1):
+            Step(step_type='dl', user_choice=choice)
+            Step(step_type='edfile', user_choice=choice)
+            Step(step_type='edprof', user_choice=choice)
+        for choice in UserChoice.objects.filter(priority=2):
+            Step(step_type='env', user_choice=choice)
+            Step(step_type='exec', user_choice=choice)
+            Step(step_type='pip', user_choice=choice)
+
+        response = self.client.get(reverse('download_profile', kwargs={'pk': self.user.pk}))
+
+
+    def test_choice_presence_set2(self):
+        self.user.save()
