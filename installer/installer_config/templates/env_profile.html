@@ -5,67 +5,69 @@
 {% block title %}{{ profile.description }}{% endblock %}
 
 {% block body %}
+<div class="back-button">
 <a href="javascript:history.go(-1)"><h4><i class="fa fa-chevron-circle-left"></i> Back</h4></a>
-
+</div>
+<div class="env-attr">
 <h1>{{ profile.description }} <a href="{% url 'installer_config:download_profile' profile.id %}"><i class="fa fa-download"></i></a></h1>
-<h4>Created by {{ profile.user }}</h4>
 
-<h3>Environment attributes:</h3>
-
-    <h4>Core Dependencies</h4><ul>
+    <div class="attr-list">
+    <h3>Core Dependencies</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'core' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Virtual Environment Set Up</h4><ul>
+    <h3>Virtual Environment Set Up</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'env' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Git / Git Customization</h4><ul>
+    <h3>Git / Git Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'git' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Terminal Prompt Customization</h4><ul>
+    <h3>Terminal Prompt Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'prompt' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Sublime Customization</h4><ul>
+    <h3>Sublime Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'subl' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Pip Packages</h4><ul>
+    <h3>Pip Packages</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'pkg' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h4>Other</h4><ul>
+    <h3>Other</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'other' %}
-            <li>{{ choice }} / <small>{{ choice.description }}</small></li>
+            <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
     </ul>
+    </div>
+</div>
 
 {% endblock %}
