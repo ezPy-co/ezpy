@@ -29,6 +29,10 @@ header {
     background-color: white;
 }
 
+footer{
+    font-size: 10px;
+}
+
 #headerTitle {
     float: left;
     margin-left: -1%;
@@ -76,6 +80,12 @@ nav li a {
 
 #id_description {
     color: #ff9a00;
+}
+
+.profileform {
+    margin: auto;
+    text-align: left;
+    width:300px;
 }
 
 .button {
