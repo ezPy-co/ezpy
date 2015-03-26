@@ -13,7 +13,7 @@ from selenium import webdriver
 import os
 
 
-TEST_DOMAIN_NAME = "http://127.0.0.1:8081"
+# TEST_DOMAIN_NAME = "http://127.0.0.1:8081"
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -32,19 +32,19 @@ class EnvironmentProfileFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
 
 
-class UserProfileDetailTestCase(LiveServerTestCase):
-    """This class is for testing user login form"""
-    def setUp(self):
-        self.driver = webdriver.Firefox()
-        super(UserProfileDetailTestCase, self).setUp
-        self.user = User(username='user1')
-        self.user.set_password('pass')
-        self.user.is_active = True
+# class UserProfileDetailTestCase(LiveServerTestCase):
+#     """This class is for testing user login form"""
+#     def setUp(self):
+#         self.driver = webdriver.Firefox()
+#         super(UserProfileDetailTestCase, self).setUp
+#         self.user = User(username='user1')
+#         self.user.set_password('pass')
+#         self.user.is_active = True
 
-    def tearDown(self):
-        self.driver.refresh()
-        self.driver.quit()
-        super(UserProfileDetailTestCase, self).tearDown()
+#     def tearDown(self):
+#         self.driver.refresh()
+#         self.driver.quit()
+#         super(UserProfileDetailTestCase, self).tearDown()
 
 
 class DownloadFileFormationTest(TestCase):
@@ -85,7 +85,23 @@ class DownloadFileFormationTest(TestCase):
             Step(step_type='exec', user_choice=choice)
             Step(step_type='pip', user_choice=choice)
 
-        response = self.client.get(reverse('download_profile', kwargs={'pk': self.user.pk}))
+        profiles = [
+            EnvironmentProfile(user=self.user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
+            EnvironmentProfile(user=self.user, description='twos'),#, choices=UserChoice.objects.filter(priority=2)),
+            EnvironmentProfile(user=self.user, description='threes'),#, choices=UserChoice.objects.filter(priority=3)),
+            ]
+
+        for order, profile in enumerate(profiles):
+            profile.save()
+            sub_choices = UserChoice.objects.filter(priority=order+1)
+            for item in sub_choices:
+                profile.choices.add(item)
+
+        import pdb; pdb.set_trace()
+
+        # response = self.client.get('/download/'+profiles[0].pk)
+        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[0].pk}))
+        # import pdb; pdb.set_trace()
 
 
     def test_choice_presence_set2(self):
