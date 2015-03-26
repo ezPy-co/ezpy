@@ -14,7 +14,6 @@ import factory.django
 from installer_config.models import EnvironmentProfile
 
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 import os
 
 
@@ -116,10 +115,3 @@ class UserProfileDetailTestCase(LiveServerTestCase):
         password_field.send_keys('pass')
         form = self.driver.find_element_by_tag_name('form')
         form.submit()
-
-
-    def test_login(self):
-        self.user.save()
-        self.login_user()
-        self.assertIn("user1", self.driver.title)
-        self.assertIn("user1", self.driver.page_source)
