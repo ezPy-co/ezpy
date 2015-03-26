@@ -35,7 +35,7 @@ def scan(a_name):
 
 {% for choice in choices %}
 {% spaceless %}
-# For a straight pip install with no setup
+# For choice {{choice.name}}
 {% for step in choice.step.all %}
 {% spaceless %}
 {% if step.step_type == 'dl' %}
