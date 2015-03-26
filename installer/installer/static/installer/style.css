@@ -65,7 +65,7 @@ nav li a {
 }
 
 #content {
-    max-width: 90%;
+    max-width: 750px;
     margin: auto;
 }
 
@@ -89,14 +89,19 @@ nav li a {
 }
 
 .path-group {
-    margin: 5%;
+    margin-top: 3%;
+    margin-bottom: 3%;
     display: block;
 }
 
 #install-warn {
+    max-width:180px;
     font-size: 12px;
+    display: block;
+    margin: 0 auto;
 }
 
+.
 .profileform {
     margin: auto;
     text-align: right;
@@ -189,6 +194,8 @@ nav li a {
 
 
 .myButton {
+    margin-top: 1%;
+    margin-bottom: 4%;
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #ffffff));
     background:-moz-linear-gradient(top, #ffffff 5%, #ffffff 100%);
     background:-webkit-linear-gradient(top, #ffffff 5%, #ffffff 100%);
@@ -226,6 +233,7 @@ nav li a {
 }
 
 .downloadButton {
+    margin-top: 2%;
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #ffffff));
     background:-moz-linear-gradient(top, #ffffff 5%, #ffffff 100%);
     background:-webkit-linear-gradient(top, #ffffff 5%, #ffffff 100%);
