@@ -3,40 +3,38 @@ from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 
 
-# @python_2_unicode_compatible
-# class Package(models.Model):
-#     """Python Package Manager for pip requirements.txt"""
-#     display_name = models.CharField(max_length=63)
-#     install_name = models.CharField(max_length=63)
-#     version = models.FloatField(null=True, blank=True)
-#     website = models.URLField()
-#     description = models.TextField()
-
-#     class Meta:
-#         verbose_name = "pip package"
-
-#     def __str__(self):
-#         return str(self.display_name)
-
-
-# @python_2_unicode_compatible
-# class TerminalPrompt(models.Model):
-#     """Terminal prompt customization"""
-#     display_name = models.CharField(max_length=63)
-#     install_name = models.TextField()
-#     description = models.TextField()
-
-#     def __str__(self):
-#         return str(self.display_name)
-
-
 @python_2_unicode_compatible
 class UserChoice(models.Model):
-    description = models.CharField(max_length=63)
-    display_order = models.IntegerField(default=100)
-    
+    PRIORITY = (
+        (1, 'High'),
+        (2, 'Normal'),
+        (3, 'Low'),
+    )
+
+    DISPLAY_CATEGORY = (
+        ('core', 'Core Dependencies'),
+        ('env', 'Virtual Environment'),
+        ('git', 'Git'),
+        ('prompt', 'Terminal Prompt'),
+        ('subl', 'Sublime'),
+        ('pkg', 'Pip Packages'),
+        ('other', 'Other'),
+    )
+
+    name = models.CharField(max_length=63)
+    description = models.CharField(max_length=255, blank=True)
+    category = models.CharField(max_length=7, choices=DISPLAY_CATEGORY)
+    priority = models.IntegerField(choices=PRIORITY)
+
+    def ordered_steps(self):
+        qs = Step.objects.filter(user_choice=self)
+        return qs.order_by('pk')
+
     def __str__(self):
-        return str(self.description)
+        return str(self.name)
+
+    class Meta:
+        ordering = ['category']
 
 
 @python_2_unicode_compatible
@@ -47,12 +45,12 @@ class Step(models.Model):
         ('edprof', 'Edit a profile'),
         ('edfile', 'Edit a file'),
         ('env', 'Set environment variable'),
-        ('exec', 'Run a shell command')
-        )
+        ('exec', 'Run a shell command'),
+    )
 
     step_type = models.CharField(max_length=63, choices=STEP_TYPE_CHOICES)
-    url = models.CharField(max_length=63, blank=True, null=True)
-    args = models.CharField(max_length=63, blank=True, null=True)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    args = models.CharField(max_length=255, blank=True, null=True)
     dependency = models.CharField(max_length=63, blank=True, null=True)
     user_choice = models.ForeignKey(UserChoice, related_name='step')
 
@@ -69,5 +67,6 @@ class EnvironmentProfile(models.Model):
                                      related_name='profiles',
                                      blank=True,
                                      null=True)
+    
     def __str__(self):
         return str(self.description)

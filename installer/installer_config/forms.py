@@ -1,12 +1,21 @@
 from django import forms
-from django.forms.models import ModelForm
+from django.forms.models import ModelForm, ModelMultipleChoiceField
+from django.utils.html import format_html
 from installer_config.models import EnvironmentProfile, UserChoice
 
 
+class CustomMultipleChoiceField(ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return format_html(u'<b>{}</b><br /><small class="indent">{}</small>',
+                           obj.name,
+                           obj.description
+                           )
+
+
 class EnvironmentForm(ModelForm):
-    choices = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-        queryset=UserChoice.objects.all().order_by('display_order'),
-        help_text="Check all wanted options.")
+    choices = CustomMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
+        queryset=UserChoice.objects.all().order_by('category', 'priority')
+    )
 
     class Meta:
         model = EnvironmentProfile

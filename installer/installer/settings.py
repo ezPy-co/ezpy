@@ -1,8 +1,7 @@
 import os
 import dj_database_url
 from configurations import Settings
-from secret import (DATABASE_SETTINGS,
-                    HOST_USER,
+from secret import (HOST_USER,
                     HOST_PASSWORD)
 
 
@@ -18,7 +17,6 @@ class Base(Settings):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'installer_profile',
         'installer_config',
         'django_jinja',
         'registration',
@@ -38,10 +36,12 @@ class Base(Settings):
     WSGI_APPLICATION = 'installer.wsgi.application'
 
     DATABASES = {
-            'default': dj_database_url.config(
-                default='postgres://{}:@localhost:5432/installer'.format(USER_NAME))
+                'default': dj_database_url.config(
+                default='postgres://{}:@localhost:5432/installer'.format(
+                    USER_NAME))
                 # default='postgres://postgres:admin@localhost:5432/installer_dbase')
-        }
+                }
+
 
     LANGUAGE_CODE = 'en-us'
     TIME_ZONE = 'America/Los_Angeles'
@@ -60,13 +60,6 @@ class Base(Settings):
         os.path.join(BASE_DIR, "installer/templates/"),
         )
 
-    TEMPLATE_LOADERS = (
-        'django_jinja.loaders.FileSystemLoader',
-        'django_jinja.loaders.AppLoader',
-    )
-
-    DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja2'
-
     ACCOUNT_ACTIVATION_DAYS = 7
     REGISTRATION_AUTO_LOGIN = True
     REGISTRATION_OPEN = True
@@ -83,18 +76,14 @@ class Dev(Base):
 
 class Prod(Base):
 
-    DATABASES = DATABASE_SETTINGS
-
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
     ALLOWED_HOSTS = ['.ec2-54-149-69-177.us-west-2.compute.amazonaws.com']
 
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
+    EMAIL_PORT = 25
     EMAIL_USE_TLS = True
     EMAIL_HOST_USER = HOST_USER
     EMAIL_HOST_PASSWORD = HOST_PASSWORD
     DEFAULT_FROM_EMAIL = HOST_USER
-

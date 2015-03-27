@@ -58,3 +58,10 @@ target/
 
 # Dbase Passwords
 secret.py
+secret2.py
+
+# Django Migrations
+migrations/
+
+# Upstart Conf
+installer_app.conf

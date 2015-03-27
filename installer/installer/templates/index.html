@@ -13,8 +13,10 @@
 
 <body>
     <header>
-        <img id ="pythonlogo" src="{% static 'installer/Python-logo.png' %}" alt="" height="42" width="42">
-        <h2 id="headerTitle"><a href="{% url 'index' %}">ezPy</a></h2>
+        <h2 id="headerTitle">
+            <img id ="pythonlogo" src="{% static 'installer/Python-logo.png' %}" alt="" height="42" width="42">
+            <a href="{% url 'index' %}">ezPy</a>
+        </h2>
         <nav>
             <ul>
                 <li><a href="{% url 'index' %}">Home</a></li>
@@ -22,7 +24,7 @@
                     <li><a href="{% url 'auth_login' %}">Login</a></li>
                     <li><a href="{% url 'registration_register' %}">Join</a></li>
                 {% else %}
-                    <li><a href="{% url 'profile:profile' %}">{{user}}</a></li>
+                    <li><a href="{% url 'profile' %}">{{user}}</a></li>
                     <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
                 {% endif %}
             </ul>
@@ -31,9 +33,72 @@
     <div id="page">
         <div id="content">
             {% block body %}
-                <a id="quickStart">Get Started Here</a>
+                <h1> Prep Less, Code More</h1>
+                <h3> Create and save a personalized Python programming environment with ezPy!</h3>
+                <a href="{% if not user.is_authenticated %}{% url 'registration_register' %}{% else %}{% url 'profile' %}{% endif %}" class="myButton">Get Started</a>
+                <h2> Select our Basic Environment setup or pick and choose for a customized programming experience</h2>
+                <div class="path-group">
+                <div class="path">
+                    <i class="fa fa-check-square-o fa-5x"></i>
+                    <h4>add installs</h4>
+                </div>
+                <div class="path">
+                    <i class="fa fa-long-arrow-right fa-5x"></i>
+                </div>
+                <div class="path">
+                    <i class="fa fa-download fa-5x"></i>
+                    <h4>download and run</h4>
+                </div>
+                <div class="path">
+                    <i class="fa fa-long-arrow-right fa-5x"></i>
+                </div>
+                <div class="path">
+                    <i class="fa fa-code fa-5x"></i>
+                    <h4>start coding!</h4>
+                </div>
+                </div>
+
+                <div>
+                    <h2> Download the Basic Environment Now!</h2>
+                    <h4><i class="fa fa-terminal fa-2x"></i> .bashrc</h4>
+                    <i class="fa fa-git-square fa-2x"></i>
+                    <h4>pip</h4>
+                    <h4>Sublime Text 2 package control</h4>
+                    <h4>virtualenv/wrapper</h4>
+                </div>
+                <div>
+                    <a href="{% static 'installer/ezpy__Default.py' %}" class="downloadButton">Download</a>
+                </div>
+                <div class="directions">
+                    After downloading, simply run this file from your terminal with "python ezpy__[your environment name].py"
+                </div>
+            <div id="install-warn">
+                    <h8>Note: Sublime Text 2 and Python 2.7.x must be installed.</h8>
+            </div>
+            <div class="sys-icons">
+                <div class="icon">
+                    <i class="fa fa-apple fa-2x"></i>
+                    <h5>Mac</h5>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-spinner fa-2x"></i>
+                    <h5>Linux</h5>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-windows fa-2x"></i>
+                    <h5>Windows</h5>
+                </div>
+            </div>
+
             {% endblock %}
         </div>
+    </div>
+    <div>
+    <footer>
+        <hr class="main-footer">
+        <p> Creators:</p>
+        <p>Alicija Bulota | Henry Grantham | Henry Howes | Mat Lee | James Warren</p>
+    </footer>
     </div>
 </body>
 </html>
