@@ -54,11 +54,11 @@ def login_user(driver, user, password):
     form.submit()
 
 
-class UserProfileCreationTestCase(LiveServerTestCase):
+class UserProfileDetailTestCase(LiveServerTestCase):
     """This class is for testing user login form"""
     def setUp(self):
         self.driver = webdriver.Firefox()
-        super(UserProfileCreationTestCase, self).setUp
+        super(UserProfileDetailTestCase, self).setUp
         self.user = User(username='user1')
         self.user.set_password('pass')
         self.user.is_active = True
@@ -70,14 +70,24 @@ class UserProfileCreationTestCase(LiveServerTestCase):
     def tearDown(self):
         self.driver.refresh()
         self.driver.quit()
-        super(UserProfileCreationTestCase, self).tearDown()
+        super(UserProfileDetailTestCase, self).tearDown()
 
 
-    def test_create_profile_chosing_all(self):
+    def login_user(self, user, password):
+        """login user"""
+        self.driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
+        username_field = self.driver.find_element_by_id('id_username')
+        username_field.send_keys(user)
+        password_field = self.driver.find_element_by_id('id_password')
+        password_field.send_keys(password)
+        form = self.driver.find_element_by_tag_name('form')
+        form.submit()
+
+    def test_create_profile_all(self):
         """If all choices selected, all are in the created profile"""
         # .save() is here instead of setUp to save time
         self.user.save()
-        login_user(self.driver, 'user1', 'pass')
+        self.login_user('user1', 'pass')
         self.driver.get(TEST_DOMAIN_NAME +
                         reverse('installer_config:CreateEnv'))
         self.assertIn("profileform", self.driver.page_source)
@@ -102,11 +112,11 @@ class UserProfileCreationTestCase(LiveServerTestCase):
             self.assertIn(self.choice[i].description, self.driver.page_source)
 
 
-    def test_create_profile_chosing_not_all(self):
+    def test_create_profile_not_all(self):
         """If not all choices selected, the right ones are produced"""
         # .save() is here instead of setUp to save time
         self.user.save()
-        login_user(self.driver, 'user1', 'pass')
+        self.login_user('user1', 'pass')
         self.driver.get(TEST_DOMAIN_NAME +
                         reverse('installer_config:CreateEnv'))
         self.assertIn("profileform", self.driver.page_source)
@@ -133,7 +143,7 @@ class UserProfileCreationTestCase(LiveServerTestCase):
         self.assertNotIn(self.choice[2].name, self.driver.page_source)
         self.assertNotIn(self.choice[2].description, self.driver.page_source)
 
-    # Will use these to write update and delete tests
+# Will use these to write update and delete tests
 
     # def test_update_profile(self):
     #     # .save() is here instead of setUp to save time
@@ -154,9 +164,75 @@ class UserProfileCreationTestCase(LiveServerTestCase):
     #                             kwargs={'pk': self.user.pk}))
     #     self.assertIn("profileform", self.driver.page_source)
 
-def set_up_profiles(user):
-    """ gives a user three profiles and returns them"""
-    settings = [('important thing', 'core', 1),
+
+class DownloadFileFormationTest(TestCase):
+    def setUp(self):
+        self.user = User(username='n00b')
+        self.user.set_password('...')
+        self.user.is_active = True
+        self.client = Client()
+
+
+    def tearDown(self):
+        pass
+
+    def test_choice_presence_set1(self):
+        # Verify the presence of the corresponding code in the downloaded
+        # generated python script
+        self.user.save()
+        inputs, profiles, choices = set_data(self.user)
+        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[0].pk}))
+
+        # Verify that choices selected are present
+        self.assertIn('# For choice important thing', response.content)
+        self.assertIn('# For choice your env', response.content)
+        self.assertIn('# For choice get', response.content)
+
+        # Check that the steps for choices selected and only choices selected
+        # for a given environment are present in the generated python file
+        self.assertIn('# Download and run', response.content)
+        self.assertIn('# Edit a file', response.content)
+        self.assertIn('# Edit a profile', response.content)
+
+        # Verify choices that don't belong are not present
+        self.assertNotIn('# Add a key, value pair', response.content)
+        self.assertNotIn('"Executing " + \' \'.join(command_line)', response.content)
+        self.assertNotIn('# Pip install, assuming', response.content)
+
+    def test_choice_presence_set2(self):
+        self.user.save()
+        inputs, profiles, choices = set_data(self.user)
+        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[1].pk}))
+
+        self.assertIn('# For choice bash shenanigannns', response.content)
+        self.assertIn('# For choice text editor', response.content)
+
+        self.assertIn('# Add a key, value pair', response.content)
+        self.assertIn('"Executing " + \' \'.join(command_line)', response.content)
+        self.assertIn('# Pip install, assuming', response.content)
+
+        self.assertNotIn('# Download and run', response.content)
+        self.assertNotIn('# Edit a file', response.content)
+        self.assertNotIn('# Edit a profile', response.content)
+
+    def test_choice_presence_set3(self):
+        self.user.save()
+        inputs, profiles, choices = set_data(self.user)
+        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[2].pk}))
+
+        self.assertIn('# For choice a pip package', response.content)
+        self.assertIn('# For choice other', response.content)
+
+        # Verify no steps for this set of choices
+        self.assertNotIn('# Download and run', response.content)
+        self.assertNotIn('# Edit a file', response.content)
+        self.assertNotIn('# Edit a profile', response.content)
+        self.assertNotIn('# Add a key, value pair', response.content)
+        self.assertNotIn('"Executing " + \' \'.join(command_line)', response.content)
+        self.assertNotIn('# Pip install, assuming', response.content)
+
+def set_data(user):
+    inputs = [('important thing', 'core', 1),
                 ('your env', 'env', 1),
                 ('get', 'git', 1),
                 ('bash shenanigannns', 'prompt', 2),
@@ -165,7 +241,7 @@ def set_up_profiles(user):
                 ('other', 'other', 3),]
 
     choices = []
-    for name, category, priority in settings:
+    for name, category, priority in inputs:
         choices.append(UserChoice(name=name, category=category, priority=priority))
         choices[-1].save()
 
@@ -190,39 +266,8 @@ def set_up_profiles(user):
         sub_choices = UserChoice.objects.filter(priority=order+1)
         for item in sub_choices:
             profile.choices.add(item)
-    return profiles
 
-
-class DownloadFileFormationTest(TestCase):
-    def setUp(self):
-        self.user = User(username='n00b')
-        self.user.set_password('...')
-        self.user.is_active = True
-        self.client = Client()
-
-
-    def tearDown(self):
-        pass
-
-    def test_choice_presence_set1(self):
-        # Verify the presence of the corresponding code in the downloaded
-        # generated python script
-        self.user.save()
-
-        self.profiles = set_up_profiles(self.user)
-
-        response = self.client.get(reverse('installer_config:download_profile',
-                                           kwargs={'pk': self.profiles[0].pk}))
-
-        # Check that the steps for choices selected and only choices selected
-        # for a given environment are present in the generated python file
-        self.assertIn('# Download and run', response.content)
-        self.assertIn('# Edit a file', response.content)
-        self.assertIn('# Edit a profile', response.content)
-
-    def test_choice_presence_set2(self):
-        self.user.save()
-
+    return inputs, profiles, choices
 
 class UserProfileShowTestCase(LiveServerTestCase):
     """User profiles and choices display properly"""
@@ -244,7 +289,7 @@ class UserProfileShowTestCase(LiveServerTestCase):
         # .save() is here instead of setUp to save time
         self.user.save()
         login_user(self.driver, 'user1', 'pass')
-        self.profiles = set_up_profiles(self.user)
+        self.profiles = set_data(self.user)[1]
         self.driver.implicitly_wait(2)
 
         self.driver.get(TEST_DOMAIN_NAME + reverse('profile'))
@@ -258,7 +303,7 @@ class UserProfileShowTestCase(LiveServerTestCase):
         # .save() is here instead of setUp to save time
         self.user.save()
         login_user(self.driver, 'user1', 'pass')
-        self.profiles = set_up_profiles(self.user)
+        self.profiles = set_data(self.user)[1]
         self.driver.implicitly_wait(2)
 
         # go to each profile page and see if all choices are in them
@@ -269,3 +314,38 @@ class UserProfileShowTestCase(LiveServerTestCase):
             link[0].click()
             for choice in profile.choices.all():
                 self.assertIn(choice.description, self.driver.page_source)
+
+class UserProfileDownloadTestCase(LiveServerTestCase):
+    """User profile downloading properly"""
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        super(UserProfileDownloadTestCase, self).setUp
+        self.user = User(username='user1')
+        self.user.set_password('pass')
+        self.user.is_active = True
+        self.client = Client()
+
+    def tearDown(self):
+        self.driver.refresh()
+        self.driver.quit()
+        super(UserProfileDownloadTestCase, self).tearDown()
+
+    def test_show_profile_choices(self):
+        """Test for all choices in each profile list"""
+        # .save() is here instead of setUp to save time
+        self.user.save()
+        login_user(self.driver, 'user1', 'pass')
+        self.profiles = set_data(self.user)[1]
+        self.driver.implicitly_wait(2)
+
+        # go to each profile page and see if all choices are in them
+        for profile in self.profiles:
+            self.driver.get(TEST_DOMAIN_NAME + reverse('profile'))
+            link = self.driver.find_elements_by_link_text(
+                profile.description)
+            link[0].click()
+            # find the download link inside the profile detail page
+            link = self.driver.find_elements_by_link_text(
+                profile.description)
+            link[0].click()
+            #che
