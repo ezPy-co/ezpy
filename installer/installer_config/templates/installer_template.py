@@ -41,9 +41,9 @@ def scan(target_name):
         print 'File or directory not found'
         return None
 
+
 def execute(command_line):
-    command_line = command_line
-    if 'win' not in sys.platform:
+    if 'win' not in sys.platform and command_line[0] != 'source':
         command_line.insert(0, 'sudo')
     call(command_line)
 
