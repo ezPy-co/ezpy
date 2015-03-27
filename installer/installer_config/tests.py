@@ -42,11 +42,23 @@ class ChoiceFactory(factory.django.DjangoModelFactory):
     category = 'core'
     priority = 1
 
-class UserProfileDetailTestCase(LiveServerTestCase):
+
+def login_user(driver, user, password):
+    """login user"""
+    driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
+    username_field = driver.find_element_by_id('id_username')
+    username_field.send_keys(user)
+    password_field = driver.find_element_by_id('id_password')
+    password_field.send_keys(password)
+    form = driver.find_element_by_tag_name('form')
+    form.submit()
+
+
+class UserProfileCreationTestCase(LiveServerTestCase):
     """This class is for testing user login form"""
     def setUp(self):
         self.driver = webdriver.Firefox()
-        super(UserProfileDetailTestCase, self).setUp
+        super(UserProfileCreationTestCase, self).setUp
         self.user = User(username='user1')
         self.user.set_password('pass')
         self.user.is_active = True
@@ -58,24 +70,14 @@ class UserProfileDetailTestCase(LiveServerTestCase):
     def tearDown(self):
         self.driver.refresh()
         self.driver.quit()
-        super(UserProfileDetailTestCase, self).tearDown()
+        super(UserProfileCreationTestCase, self).tearDown()
 
 
-    def login_user(self, user, password):
-        """login user"""
-        self.driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
-        username_field = self.driver.find_element_by_id('id_username')
-        username_field.send_keys(user)
-        password_field = self.driver.find_element_by_id('id_password')
-        password_field.send_keys(password)
-        form = self.driver.find_element_by_tag_name('form')
-        form.submit()
-
-    def test_create_profile_all(self):
+    def test_create_profile_chosing_all(self):
         """If all choices selected, all are in the created profile"""
         # .save() is here instead of setUp to save time
         self.user.save()
-        self.login_user('user1', 'pass')
+        login_user(self.driver, 'user1', 'pass')
         self.driver.get(TEST_DOMAIN_NAME +
                         reverse('installer_config:CreateEnv'))
         self.assertIn("profileform", self.driver.page_source)
@@ -100,11 +102,11 @@ class UserProfileDetailTestCase(LiveServerTestCase):
             self.assertIn(self.choice[i].description, self.driver.page_source)
 
 
-    def test_create_profile_not_all(self):
+    def test_create_profile_chosing_not_all(self):
         """If not all choices selected, the right ones are produced"""
         # .save() is here instead of setUp to save time
         self.user.save()
-        self.login_user('user1', 'pass')
+        login_user(self.driver, 'user1', 'pass')
         self.driver.get(TEST_DOMAIN_NAME +
                         reverse('installer_config:CreateEnv'))
         self.assertIn("profileform", self.driver.page_source)
@@ -136,7 +138,7 @@ class UserProfileDetailTestCase(LiveServerTestCase):
     # def test_update_profile(self):
     #     # .save() is here instead of setUp to save time
     #     self.user.save()
-    #     self.login_user('user1', 'pass')
+    #     login_user(self.driver, 'user1', 'pass')
     #     self.driver.get(TEST_DOMAIN_NAME +
     #                     reverse('installer_config:UpdateEnv',
     #                             kwargs={'pk': self.user.pk}))
@@ -146,7 +148,7 @@ class UserProfileDetailTestCase(LiveServerTestCase):
     # def test_delete_profile(self):
     #     # .save() is here instead of setUp to save time
     #     self.user.save()
-    #     self.login_user('user1', 'pass')
+    #     login_user(self.driver, 'user1', 'pass')
     #     self.driver.get(TEST_DOMAIN_NAME +
     #                     reverse('installer_config:DeleteEnv',
     #                             kwargs={'pk': self.user.pk}))
@@ -222,6 +224,52 @@ class DownloadFileFormationTest(TestCase):
         self.user.save()
 
 
+class UserProfileShowTestCase(LiveServerTestCase):
+    """User profiles and choices display properly"""
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        super(UserProfileShowTestCase, self).setUp
+        self.user = User(username='user1')
+        self.user.set_password('pass')
+        self.user.is_active = True
+        self.client = Client()
+
+    def tearDown(self):
+        self.driver.refresh()
+        self.driver.quit()
+        super(UserProfileShowTestCase, self).tearDown()
+
+    def test_show_profile_all(self):
+        """Profiles are in the created profile list."""
+        # .save() is here instead of setUp to save time
+        self.user.save()
+        login_user(self.driver, 'user1', 'pass')
+        self.profiles = set_up_profiles(self.user)
+        self.driver.implicitly_wait(2)
+
+        self.driver.get(TEST_DOMAIN_NAME + reverse('profile'))
+
+        # make sure all profiles are in profile page
+        for profile in self.profiles:
+            self.assertIn(profile.description, self.driver.page_source)
+
+    def test_show_profile_choices(self):
+        """Test for all choices in each profile list"""
+        # .save() is here instead of setUp to save time
+        self.user.save()
+        login_user(self.driver, 'user1', 'pass')
+        self.profiles = set_up_profiles(self.user)
+        self.driver.implicitly_wait(2)
+
+        # go to each profile page and see if all choices are in them
+        for profile in self.profiles:
+            self.driver.get(TEST_DOMAIN_NAME + reverse('profile'))
+            link = self.driver.find_elements_by_link_text(
+                profile.description)
+            link[0].click()
+            for choice in profile.choices.all():
+                self.assertIn(choice.description, self.driver.page_source)
+
 class UserProfileDownloadTestCase(LiveServerTestCase):
     """User profile downloading properly"""
     def setUp(self):
@@ -237,36 +285,11 @@ class UserProfileDownloadTestCase(LiveServerTestCase):
         self.driver.quit()
         super(UserProfileDownloadTestCase, self).tearDown()
 
-
-    def login_user(self, user, password):
-        """login user"""
-        self.driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
-        username_field = self.driver.find_element_by_id('id_username')
-        username_field.send_keys(user)
-        password_field = self.driver.find_element_by_id('id_password')
-        password_field.send_keys(password)
-        form = self.driver.find_element_by_tag_name('form')
-        form.submit()
-
-    def test_create_profile_all(self):
-        """Profiles are in the created profile list."""
-        # .save() is here instead of setUp to save time
-        self.user.save()
-        self.login_user('user1', 'pass')
-        self.profiles = set_up_profiles(self.user)
-        self.driver.implicitly_wait(2)
-
-        self.driver.get(TEST_DOMAIN_NAME + reverse('profile'))
-
-        # make sure all profiles are in profile page
-        for profile in self.profiles:
-            self.assertIn(profile.description, self.driver.page_source)
-
-    def test_create_profile_choices(self):
+    def test_show_profile_choices(self):
         """Test for all choices in each profile list"""
         # .save() is here instead of setUp to save time
         self.user.save()
-        self.login_user('user1', 'pass')
+        login_user(self.driver, 'user1', 'pass')
         self.profiles = set_up_profiles(self.user)
         self.driver.implicitly_wait(2)
 
@@ -276,8 +299,8 @@ class UserProfileDownloadTestCase(LiveServerTestCase):
             link = self.driver.find_elements_by_link_text(
                 profile.description)
             link[0].click()
-            for choice in profile.choices.all():
-                self.assertIn(choice.description, self.driver.page_source)
-
-
-
+            # find the download link inside the profile detail page
+            link = self.driver.find_elements_by_link_text(
+                profile.description)
+            link[0].click()
+            #che
