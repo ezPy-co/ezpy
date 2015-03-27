@@ -3,53 +3,56 @@ from subprocess import call
 import urllib2
 import os
 import sys
+import re
 
-def scan(a_name):
+CACHED_PATHS = {}
+
+def scan(target_name):
     """
     Return the full file path to a file, including file_name.
 
     If the file is not found, print 'File or directory not found'
     to the console and return None.
     """
-    extension = os.splitext(a_name)[1]
-    if 'Windows' in os.environ.get('OS'):
-        # Assumes the drive letter is C
-        walker = os.walk('C:/')
+    if CACHED_PATHS[target_name]:
+        return CACHED_PATHS[target_name]
     else:
-        walker = os.walk('/')
+        extension = os.path.splitext(target_name)[1]
+        if 'Windows' in os.environ.get('OS'):
+            # Assumes the drive letter is C
+            walker = os.walk('C:/')
+        else:
+            walker = os.walk('/')
         if extension:
-            # Search for a file
+                # Search for a file
             for directory, sub_dir, files in walker:
-                if a_name in files:
-                    return directory + a_name
+                for each_file in files:
+                    if re.match(target_name, each_file):
+                        return directory + target_name
         else:
             # Search for a directory
             for directory, sub_dir, files in walker:
-                if a_name in directory:
+                if re.search("/{}".format(target_name), directory):
                     return directory
-    # If the whole directory has been scanned with
-    # no result...
-    print 'File or directory not found'
-    return None
-
-def execute(command_line):
-    command_line = command_line
-    if 'win' not in sys.platform:
-        command_line.insert(0, 'sudo')
-    call(command_line)
+        # If the whole directory has been scanned with
+        # no result...
+        print 'File or directory not found'
+        return None
 
 {% for choice in choices %}
 {% spaceless %}
 # For choice {{choice.name}}
-{% for step in choice.step.all %}
+{% for step in choice.ordered_steps %}
 {% spaceless %}
 
 {% if step.step_type == 'dl' %}
 
 # Download and run {{step}}
 url = '{{step.url}}'
+scan_result = None
 not_linux = True
-{% if choice.category != 'git' %}
+
+{% if choice.category == 'git' %}
 # Detect OS and change url accordingly...
 if 'win' in sys.platform:
     # The url for git will be the url used for the windows exe
@@ -70,29 +73,36 @@ if not_linux and url:
     {% if step.args %}
     scan_result = scan('{{step.args}}')
 
-    if scan_result:
-        file_name = scan_result + os.path.basename('{{step.url}}')
-  
+    {% if scan_result %}
+    file_name = scan_result + os.path.basename('{{step.url}}')
+    {% endif %}
 
-    {% else %}
-
+    {% else }
     file_name = os.path.basename(url)
+    {% endif %}
 
-    with open(file_name, 'w') as f:
-        f.write(response.read())
+    if not "{{step.args}}" or scan_result:
+        with open(file_name, 'w') as f:
+            f.write(response.read())
 
-    if os.path.splitext(file_name)[1] == '.py':
-        execute([sys.executable, file_name])
-        raw_input('Enter anything to continue when finished installing git.')
-    else:
-        print "Running file_name"
-        execute(['./'+file_name])
+        if os.path.splitext(file_name)[1] == '.py':
+            call([sys.executable, file_name])
+            {% if choice.category == 'git' %}
+            raw_input('Enter anything to continue when finished installing git.')
+            {% endif %}
+        else:
+            run_file = './'+file_name
+            print "Running file_name"
+            call([run_file])
+
+{% if choice.category == 'git' %}
 elif url is None:
-    call(['sudo', 'xcode-select', '--install'])
+    call(['xcode-select', '--install'])
     raw_input('Enter anything to continue when finished installing xcode and git.')
 else:
     # This will prompt user for sudo password
     call(['sudo', 'apt-get', 'install', 'git'])
+{% endif %}
 {% endif %}
 
 {% if step.step_type == 'edprof' %}
@@ -100,8 +110,7 @@ else:
 profile_name = os.path.expanduser('~/')+'.profile'
 print "Adding '{{step.args}}' to file at profile_name"
 with open(profile_name, 'a') as f:
-    # Assumes the .profile should be in the home directory
-    f.write("\n"+"{{step.args|safe}}")
+    f.write("\n"+"{{step.args}}")
 {% endif %}
 
 {% if step.step_type == 'edfile' %}
@@ -120,13 +129,13 @@ os.putenv(key, val)
 {% if step.step_type == 'pip' %}
 # Pip install, assuming the exact name of the package as used for 'pip install [package]'
 # is given in the args field for a step
-execute(['pip', 'install', "{{step.args}}"])
+call(['pip', 'install', "{{step.args}}"])
 {% endif %}
 
 {% if step.step_type == 'exec' %}
 command_line = "{{step.args}}".split(',')
 print "Executing " + ' '.join(command_line)
-execute(command_line)
+call(command_line)
 {% endif %}
 
 {% endspaceless %}
