@@ -214,7 +214,7 @@ class DownloadFileFormationTest(TestCase):
         self.assertNotIn('"Executing " + \' \'.join(command_line)', response.content)
         self.assertNotIn('# Pip install, assuming', response.content)
 
-def set_data(self):
+def set_data(user):
     inputs = [('important thing', 'core', 1),
                 ('your env', 'env', 1),
                 ('get', 'git', 1),
@@ -239,9 +239,9 @@ def set_data(self):
         Step(step_type='pip', user_choice=choice).save()
 
     profiles = [
-        EnvironmentProfile(user=self.user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
-        EnvironmentProfile(user=self.user, description='twos'),#, choices=UserChoice.objects.filter(priority=2)),
-        EnvironmentProfile(user=self.user, description='threes'),#, choices=UserChoice.objects.filter(priority=3)),
+        EnvironmentProfile(user=user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
+        EnvironmentProfile(user=user, description='twos'),#, choices=UserChoice.objects.filter(priority=2)),
+        EnvironmentProfile(user=user, description='threes'),#, choices=UserChoice.objects.filter(priority=3)),
         ]
 
     for order, profile in enumerate(profiles):
