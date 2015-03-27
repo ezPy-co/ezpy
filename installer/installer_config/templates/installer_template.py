@@ -39,6 +39,12 @@ def scan(target_name):
         print 'File or directory not found'
         return None
 
+def execute(command_line):
+    command_line = command_line
+    if 'win' not in sys.platform:
+        command_line.insert(0, 'sudo')
+    call(command_line)
+
 {% for choice in choices %}
 {% spaceless %}
 # For choice {{choice.name}}
@@ -86,18 +92,17 @@ if not_linux and url:
             f.write(response.read())
 
         if os.path.splitext(file_name)[1] == '.py':
-            call([sys.executable, file_name])
+            execute([sys.executable, file_name])
             {% if choice.category == 'git' %}
             raw_input('Enter anything to continue when finished installing git.')
             {% endif %}
         else:
-            run_file = './'+file_name
             print "Running file_name"
-            call([run_file])
+            execute(['./'+file_name])
 
 {% if choice.category == 'git' %}
 elif url is None:
-    call(['xcode-select', '--install'])
+    call(['sudo', 'xcode-select', '--install'])
     raw_input('Enter anything to continue when finished installing xcode and git.')
 else:
     # This will prompt user for sudo password
@@ -129,13 +134,13 @@ os.putenv(key, val)
 {% if step.step_type == 'pip' %}
 # Pip install, assuming the exact name of the package as used for 'pip install [package]'
 # is given in the args field for a step
-call(['pip', 'install', "{{step.args}}"])
+execute(['pip', 'install', "{{step.args}}"])
 {% endif %}
 
 {% if step.step_type == 'exec' %}
 command_line = "{{step.args}}".split(',')
 print "Executing " + ' '.join(command_line)
-call(command_line)
+execute(command_line)
 {% endif %}
 
 {% endspaceless %}
