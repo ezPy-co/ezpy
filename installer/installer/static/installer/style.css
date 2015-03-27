@@ -97,8 +97,8 @@ nav li a {
 }
 
 #install-warn {
-    max-width:180px;
-    font-size: 12px;
+    max-width:210px;
+    font-size: 14px;
     display: block;
     margin: 1em auto;
 }
@@ -108,7 +108,10 @@ nav li a {
     display:block;
     margin: 1em auto;
 
+}
 
+.sub-py-links {
+    font-weight: 900;
 }
 
 .sys-icons {
