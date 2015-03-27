@@ -130,7 +130,7 @@ else:
     file_name = ""
 
 if file_name:
-{% if choice.category == 'sublime'}
+{% if choice.category == 'subl' %}
     with open(file_name, 'w+') as f:
         settings_as_json = json.loads(f.read())
         key, val = "{{step.args}}".split(',')
