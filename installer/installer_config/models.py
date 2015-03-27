@@ -67,6 +67,20 @@ class EnvironmentProfile(models.Model):
                                      related_name='profiles',
                                      blank=True,
                                      null=True)
-    
     def __str__(self):
         return str(self.description)
+
+from django.forms import fields, util
+
+
+class LatitudeField(fields.DecimalField):  
+    default_error_messages = {
+        'out_of_range': u'Value must be within -90 and 90.',
+    }
+
+
+    def clean(self, value):  
+        value = super(LatitudeField, self).clean(value)  
+        if not -90 <= value <= 90:  
+            raise util.ValidationError(self.error_messages['out_of_range'])
+        return value
