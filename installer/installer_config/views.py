@@ -51,7 +51,7 @@ class ViewEnvironmentProfile(DetailView):
 
 def download_profile_view(request, **kwargs):
     environment = EnvironmentProfile.objects.get(pk=kwargs['pk'])
-    choices = UserChoice.objects.filter(profiles=environment)
+    choices = UserChoice.objects.filter(profiles=environment).order_by('priority')
 
     response = render_to_response('installer_template.py', {'choices': choices},
                                   content_type='application')

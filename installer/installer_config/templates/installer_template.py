@@ -73,11 +73,11 @@ if not_linux and url:
     {% if step.args %}
     scan_result = scan('{{step.args}}')
 
-    {% if scan_result %}
-    file_name = scan_result + os.path.basename('{{step.url}}')
-    {% endif %}
+    if scan_result:
+        file_name = scan_result + os.path.basename('{{step.url}}')
+  
 
-    {% else }
+    {% else %}
     file_name = os.path.basename(url)
     {% endif %}
 
