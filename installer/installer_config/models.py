@@ -26,6 +26,10 @@ class UserChoice(models.Model):
     category = models.CharField(max_length=7, choices=DISPLAY_CATEGORY)
     priority = models.IntegerField(choices=PRIORITY)
 
+    def ordered_steps(self):
+        qs = Step.objects.filter(user_choice=self)
+        return qs.order_by('pk')
+
     def __str__(self):
         return str(self.name)
 
