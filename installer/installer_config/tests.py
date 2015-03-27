@@ -182,7 +182,7 @@ class DownloadFileFormationTest(TestCase):
         self.user.save()
         inputs, profiles, choices = set_data(self.user)
         response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[0].pk}))
-
+        import pdb; pdb.set_choice()
         # Verify that choices selected are present
         self.assertIn('# For choice important thing', response.content)
         self.assertIn('# For choice your env', response.content)
