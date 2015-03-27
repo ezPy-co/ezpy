@@ -269,38 +269,3 @@ class UserProfileShowTestCase(LiveServerTestCase):
             link[0].click()
             for choice in profile.choices.all():
                 self.assertIn(choice.description, self.driver.page_source)
-
-class UserProfileDownloadTestCase(LiveServerTestCase):
-    """User profile downloading properly"""
-    def setUp(self):
-        self.driver = webdriver.Firefox()
-        super(UserProfileDownloadTestCase, self).setUp
-        self.user = User(username='user1')
-        self.user.set_password('pass')
-        self.user.is_active = True
-        self.client = Client()
-
-    def tearDown(self):
-        self.driver.refresh()
-        self.driver.quit()
-        super(UserProfileDownloadTestCase, self).tearDown()
-
-    def test_show_profile_choices(self):
-        """Test for all choices in each profile list"""
-        # .save() is here instead of setUp to save time
-        self.user.save()
-        login_user(self.driver, 'user1', 'pass')
-        self.profiles = set_up_profiles(self.user)
-        self.driver.implicitly_wait(2)
-
-        # go to each profile page and see if all choices are in them
-        for profile in self.profiles:
-            self.driver.get(TEST_DOMAIN_NAME + reverse('profile'))
-            link = self.driver.find_elements_by_link_text(
-                profile.description)
-            link[0].click()
-            # find the download link inside the profile detail page
-            link = self.driver.find_elements_by_link_text(
-                profile.description)
-            link[0].click()
-            #che
