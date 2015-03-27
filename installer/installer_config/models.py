@@ -12,18 +12,18 @@ class UserChoice(models.Model):
     )
 
     DISPLAY_CATEGORY = (
-        ('Core Dependencies', 'Core Dependencies'),
-        ('Virtual Environment', 'Virtual Environment'),
-        ('Git', 'Git'),
-        ('Terminal Prompt', 'Terminal Prompt'),
-        ('Sublime', 'Sublime'),
-        ('Pip Packages', 'Pip Packages'),
-        ('Other', 'Other'),
+        ('core', 'Core Dependencies'),
+        ('env', 'Virtual Environment'),
+        ('git', 'Git'),
+        ('prompt', 'Terminal Prompt'),
+        ('subl', 'Sublime'),
+        ('pkg', 'Pip Packages'),
+        ('other', 'Other'),
     )
 
     name = models.CharField(max_length=63)
     description = models.CharField(max_length=255, blank=True)
-    category = models.CharField(max_length=31, choices=DISPLAY_CATEGORY)
+    category = models.CharField(max_length=7, choices=DISPLAY_CATEGORY)
     priority = models.IntegerField(choices=PRIORITY)
 
     def ordered_steps(self):
@@ -67,20 +67,6 @@ class EnvironmentProfile(models.Model):
                                      related_name='profiles',
                                      blank=True,
                                      null=True)
+    
     def __str__(self):
         return str(self.description)
-
-from django.forms import fields, util
-
-
-class LatitudeField(fields.DecimalField):  
-    default_error_messages = {
-        'out_of_range': u'Value must be within -90 and 90.',
-    }
-
-
-    def clean(self, value):  
-        value = super(LatitudeField, self).clean(value)  
-        if not -90 <= value <= 90:  
-            raise util.ValidationError(self.error_messages['out_of_range'])
-        return value
