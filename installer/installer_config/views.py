@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
-from installer_config.models import EnvironmentProfile, UserChoice, Step
+from installer_config.models import EnvironmentProfile, UserChoice, Step 
 from installer_config.forms import EnvironmentForm
 from django.core.urlresolvers import reverse
 
@@ -42,7 +42,7 @@ class ViewEnvironmentProfile(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ViewEnvironmentProfile, self).get_context_data()
-        categories = ['core', 'env', 'git', 'prompt', 'subl', 'pkg', 'other']
+        categories = [cat[0] for cat in UserChoice.DISPLAY_CATEGORY]
 
         # all = context.profile.choices.all
         for categ in categories:
