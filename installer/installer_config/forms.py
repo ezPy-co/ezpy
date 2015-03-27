@@ -6,7 +6,7 @@ from installer_config.models import EnvironmentProfile, UserChoice
 
 class CustomMultipleChoiceField(ModelMultipleChoiceField):
     def label_from_instance(self, obj):
-        return format_html(u"<b>{}</b><br /><small>{}</small>",
+        return format_html(u'<b>{}</b><br /><small class="indent">{}</small>',
                            obj.name,
                            obj.description
                            )

@@ -67,6 +67,15 @@ else:
 if not_linux and url:
     print "Downloading from {}".format(url)
     response = urllib2.urlopen(url)
+    {% if step.args %}
+    scan_result = scan('{{step.args}}')
+
+    if scan_result:
+        file_name = scan_result + os.path.basename('{{step.url}}')
+  
+
+    {% else %}
+
     file_name = os.path.basename(url)
 
     with open(file_name, 'w') as f:

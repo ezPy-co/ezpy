@@ -40,6 +40,20 @@ class ViewEnvironmentProfile(DetailView):
     context_object_name = 'profile'
     template_name = 'env_profile.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ViewEnvironmentProfile, self).get_context_data()
+        categories = ['core', 'env', 'git', 'prompt', 'subl', 'pkg', 'other']
+
+        # all = context.profile.choices.all
+        for categ in categories:
+            count = context['profile'].choices.filter(category=categ).count()
+            print categ + "  " + str(count)
+            if count:
+                context[categ] = True
+            else:
+                context[categ] = False
+        return context
+
     # def get_context_data(self):
     #     context = super(ViewEnvironmentProfile, self).get_context_data()
     #     categorized = {}
@@ -51,7 +65,7 @@ class ViewEnvironmentProfile(DetailView):
 
 def download_profile_view(request, **kwargs):
     environment = EnvironmentProfile.objects.get(pk=kwargs['pk'])
-    choices = UserChoice.objects.filter(profiles=environment)
+    choices = UserChoice.objects.filter(profiles=environment).order_by('priority')
 
     response = render_to_response('installer_template.py', {'choices': choices},
                                   content_type='application')
