@@ -12,18 +12,16 @@
 <h1>{{ profile.description }} <a href="{% url 'installer_config:download_profile' profile.id %}"><i class="fa fa-download"></i></a></h1>
 
     <div class="attr-list">
-    <h3>Core Dependencies</h3><ul>
-    {% for choice in profile.choices.all %}
-        {% if choice.category == 'core' %}
+    {% for category, choices in categorized.iteritems %}
+    <h3>{{ category }}</h3><ul>
+        
+        {% for choice in choices %}
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
-        {% endif %}
-    {% endfor %}
-    {% if not core %}
-        <li>-<small>No items selected.</small></li>
-    {% endif %}
+        {% endfor %}
     </ul>
+    {% endfor %}
 
-    <h3>Virtual Environment Set Up</h3><ul>
+<!--     <h3>Virtual Environment Set Up</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'env' %}
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
@@ -32,7 +30,7 @@
     {% if not env %}
         <li>-<small>No items selected.</small></li>
     {% endif %}
-    </ul>
+    </ul> -->
 
 <!--     <h3>Git / Git Customization</h3><ul>
     {% for choice in profile.choices.all %}
@@ -49,7 +47,7 @@
 
 -->
 
-    <h3>Terminal Prompt Customization</h3><ul>
+<!--     <h3>Terminal Prompt Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'prompt' %}
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
@@ -58,7 +56,7 @@
     {% if not prompt %}
         <li>-<small>No items selected.</small></li>
     {% endif %}
-    </ul>
+    </ul> -->
 <!--     <h3>Sublime Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'subl' %}
@@ -74,7 +72,7 @@
 
 
 
-    <h3>Pip Packages</h3><ul>
+<!--     <h3>Pip Packages</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'pkg' %}
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
@@ -83,10 +81,10 @@
     {% if not pkg %}
         <li>-<small>No items selected.</small></li>
     {% endif %}
-    </ul>
+    </ul> -->
 
 
-    <h3>Other</h3><ul>
+<!--     <h3>Other</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'other' %}
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
@@ -95,7 +93,7 @@
     {% if not other %}
         <li>-<small>No items selected.</small></li>
     {% endif %}
-    </ul>
+    </ul> -->
 
 
     </div>

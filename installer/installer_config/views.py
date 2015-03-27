@@ -40,27 +40,33 @@ class ViewEnvironmentProfile(DetailView):
     context_object_name = 'profile'
     template_name = 'env_profile.html'
 
+    # def get_context_data(self, **kwargs):
+    #     context = super(ViewEnvironmentProfile, self).get_context_data()
+    #     categories = ['core', 'env', 'git', 'prompt', 'subl', 'pkg', 'other']
+
+    #     all = context.profile.choices.all
+    #     for categ in categories:
+    #         count = context['profile'].choices.filter(category=categ).count()
+    #         print categ + "  " + str(count)
+    #         if count:
+    #             context[categ] = True
+    #         else:
+    #             context[categ] = False
+    #     import pdb; pdb.set_trace()
+    #     return context
+
     def get_context_data(self, **kwargs):
         context = super(ViewEnvironmentProfile, self).get_context_data()
-        categories = ['core', 'env', 'git', 'prompt', 'subl', 'pkg', 'other']
+        categorized = {}
+        for choice in self.object.choices.all():
+            categorized.setdefault(choice.category, []).append(choice)
+        
+        for category in categorized:
+            category = UserChoice.DISPLAY_CATEGORY[1]
 
-        # all = context.profile.choices.all
-        for categ in categories:
-            count = context['profile'].choices.filter(category=categ).count()
-            print categ + "  " + str(count)
-            if count:
-                context[categ] = True
-            else:
-                context[categ] = False
+        context.update({'categorized': categorized})
+        # import pdb; pdb.set_trace()
         return context
-
-    # def get_context_data(self):
-    #     context = super(ViewEnvironmentProfile, self).get_context_data()
-    #     categorized = {}
-    #     for choice in self.object.choices.all():
-    #         categorized.setdefault(choice.category, []).append(choice)
-    #     context.update({'categorized_choices': categorized})
-    #     return context
 
 
 def download_profile_view(request, **kwargs):
