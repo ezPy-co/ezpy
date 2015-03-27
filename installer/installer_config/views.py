@@ -47,7 +47,6 @@ class ViewEnvironmentProfile(DetailView):
         # all = context.profile.choices.all
         for categ in categories:
             count = context['profile'].choices.filter(category=categ).count()
-            print categ + "  " + str(count)
             if count:
                 context[categ] = True
             else:

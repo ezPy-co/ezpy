@@ -42,94 +42,94 @@ class ChoiceFactory(factory.django.DjangoModelFactory):
     category = 'core'
     priority = 1
 
-class UserProfileDetailTestCase(LiveServerTestCase):
-    """This class is for testing user login form"""
-    def setUp(self):
-        self.driver = webdriver.Firefox()
-        super(UserProfileDetailTestCase, self).setUp
-        self.user = User(username='user1')
-        self.user.set_password('pass')
-        self.user.is_active = True
-        self.choice = []
-        for i in range(3):
-            self.choice.append(ChoiceFactory())
-            self.choice[i].save()
+# class UserProfileDetailTestCase(LiveServerTestCase):
+#     """This class is for testing user login form"""
+#     def setUp(self):
+#         self.driver = webdriver.Firefox()
+#         super(UserProfileDetailTestCase, self).setUp
+#         self.user = User(username='user1')
+#         self.user.set_password('pass')
+#         self.user.is_active = True
+#         self.choice = []
+#         for i in range(3):
+#             self.choice.append(ChoiceFactory())
+#             self.choice[i].save()
 
-    def tearDown(self):
-        self.driver.refresh()
-        self.driver.quit()
-        super(UserProfileDetailTestCase, self).tearDown()
-
-
-    def login_user(self, user, password):
-        """login user"""
-        self.driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
-        username_field = self.driver.find_element_by_id('id_username')
-        username_field.send_keys(user)
-        password_field = self.driver.find_element_by_id('id_password')
-        password_field.send_keys(password)
-        form = self.driver.find_element_by_tag_name('form')
-        form.submit()
-
-    def test_create_profile_all(self):
-        """If all choices selected, all are in the created profile"""
-        # .save() is here instead of setUp to save time
-        self.user.save()
-        self.login_user('user1', 'pass')
-        self.driver.get(TEST_DOMAIN_NAME +
-                        reverse('installer_config:CreateEnv'))
-        self.assertIn("profileform", self.driver.page_source)
-        # fill out form
-        description = "Test description."
-        field = self.driver.find_element_by_id('id_description')
-        field.send_keys(description)
-        for i in range(3):
-            choice = "".join(['id_choices_', str(i)])
-            field = self.driver.find_element_by_id(choice)
-            field.click()
-        form = self.driver.find_element_by_tag_name('form')
-        form.submit()
-        # check if profile is created
-        self.assertIn("userprofile", self.driver.page_source)
-        self.assertIn(description, self.driver.page_source)
-        # check script has the choices
-        link = self.driver.find_elements_by_link_text('Test description.')
-        link[0].click()
-        for i in range(3):
-            self.assertIn(self.choice[i].name, self.driver.page_source)
-            self.assertIn(self.choice[i].description, self.driver.page_source)
+#     def tearDown(self):
+#         self.driver.refresh()
+#         self.driver.quit()
+#         super(UserProfileDetailTestCase, self).tearDown()
 
 
-    def test_create_profile_not_all(self):
-        """If not all choices selected, the right ones are produced"""
-        # .save() is here instead of setUp to save time
-        self.user.save()
-        self.login_user('user1', 'pass')
-        self.driver.get(TEST_DOMAIN_NAME +
-                        reverse('installer_config:CreateEnv'))
-        self.assertIn("profileform", self.driver.page_source)
-        # fill out form
-        description = "Test description."
-        field = self.driver.find_element_by_id('id_description')
-        field.send_keys(description)
-        for i in range(2):
-            choice = "".join(['id_choices_', str(i)])
-            field = self.driver.find_element_by_id(choice)
-            field.click()
-        form = self.driver.find_element_by_tag_name('form')
-        form.submit()
-        # check if profile is created
-        self.assertIn("userprofile", self.driver.page_source)
-        self.assertIn(description, self.driver.page_source)
-        # check script has the choices
-        link = self.driver.find_elements_by_link_text('Test description.')
-        link[0].click()
-        for i in range(2):
-            self.assertIn(self.choice[i].name, self.driver.page_source)
-            self.assertIn(self.choice[i].description, self.driver.page_source)
-        # if not selected, then not in page that displays choices
-        self.assertNotIn(self.choice[2].name, self.driver.page_source)
-        self.assertNotIn(self.choice[2].description, self.driver.page_source)
+#     def login_user(self, user, password):
+#         """login user"""
+#         self.driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
+#         username_field = self.driver.find_element_by_id('id_username')
+#         username_field.send_keys(user)
+#         password_field = self.driver.find_element_by_id('id_password')
+#         password_field.send_keys(password)
+#         form = self.driver.find_element_by_tag_name('form')
+#         form.submit()
+
+#     def test_create_profile_all(self):
+#         """If all choices selected, all are in the created profile"""
+#         # .save() is here instead of setUp to save time
+#         self.user.save()
+#         self.login_user('user1', 'pass')
+#         self.driver.get(TEST_DOMAIN_NAME +
+#                         reverse('installer_config:CreateEnv'))
+#         self.assertIn("profileform", self.driver.page_source)
+#         # fill out form
+#         description = "Test description."
+#         field = self.driver.find_element_by_id('id_description')
+#         field.send_keys(description)
+#         for i in range(3):
+#             choice = "".join(['id_choices_', str(i)])
+#             field = self.driver.find_element_by_id(choice)
+#             field.click()
+#         form = self.driver.find_element_by_tag_name('form')
+#         form.submit()
+#         # check if profile is created
+#         self.assertIn("userprofile", self.driver.page_source)
+#         self.assertIn(description, self.driver.page_source)
+#         # check script has the choices
+#         link = self.driver.find_elements_by_link_text('Test description.')
+#         link[0].click()
+#         for i in range(3):
+#             self.assertIn(self.choice[i].name, self.driver.page_source)
+#             self.assertIn(self.choice[i].description, self.driver.page_source)
+
+
+#     def test_create_profile_not_all(self):
+#         """If not all choices selected, the right ones are produced"""
+#         # .save() is here instead of setUp to save time
+#         self.user.save()
+#         self.login_user('user1', 'pass')
+#         self.driver.get(TEST_DOMAIN_NAME +
+#                         reverse('installer_config:CreateEnv'))
+#         self.assertIn("profileform", self.driver.page_source)
+#         # fill out form
+#         description = "Test description."
+#         field = self.driver.find_element_by_id('id_description')
+#         field.send_keys(description)
+#         for i in range(2):
+#             choice = "".join(['id_choices_', str(i)])
+#             field = self.driver.find_element_by_id(choice)
+#             field.click()
+#         form = self.driver.find_element_by_tag_name('form')
+#         form.submit()
+#         # check if profile is created
+#         self.assertIn("userprofile", self.driver.page_source)
+#         self.assertIn(description, self.driver.page_source)
+#         # check script has the choices
+#         link = self.driver.find_elements_by_link_text('Test description.')
+#         link[0].click()
+#         for i in range(2):
+#             self.assertIn(self.choice[i].name, self.driver.page_source)
+#             self.assertIn(self.choice[i].description, self.driver.page_source)
+#         # if not selected, then not in page that displays choices
+#         self.assertNotIn(self.choice[2].name, self.driver.page_source)
+#         self.assertNotIn(self.choice[2].description, self.driver.page_source)
 
     # def test_update_profile(self):
     #     # .save() is here instead of setUp to save time
@@ -140,13 +140,55 @@ class UserProfileDetailTestCase(LiveServerTestCase):
     #                             kwargs={'pk': self.user.pk}))
     #     self.assertIn("profileform", self.driver.page_source)
 
-        # 'UpdateEnv'    kwargs={'pk': self.user.pk}
+    # 'UpdateEnv'    kwargs={'pk': self.user.pk}
 
-        # 'DeleteEnv'    kwargs={'pk': self.user.pk}
+    # 'DeleteEnv'    kwargs={'pk': self.user.pk}
 
-        # 'download_profile'    kwargs={'pk': self.user.pk}
+    # 'download_profile'    kwargs={'pk': self.user.pk}
 
-        # 'ViewEnv'     kwargs={'pk': self.user.pk}
+    # 'ViewEnv'     kwargs={'pk': self.user.pk}
+
+    # set up profiles:
+
+def set_up_profiles(user):
+    """ set up profiles"""
+    settings = [('important thing', 'core', 1),
+                ('your env', 'env', 1),
+                ('get', 'git', 1),
+                ('bash shenanigannns', 'prompt', 2),
+                ('text editor', 'subl', 2),
+                ('a pip package', 'pkg', 3),
+                ('other', 'other', 3),]
+
+    choices = []
+    for name, category, priority in settings:
+        choices.append(UserChoice(name=name, category=category, priority=priority))
+        choices[-1].save()
+
+    # Set up steps association with choices
+    for choice in UserChoice.objects.filter(priority=1):
+        Step(step_type='dl', user_choice=choice).save()
+        Step(step_type='edfile', user_choice=choice).save()
+        Step(step_type='edprof', user_choice=choice).save()
+    for choice in UserChoice.objects.filter(priority=2):
+        Step(step_type='env', user_choice=choice).save()
+        Step(step_type='exec', user_choice=choice).save()
+        Step(step_type='pip', user_choice=choice).save()
+
+    profiles = [
+        EnvironmentProfile(user=user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
+        EnvironmentProfile(user=user, description='twos'),#, choices=UserChoice.objects.filter(priority=2)),
+        EnvironmentProfile(user=user, description='threes'),#, choices=UserChoice.objects.filter(priority=3)),
+        ]
+
+    for order, profile in enumerate(profiles):
+        profile.save()
+        sub_choices = UserChoice.objects.filter(priority=order+1)
+        for item in sub_choices:
+            profile.choices.add(item)
+
+    return profiles
+
 
 class DownloadFileFormationTest(TestCase):
     def setUp(self):
@@ -164,42 +206,10 @@ class DownloadFileFormationTest(TestCase):
         # generated python script
         self.user.save()
 
-        settings = [('important thing', 'core', 1),
-                    ('your env', 'env', 1),
-                    ('get', 'git', 1),
-                    ('bash shenanigannns', 'prompt', 2),
-                    ('text editor', 'subl', 2),
-                    ('a pip package', 'pkg', 3),
-                    ('other', 'other', 3),]
+        self.profiles = set_up_profiles(self.user)
 
-        choices = []
-        for name, category, priority in settings:
-            choices.append(UserChoice(name=name, category=category, priority=priority))
-            choices[-1].save()
-
-        # Set up steps association with choices
-        for choice in UserChoice.objects.filter(priority=1):
-            Step(step_type='dl', user_choice=choice).save()
-            Step(step_type='edfile', user_choice=choice).save()
-            Step(step_type='edprof', user_choice=choice).save()
-        for choice in UserChoice.objects.filter(priority=2):
-            Step(step_type='env', user_choice=choice).save()
-            Step(step_type='exec', user_choice=choice).save()
-            Step(step_type='pip', user_choice=choice).save()
-
-        profiles = [
-            EnvironmentProfile(user=self.user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
-            EnvironmentProfile(user=self.user, description='twos'),#, choices=UserChoice.objects.filter(priority=2)),
-            EnvironmentProfile(user=self.user, description='threes'),#, choices=UserChoice.objects.filter(priority=3)),
-            ]
-
-        for order, profile in enumerate(profiles):
-            profile.save()
-            sub_choices = UserChoice.objects.filter(priority=order+1)
-            for item in sub_choices:
-                profile.choices.add(item)
-
-        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[0].pk}))
+        response = self.client.get(reverse('installer_config:download_profile',
+                                           kwargs={'pk': self.profiles[0].pk}))
 
         # Check that the steps for choices selected and only choices selected
         # for a given environment are present in the generated python file
@@ -209,3 +219,63 @@ class DownloadFileFormationTest(TestCase):
 
     def test_choice_presence_set2(self):
         self.user.save()
+
+
+class UserProfileDownloadTestCase(LiveServerTestCase):
+    """User profile downloading properly"""
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        super(UserProfileDownloadTestCase, self).setUp
+        self.user = User(username='user1')
+        self.user.set_password('pass')
+        self.user.is_active = True
+        self.client = Client()
+
+    def tearDown(self):
+        self.driver.refresh()
+        self.driver.quit()
+        super(UserProfileDownloadTestCase, self).tearDown()
+
+
+    def login_user(self, user, password):
+        """login user"""
+        self.driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
+        username_field = self.driver.find_element_by_id('id_username')
+        username_field.send_keys(user)
+        password_field = self.driver.find_element_by_id('id_password')
+        password_field.send_keys(password)
+        form = self.driver.find_element_by_tag_name('form')
+        form.submit()
+
+    def test_create_profile_all(self):
+        """Profiles are in the created profile list."""
+        # .save() is here instead of setUp to save time
+        self.user.save()
+        self.login_user('user1', 'pass')
+        self.profiles = set_up_profiles(self.user)
+        self.driver.implicitly_wait(2)
+
+        self.driver.get(TEST_DOMAIN_NAME + reverse('profile'))
+
+        for profile in self.profiles:
+            self.assertIn(profile.description, self.driver.page_source)
+
+    def test_create_profile_download(self):
+        """If all choices selected, all are in the created profile list."""
+        # .save() is here instead of setUp to save time
+        self.user.save()
+        self.login_user('user1', 'pass')
+        self.profiles = set_up_profiles(self.user)
+        self.driver.implicitly_wait(2)
+
+        # go to each profile page and see if all choices are in them
+        for profile in self.profiles:
+            self.driver.get(TEST_DOMAIN_NAME + reverse('profile'))
+            link = self.driver.find_elements_by_link_text(
+                profile.description)
+            link[0].click()
+            for choice in profile.choices.all():
+                self.assertIn(choice.description, self.driver.page_source)
+
+
+
