@@ -312,3 +312,7 @@ nav li a {
 .indent {
     margin-left: 1.2em;
 }
+
+.errorlist {
+    color: #ee0000;
+}

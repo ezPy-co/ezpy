@@ -14,7 +14,9 @@ class CustomMultipleChoiceField(ModelMultipleChoiceField):
 
 class EnvironmentForm(ModelForm):
     choices = CustomMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-        queryset=UserChoice.objects.all().order_by('category', 'priority')
+        queryset=UserChoice.objects.all().order_by('category', 'priority',
+        ),
+        error_messages={'required': 'Choose options below.'}
     )
 
     class Meta:

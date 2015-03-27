@@ -131,7 +131,6 @@ class UserProfileDetailTestCase(LiveServerTestCase):
         self.assertNotIn(self.choice[2].name, self.driver.page_source)
         self.assertNotIn(self.choice[2].description, self.driver.page_source)
 
-
     # def test_update_profile(self):
     #     # .save() is here instead of setUp to save time
     #     self.user.save()
@@ -141,10 +140,6 @@ class UserProfileDetailTestCase(LiveServerTestCase):
     #                             kwargs={'pk': self.user.pk}))
     #     self.assertIn("profileform", self.driver.page_source)
 
-
-
-
-
         # 'UpdateEnv'    kwargs={'pk': self.user.pk}
 
         # 'DeleteEnv'    kwargs={'pk': self.user.pk}
@@ -152,8 +147,6 @@ class UserProfileDetailTestCase(LiveServerTestCase):
         # 'download_profile'    kwargs={'pk': self.user.pk}
 
         # 'ViewEnv'     kwargs={'pk': self.user.pk}
-
-
 
 class DownloadFileFormationTest(TestCase):
     def setUp(self):

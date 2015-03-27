@@ -39,26 +39,45 @@ def scan(target_name):
         print 'File or directory not found'
         return None
 
-def execute(command_line):
-    command_line = command_line
-    if 'win' not in sys.platform:
-        command_line.insert(0, 'sudo')
-    call(command_line)
 
-{% for choice in choices %}
-{% spaceless %}
-# For choice {{choice.name}}
-{% for step in choice.ordered_steps %}
-{% spaceless %}
+# For choice Install Pip
 
-{% if step.step_type == 'dl' %}
-
-# Download and run {{step}}
-url = '{{step.url}}'
+# Download and run dl 
+url = 'https://bootstrap.pypa.io/get-pip.py'
 scan_result = None
 not_linux = True
 
-{% if choice.category == 'git' %}
+
+
+if not_linux and url:
+    print "Downloading from {}".format(url)
+    response = urllib2.urlopen(url)
+    
+
+    if not "" or scan_result:
+        with open(file_name, 'w') as f:
+            f.write(response.read())
+
+        if os.path.splitext(file_name)[1] == '.py':
+            call([sys.executable, file_name])
+            
+        else:
+            run_file = './'+file_name
+            print "Running file_name"
+            call([run_file])
+
+command_line = "sudo,python,get-pip.py".split(',')
+print "Executing " + ' '.join(command_line)
+call(command_line)
+
+# For choice Install Git
+
+# Download and run dl 
+url = 'https://github.com/msysgit/msysgit/releases/download/Git-1.9.5-preview20150319/Git-1.9.5-preview20150319.exe'
+scan_result = None
+not_linux = True
+
+
 # Detect OS and change url accordingly...
 if 'win' in sys.platform:
     # The url for git will be the url used for the windows exe
@@ -71,80 +90,63 @@ elif 'linux' in sys.platform:
     not_linux = False
 else:
     print 'WARNING: Failed to determine OS'
-{% endif %}
+
 
 if not_linux and url:
     print "Downloading from {}".format(url)
     response = urllib2.urlopen(url)
-    {% if step.args %}
-    scan_result = scan('{{step.args}}')
+    
 
-    {% if scan_result %}
-    file_name = scan_result + os.path.basename('{{step.url}}')
-    {% endif %}
-
-    {% else }
-    file_name = os.path.basename(url)
-    {% endif %}
-
-    if not "{{step.args}}" or scan_result:
+    if not "" or scan_result:
         with open(file_name, 'w') as f:
             f.write(response.read())
 
         if os.path.splitext(file_name)[1] == '.py':
-            execute([sys.executable, file_name])
-            {% if choice.category == 'git' %}
+            call([sys.executable, file_name])
+            
             raw_input('Enter anything to continue when finished installing git.')
-            {% endif %}
+            
         else:
+            run_file = './'+file_name
             print "Running file_name"
-            execute(['./'+file_name])
+            call([run_file])
 
-{% if choice.category == 'git' %}
+
 elif url is None:
-    call(['sudo', 'xcode-select', '--install'])
+    call(['xcode-select', '--install'])
     raw_input('Enter anything to continue when finished installing xcode and git.')
 else:
     # This will prompt user for sudo password
     call(['sudo', 'apt-get', 'install', 'git'])
-{% endif %}
-{% endif %}
 
-{% if step.step_type == 'edprof' %}
-# Edit a profile
-profile_name = os.path.expanduser('~/')+'.profile'
-print "Adding '{{step.args}}' to file at profile_name"
-with open(profile_name, 'a') as f:
-    f.write("\n"+"{{step.args}}")
-{% endif %}
+# For choice Pip Install virtualenvwrapper
 
-{% if step.step_type == 'edfile' %}
-# Edit a file, {{step.args}}
-with open(step.file_location)
-# call(['pip', 'install', option.package_name])
-print 'file change\n'
-{% endif %}
-
-{% if step.step_type == 'env' %}
-# Add a key, value pair for a subsequent call([])
-key, val = "{{step.args}}".split(',')
-os.putenv(key, val)
-{% endif %}
-
-{% if step.step_type == 'pip' %}
 # Pip install, assuming the exact name of the package as used for 'pip install [package]'
 # is given in the args field for a step
-execute(['pip', 'install', "{{step.args}}"])
-{% endif %}
+call(['pip', 'install', "virtualenvwrapper"])
 
-{% if step.step_type == 'exec' %}
-command_line = "{{step.args}}".split(',')
+# Add a key, value pair for a subsequent call([])
+key, val = "WORKON_HOME,$HOME/.virtualens".split(',')
+os.putenv(key, val)
+
+# Add a key, value pair for a subsequent call([])
+key, val = "PROJECT_HOME,$HOME/projects".split(',')
+os.putenv(key, val)
+
+command_line = "source /usr/local/bin/virtualenvwrapper.sh".split(',')
 print "Executing " + ' '.join(command_line)
-execute(command_line)
-{% endif %}
+call(command_line)
 
-{% endspaceless %}
-{% endfor %}
+# For choice Pip Install virtualenv
 
-{% endspaceless %}
-{% endfor %}
+# Pip install, assuming the exact name of the package as used for 'pip install [package]'
+# is given in the args field for a step
+call(['pip', 'install', "virtualenv"])
+
+# For choice Add Username to prompt
+
+# Edit a profile
+profile_name = os.path.expanduser('~/')+'.profile'
+print "Adding 'PS1=&#39;\[\e[00;37m\]\u@\h:\w\\$ \[\e[0m\]&#39;' to file at profile_name"
+with open(profile_name, 'a') as f:
+    f.write("\n"+"PS1=&#39;\[\e[00;37m\]\u@\h:\w\\$ \[\e[0m\]&#39;")
