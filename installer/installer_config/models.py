@@ -12,18 +12,18 @@ class UserChoice(models.Model):
     )
 
     DISPLAY_CATEGORY = (
-        ('core', 'Core Dependencies'),
-        ('env', 'Virtual Environment'),
-        ('git', 'Git'),
-        ('prompt', 'Terminal Prompt'),
-        ('subl', 'Sublime'),
-        ('pkg', 'Pip Packages'),
-        ('other', 'Other'),
+        ('Core Dependencies', 'Core Dependencies'),
+        ('Virtual Environment', 'Virtual Environment'),
+        ('Git', 'Git'),
+        ('Terminal Prompt', 'Terminal Prompt'),
+        ('Sublime', 'Sublime'),
+        ('Pip Packages', 'Pip Packages'),
+        ('Other', 'Other'),
     )
 
     name = models.CharField(max_length=63)
     description = models.CharField(max_length=255, blank=True)
-    category = models.CharField(max_length=7, choices=DISPLAY_CATEGORY)
+    category = models.CharField(max_length=31, choices=DISPLAY_CATEGORY)
     priority = models.IntegerField(choices=PRIORITY)
 
     def ordered_steps(self):

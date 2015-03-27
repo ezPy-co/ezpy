@@ -60,10 +60,6 @@ class ViewEnvironmentProfile(DetailView):
         categorized = {}
         for choice in self.object.choices.all():
             categorized.setdefault(choice.category, []).append(choice)
-        
-        for category in categorized:
-            category = UserChoice.DISPLAY_CATEGORY[1]
-
         context.update({'categorized': categorized})
         # import pdb; pdb.set_trace()
         return context
