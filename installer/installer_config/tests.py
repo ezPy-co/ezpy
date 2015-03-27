@@ -331,7 +331,7 @@ class UserProfileDownloadTestCase(LiveServerTestCase):
         super(UserProfileDownloadTestCase, self).tearDown()
 
     def test_show_profile_choices(self):
-        """Test for all choices in each profile list"""
+        """Test that download link exists for all choices in each profile list"""
         # .save() is here instead of setUp to save time
         self.user.save()
         login_user(self.driver, 'user1', 'pass')
@@ -345,7 +345,6 @@ class UserProfileDownloadTestCase(LiveServerTestCase):
                 profile.description)
             link[0].click()
             # find the download link inside the profile detail page
-            link = self.driver.find_elements_by_link_text(
-                profile.description)
-            link[0].click()
-            #che
+            link = self.driver.find_elements_by_link_text('')
+            self.assertTrue(link)
+            

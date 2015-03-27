@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
-from installer_config.models import EnvironmentProfile, UserChoice, Step 
+from installer_config.models import EnvironmentProfile, UserChoice, Step
 from installer_config.forms import EnvironmentForm
 from django.core.urlresolvers import reverse
 
@@ -42,24 +42,11 @@ class ViewEnvironmentProfile(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ViewEnvironmentProfile, self).get_context_data()
-        categories = [cat[0] for cat in UserChoice.DISPLAY_CATEGORY]
-
-        # all = context.profile.choices.all
-        for categ in categories:
-            count = context['profile'].choices.filter(category=categ).count()
-            if count:
-                context[categ] = True
-            else:
-                context[categ] = False
+        categorized = {}
+        for choice in self.object.choices.all():
+            categorized.setdefault(choice.get_category_display(), []).append(choice)
+        context.update({'categorized': categorized})
         return context
-
-    # def get_context_data(self):
-    #     context = super(ViewEnvironmentProfile, self).get_context_data()
-    #     categorized = {}
-    #     for choice in self.object.choices.all():
-    #         categorized.setdefault(choice.category, []).append(choice)
-    #     context.update({'categorized_choices': categorized})
-    #     return context
 
 
 def download_profile_view(request, **kwargs):
