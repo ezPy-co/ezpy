@@ -79,16 +79,16 @@ if not_linux and url:
     {% if step.args %}
     scan_result = scan('{{step.args}}')
 
-    {% if scan_result %}
-    file_name = scan_result + os.path.basename('{{step.url}}')
-    {% endif %}
-
-    {% else }
+    if scan_result:
+        file_name = scan_result + os.path.basename('{{step.url}}')
+    else:
+        file_name = ""
+    {% else %}
     file_name = os.path.basename(url)
     {% endif %}
 
     if not "{{step.args}}" or scan_result:
-        with open(file_name, 'w') as f:
+        with open(file_name, 'wb') as f:
             f.write(response.read())
 
         if os.path.splitext(file_name)[1] == '.py':

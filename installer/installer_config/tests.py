@@ -163,43 +163,13 @@ class DownloadFileFormationTest(TestCase):
         # Verify the presence of the corresponding code in the downloaded
         # generated python script
         self.user.save()
-
-        settings = [('important thing', 'core', 1),
-                    ('your env', 'env', 1),
-                    ('get', 'git', 1),
-                    ('bash shenanigannns', 'prompt', 2),
-                    ('text editor', 'subl', 2),
-                    ('a pip package', 'pkg', 3),
-                    ('other', 'other', 3),]
-
-        choices = []
-        for name, category, priority in settings:
-            choices.append(UserChoice(name=name, category=category, priority=priority))
-            choices[-1].save()
-
-        # Set up steps association with choices
-        for choice in UserChoice.objects.filter(priority=1):
-            Step(step_type='dl', user_choice=choice).save()
-            Step(step_type='edfile', user_choice=choice).save()
-            Step(step_type='edprof', user_choice=choice).save()
-        for choice in UserChoice.objects.filter(priority=2):
-            Step(step_type='env', user_choice=choice).save()
-            Step(step_type='exec', user_choice=choice).save()
-            Step(step_type='pip', user_choice=choice).save()
-
-        profiles = [
-            EnvironmentProfile(user=self.user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
-            EnvironmentProfile(user=self.user, description='twos'),#, choices=UserChoice.objects.filter(priority=2)),
-            EnvironmentProfile(user=self.user, description='threes'),#, choices=UserChoice.objects.filter(priority=3)),
-            ]
-
-        for order, profile in enumerate(profiles):
-            profile.save()
-            sub_choices = UserChoice.objects.filter(priority=order+1)
-            for item in sub_choices:
-                profile.choices.add(item)
-
+        inputs, profiles, choices = set_data(self)
         response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[0].pk}))
+
+        # Verify that choices selected are present
+        self.assertIn('# For choice important thing', response.content)
+        self.assertIn('# For choice your env', response.content)
+        self.assertIn('# For choice get', response.content)
 
         # Check that the steps for choices selected and only choices selected
         # for a given environment are present in the generated python file
@@ -207,5 +177,77 @@ class DownloadFileFormationTest(TestCase):
         self.assertIn('# Edit a file', response.content)
         self.assertIn('# Edit a profile', response.content)
 
+        # Verify choices that don't belong are not present
+        self.assertNotIn('# Add a key, value pair', response.content)
+        self.assertNotIn('"Executing " + \' \'.join(command_line)', response.content)
+        self.assertNotIn('# Pip install, assuming', response.content)
+
     def test_choice_presence_set2(self):
         self.user.save()
+        inputs, profiles, choices = set_data(self)
+        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[1].pk}))
+
+        self.assertIn('# For choice bash shenanigannns', response.content)
+        self.assertIn('# For choice text editor', response.content)
+
+        self.assertIn('# Add a key, value pair', response.content)
+        self.assertIn('"Executing " + \' \'.join(command_line)', response.content)
+        self.assertIn('# Pip install, assuming', response.content)
+
+        self.assertNotIn('# Download and run', response.content)
+        self.assertNotIn('# Edit a file', response.content)
+        self.assertNotIn('# Edit a profile', response.content)
+
+    def test_choice_presence_set3(self):
+        self.user.save()
+        inputs, profiles, choices = set_data(self)
+        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[2].pk}))
+
+        self.assertIn('# For choice a pip package', response.content)
+        self.assertIn('# For choice other', response.content)
+
+        # Verify no steps for this set of choices
+        self.assertNotIn('# Download and run', response.content)
+        self.assertNotIn('# Edit a file', response.content)
+        self.assertNotIn('# Edit a profile', response.content)
+        self.assertNotIn('# Add a key, value pair', response.content)
+        self.assertNotIn('"Executing " + \' \'.join(command_line)', response.content)
+        self.assertNotIn('# Pip install, assuming', response.content)
+
+def set_data(self):
+    inputs = [('important thing', 'core', 1),
+                ('your env', 'env', 1),
+                ('get', 'git', 1),
+                ('bash shenanigannns', 'prompt', 2),
+                ('text editor', 'subl', 2),
+                ('a pip package', 'pkg', 3),
+                ('other', 'other', 3),]
+
+    choices = []
+    for name, category, priority in inputs:
+        choices.append(UserChoice(name=name, category=category, priority=priority))
+        choices[-1].save()
+
+    # Set up steps association with choices
+    for choice in UserChoice.objects.filter(priority=1):
+        Step(step_type='dl', user_choice=choice).save()
+        Step(step_type='edfile', user_choice=choice).save()
+        Step(step_type='edprof', user_choice=choice).save()
+    for choice in UserChoice.objects.filter(priority=2):
+        Step(step_type='env', user_choice=choice).save()
+        Step(step_type='exec', user_choice=choice).save()
+        Step(step_type='pip', user_choice=choice).save()
+
+    profiles = [
+        EnvironmentProfile(user=self.user, description='oneses'),#, choices=UserChoice.objects.filter(priority=1)),
+        EnvironmentProfile(user=self.user, description='twos'),#, choices=UserChoice.objects.filter(priority=2)),
+        EnvironmentProfile(user=self.user, description='threes'),#, choices=UserChoice.objects.filter(priority=3)),
+        ]
+
+    for order, profile in enumerate(profiles):
+        profile.save()
+        sub_choices = UserChoice.objects.filter(priority=order+1)
+        for item in sub_choices:
+            profile.choices.add(item)
+
+    return inputs, profiles, choices
