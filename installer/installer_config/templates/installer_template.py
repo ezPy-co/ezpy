@@ -118,7 +118,7 @@ profile_name = os.path.expanduser('~/')+'.bashrc'
 print 'Adding {{step.args|safe}} to ~/.bashrc'
 with open(profile_name, 'a') as f:
     f.write('\n'+'export {{step.args|safe}}')
-call(['source', '~/.bashrc'])
+# call(['source', '~/.bashrc'])
 {% endif %}
 
 {% if step.step_type == 'edfile' %}
