@@ -114,3 +114,17 @@ class UserProfileDetailTestCase(LiveServerTestCase):
         password_field.send_keys('pass')
         form = self.driver.find_element_by_tag_name('form')
         form.submit()
+
+    def test_login_authorized(self):
+        """Test that a registered user can get in."""
+        self.user.save()
+        self.login_user()
+        self.assertIn(self.user.username, self.driver.page_source)
+
+    def test_login_unregistered(self):
+        """Test that an unregistered user cannot get in."""
+        self.unregistered_user = User(username='unregistered')
+        self.user.set_password('pass')
+        self.user.is_active = False
+        self.assertNotIn(self.unregistered_user.username, self.driver.page_source)
+

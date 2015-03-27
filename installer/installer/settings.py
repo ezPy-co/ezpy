@@ -79,7 +79,8 @@ class Prod(Base):
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    ALLOWED_HOSTS = ['.ec2-54-149-69-177.us-west-2.compute.amazonaws.com']
+    ALLOWED_HOSTS = ['.ec2-54-149-69-177.us-west-2.compute.amazonaws.com',
+                     'ezpy.gertrudescastle.com']
 
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 25
