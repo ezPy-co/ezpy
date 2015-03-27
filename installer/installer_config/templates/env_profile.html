@@ -18,6 +18,9 @@
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
+    {% if not core %}
+        <li>-<small>No items selected.</small></li>
+    {% endif %}
     </ul>
 
     <h3>Virtual Environment Set Up</h3><ul>
@@ -26,6 +29,9 @@
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
+    {% if not env %}
+        <li>-<small>No items selected.</small></li>
+    {% endif %}
     </ul>
 
 <!--     <h3>Git / Git Customization</h3><ul>
@@ -34,7 +40,14 @@
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
-    </ul> -->
+    {% if not git %}
+        <li>-<small>No items selected.</small></li>
+    {% endif %}
+    </ul>
+
+
+
+-->
 
     <h3>Terminal Prompt Customization</h3><ul>
     {% for choice in profile.choices.all %}
@@ -42,15 +55,24 @@
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
+    {% if not prompt %}
+        <li>-<small>No items selected.</small></li>
+    {% endif %}
     </ul>
-
 <!--     <h3>Sublime Customization</h3><ul>
     {% for choice in profile.choices.all %}
         {% if choice.category == 'subl' %}
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
-    </ul> -->
+    {% if not subl %}
+        <li><small>No items selected.</small></li>
+    {% endif %}
+    </ul>
+
+-->
+
+
 
     <h3>Pip Packages</h3><ul>
     {% for choice in profile.choices.all %}
@@ -58,7 +80,11 @@
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
+    {% if not pkg %}
+        <li>-<small>No items selected.</small></li>
+    {% endif %}
     </ul>
+
 
     <h3>Other</h3><ul>
     {% for choice in profile.choices.all %}
@@ -66,7 +92,12 @@
             <li>- {{ choice }} / <small>{{ choice.description }}</small></li>
         {% endif %}
     {% endfor %}
+    {% if not other %}
+        <li>-<small>No items selected.</small></li>
+    {% endif %}
     </ul>
+
+
     </div>
 </div>
 

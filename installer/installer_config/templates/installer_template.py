@@ -3,56 +3,47 @@ from subprocess import call
 import urllib2
 import os
 import sys
-import re
 
-CACHED_PATHS = {}
-
-def scan(target_name):
+def scan(a_name):
     """
     Return the full file path to a file, including file_name.
 
     If the file is not found, print 'File or directory not found'
     to the console and return None.
     """
-    if CACHED_PATHS[target_name]:
-        return CACHED_PATHS[target_name]
+    extension = os.splitext(a_name)[1]
+    if 'Windows' in os.environ.get('OS'):
+        # Assumes the drive letter is C
+        walker = os.walk('C:/')
     else:
-        extension = os.path.splitext(target_name)[1]
-        if 'Windows' in os.environ.get('OS'):
-            # Assumes the drive letter is C
-            walker = os.walk('C:/')
-        else:
-            walker = os.walk('/')
+        walker = os.walk('/')
         if extension:
-                # Search for a file
+            # Search for a file
             for directory, sub_dir, files in walker:
-                for each_file in files:
-                    if re.match(target_name, each_file):
-                        return directory + target_name
+                if a_name in files:
+                    return directory + a_name
         else:
             # Search for a directory
             for directory, sub_dir, files in walker:
-                if re.search("/{}".format(target_name), directory):
+                if a_name in directory:
                     return directory
-        # If the whole directory has been scanned with
-        # no result...
-        print 'File or directory not found'
-        return None
+    # If the whole directory has been scanned with
+    # no result...
+    print 'File or directory not found'
+    return None
 
 {% for choice in choices %}
 {% spaceless %}
 # For choice {{choice.name}}
-{% for step in choice.ordered_steps %}
+{% for step in choice.step.all %}
 {% spaceless %}
 
 {% if step.step_type == 'dl' %}
 
 # Download and run {{step}}
 url = '{{step.url}}'
-scan_result = None
 not_linux = True
-
-{% if choice.category == 'git' %}
+{% if choice.category != 'git' %}
 # Detect OS and change url accordingly...
 if 'win' in sys.platform:
     # The url for git will be the url used for the windows exe
@@ -78,24 +69,19 @@ if not_linux and url:
   
 
     {% else %}
+
     file_name = os.path.basename(url)
-    {% endif %}
 
-    if not "{{step.args}}" or scan_result:
-        with open(file_name, 'w') as f:
-            f.write(response.read())
+    with open(file_name, 'w') as f:
+        f.write(response.read())
 
-        if os.path.splitext(file_name)[1] == '.py':
-            call([sys.executable, file_name])
-            {% if choice.category == 'git' %}
-            raw_input('Enter anything to continue when finished installing git.')
-            {% endif %}
-        else:
-            run_file = './'+file_name
-            print "Running file_name"
-            call([run_file])
-
-{% if choice.category == 'git' %}
+    if os.path.splitext(file_name)[1] == '.py':
+        call([sys.executable, file_name])
+        raw_input('Enter anything to continue when finished installing git.')
+    else:
+        run_file = './'+file_name
+        print "Running file_name"
+        call([run_file])
 elif url is None:
     call(['xcode-select', '--install'])
     raw_input('Enter anything to continue when finished installing xcode and git.')
@@ -103,14 +89,14 @@ else:
     # This will prompt user for sudo password
     call(['sudo', 'apt-get', 'install', 'git'])
 {% endif %}
-{% endif %}
 
 {% if step.step_type == 'edprof' %}
 # Edit a profile
 profile_name = os.path.expanduser('~/')+'.profile'
 print "Adding '{{step.args}}' to file at profile_name"
 with open(profile_name, 'a') as f:
-    f.write("\n"+"{{step.args}}")
+    # Assumes the .profile should be in the home directory
+    f.write("\n"+"{{step.args|safe}}")
 {% endif %}
 
 {% if step.step_type == 'edfile' %}
