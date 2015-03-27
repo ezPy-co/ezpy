@@ -26,6 +26,10 @@ class UserChoice(models.Model):
     category = models.CharField(max_length=7, choices=DISPLAY_CATEGORY)
     priority = models.IntegerField(choices=PRIORITY)
 
+    def ordered_steps(self):
+        qs = Step.objects.filter(user_choice=self)
+        return qs.order_by('pk')
+
     def __str__(self):
         return str(self.name)
 
@@ -45,8 +49,8 @@ class Step(models.Model):
     )
 
     step_type = models.CharField(max_length=63, choices=STEP_TYPE_CHOICES)
-    url = models.CharField(max_length=63, blank=True, null=True)
-    args = models.CharField(max_length=63, blank=True, null=True)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    args = models.CharField(max_length=255, blank=True, null=True)
     dependency = models.CharField(max_length=63, blank=True, null=True)
     user_choice = models.ForeignKey(UserChoice, related_name='step')
 
