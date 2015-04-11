@@ -96,7 +96,7 @@ if not_linux and url:
         if os.path.splitext(file_name)[1] == '.py':
             execute([sys.executable, file_name])
             {% if choice.category == 'git' %}
-            raw_input('Enter anything to continue when finished installing git.')
+            raw_input('Enter anything to continue when finished installing Git.')
             {% endif %}
         else:
             print "Running file_name"
@@ -105,7 +105,7 @@ if not_linux and url:
 {% if choice.category == 'git' %}
 elif url is None:
     call(['sudo', 'xcode-select', '--install'])
-    raw_input('Enter anything to continue when finished installing xcode and git.')
+    raw_input('Enter anything to continue when finished installing Xcode and Git.')
 else:
     # This will prompt user for sudo password
     call(['sudo', 'apt-get', 'install', 'git'])

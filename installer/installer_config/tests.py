@@ -1,16 +1,9 @@
-from django.test import TestCase, LiveServerTestCase
-from django.test import Client
-
+from django.test import TestCase, LiveServerTestCase, Client
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-
 from selenium import webdriver
 import factory
-import factory.django
 from installer_config.models import EnvironmentProfile, UserChoice, Step
-
-from selenium import webdriver
-import os
 
 
 TEST_DOMAIN_NAME = "http://127.0.0.1:8081"
@@ -72,7 +65,6 @@ class UserProfileDetailTestCase(LiveServerTestCase):
         self.driver.quit()
         super(UserProfileDetailTestCase, self).tearDown()
 
-
     def login_user(self, user, password):
         """login user"""
         self.driver.get(TEST_DOMAIN_NAME + reverse('auth_login'))
@@ -110,7 +102,6 @@ class UserProfileDetailTestCase(LiveServerTestCase):
         for i in range(3):
             self.assertIn(self.choice[i].name, self.driver.page_source)
             self.assertIn(self.choice[i].description, self.driver.page_source)
-
 
     def test_create_profile_not_all(self):
         """If not all choices selected, the right ones are produced"""
@@ -154,7 +145,6 @@ class UserProfileDetailTestCase(LiveServerTestCase):
     #                             kwargs={'pk': self.user.pk}))
     #     self.assertIn("profileform", self.driver.page_source)
 
-
     # def test_delete_profile(self):
     #     # .save() is here instead of setUp to save time
     #     self.user.save()
@@ -172,7 +162,6 @@ class DownloadFileFormationTest(TestCase):
         self.user.is_active = True
         self.client = Client()
 
-
     def tearDown(self):
         pass
 
@@ -181,7 +170,8 @@ class DownloadFileFormationTest(TestCase):
         # generated python script
         self.user.save()
         inputs, profiles, choices = set_data(self.user)
-        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[0].pk}))
+        response = self.client.get(reverse('installer_config:download_profile',
+                                   kwargs={'pk': profiles[0].pk}))
         import pdb; pdb.set_choice()
         # Verify that choices selected are present
         self.assertIn('# For choice important thing', response.content)
@@ -202,7 +192,8 @@ class DownloadFileFormationTest(TestCase):
     def test_choice_presence_set2(self):
         self.user.save()
         inputs, profiles, choices = set_data(self.user)
-        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[1].pk}))
+        response = self.client.get(reverse('installer_config:download_profile',
+                                           kwargs={'pk': profiles[1].pk}))
 
         self.assertIn('# For choice bash shenanigannns', response.content)
         self.assertIn('# For choice text editor', response.content)
@@ -218,7 +209,8 @@ class DownloadFileFormationTest(TestCase):
     def test_choice_presence_set3(self):
         self.user.save()
         inputs, profiles, choices = set_data(self.user)
-        response = self.client.get(reverse('installer_config:download_profile', kwargs={'pk': profiles[2].pk}))
+        response = self.client.get(reverse('installer_config:download_profile',
+                                           kwargs={'pk': profiles[2].pk}))
 
         self.assertIn('# For choice a pip package', response.content)
         self.assertIn('# For choice other', response.content)
@@ -269,6 +261,7 @@ def set_data(user):
 
     return inputs, profiles, choices
 
+
 class UserProfileShowTestCase(LiveServerTestCase):
     """User profiles and choices display properly"""
     def setUp(self):
@@ -315,6 +308,7 @@ class UserProfileShowTestCase(LiveServerTestCase):
             for choice in profile.choices.all():
                 self.assertIn(choice.description, self.driver.page_source)
 
+
 class UserProfileDownloadTestCase(LiveServerTestCase):
     """User profile downloading properly"""
     def setUp(self):
@@ -347,4 +341,3 @@ class UserProfileDownloadTestCase(LiveServerTestCase):
             # find the download link inside the profile detail page
             link = self.driver.find_elements_by_link_text('')
             self.assertTrue(link)
-            
