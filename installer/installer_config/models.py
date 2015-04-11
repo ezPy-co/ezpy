@@ -67,6 +67,6 @@ class EnvironmentProfile(models.Model):
                                      related_name='profiles',
                                      blank=True,
                                      null=True)
-    
+
     def __str__(self):
         return str(self.description)

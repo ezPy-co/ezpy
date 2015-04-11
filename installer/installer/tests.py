@@ -1,19 +1,13 @@
 from django.test import TestCase, LiveServerTestCase
 from django.test import Client
-import datetime
-import time
-# from django.utils import timezone
 
 from django.contrib.auth.models import User
-from registration.models import RegistrationProfile
 from django.core.urlresolvers import reverse
 
 from selenium import webdriver
 import factory
 import factory.django
 from installer_config.models import EnvironmentProfile
-
-import os
 
 
 TEST_DOMAIN_NAME = "http://127.0.0.1:8081"
@@ -76,7 +70,6 @@ class RegistrationTestCase(TestCase):
                                           password='secret')
         self.assertTrue(is_logged_in)
 
-
     def test_logout(self):
         """Test that an authorized user can log out."""
         is_logged_in = self.client1.login(username=self.user['user1'].username,
@@ -86,6 +79,7 @@ class RegistrationTestCase(TestCase):
         # Goes to an intermediate page that the user never sees before
         # going back to the home page
         self.assertIn('You are now logged out.', response.content)
+
 
 class UserProfileDetailTestCase(LiveServerTestCase):
     """This class is for testing user login form"""
@@ -127,4 +121,3 @@ class UserProfileDetailTestCase(LiveServerTestCase):
         self.user.set_password('pass')
         self.user.is_active = False
         self.assertNotIn(self.unregistered_user.username, self.driver.page_source)
-

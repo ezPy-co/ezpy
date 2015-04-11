@@ -39,9 +39,7 @@ class Base(Settings):
                 'default': dj_database_url.config(
                 default='postgres://{}:@localhost:5432/installer'.format(
                     USER_NAME))
-                # default='postgres://postgres:admin@localhost:5432/installer_dbase')
                 }
-
 
     LANGUAGE_CODE = 'en-us'
     TIME_ZONE = 'America/Los_Angeles'
@@ -79,8 +77,7 @@ class Prod(Base):
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    ALLOWED_HOSTS = ['.ec2-54-149-69-177.us-west-2.compute.amazonaws.com',
-                     'ezpy.gertrudescastle.com']
+    ALLOWED_HOSTS = ['.ezpy.co']
 
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 25
