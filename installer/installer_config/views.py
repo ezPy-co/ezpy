@@ -1,9 +1,7 @@
-from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
-from installer_config.models import EnvironmentProfile, UserChoice, Step
+from installer_config.models import EnvironmentProfile, UserChoice
 from installer_config.forms import EnvironmentForm
-from django.core.urlresolvers import reverse
 
 
 class CreateEnvironmentProfile(CreateView):

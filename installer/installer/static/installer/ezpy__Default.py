@@ -147,6 +147,6 @@ call(['pip', 'install', "virtualenv"])
 
 # Edit a profile
 profile_name = os.path.expanduser('~/')+'.profile'
-print "Adding 'PS1=&#39;\[\e[00;37m\]\u@\h:\w\\$ \[\e[0m\]&#39;' to file at profile_name"
+print 'Adding PS1="\[\e[00;33m\]\u\[\e[0m\]\[\e[00;37m\]@\h:\[\e[0m\]\[\e[00;36m\][\w]:\[\e[0m\]\[\e[00;37m\] \[\e[0m\]" to file at profile_name'
 with open(profile_name, 'a') as f:
-    f.write("\n"+"PS1=&#39;\[\e[00;37m\]\u@\h:\w\\$ \[\e[0m\]&#39;")
+    f.write('\n'+'export PS1="\[\e[00;33m\]\u\[\e[0m\]\[\e[00;37m\]@\h:\[\e[0m\]\[\e[00;36m\][\w]:\[\e[0m\]\[\e[00;37m\] \[\e[0m\]"')
