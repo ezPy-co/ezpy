@@ -71,7 +71,6 @@ class Dev(Base):
 
 
 class Prod(Base):
-    # from secret import HOST_USER, HOST_PASSWORD
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
