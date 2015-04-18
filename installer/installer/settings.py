@@ -1,8 +1,6 @@
 import os
 import dj_database_url
 from configurations import Settings
-from secret import (HOST_USER,
-                    HOST_PASSWORD)
 
 
 class Base(Settings):
@@ -73,7 +71,7 @@ class Dev(Base):
 
 
 class Prod(Base):
-
+    from secret import HOST_USER, HOST_PASSWORD
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
