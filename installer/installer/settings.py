@@ -1,8 +1,6 @@
 import os
 import dj_database_url
 from configurations import Settings
-from secret import (HOST_USER,
-                    HOST_PASSWORD)
 
 
 class Base(Settings):
@@ -73,7 +71,6 @@ class Dev(Base):
 
 
 class Prod(Base):
-
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
     SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -82,6 +79,6 @@ class Prod(Base):
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 25
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = HOST_USER
-    EMAIL_HOST_PASSWORD = HOST_PASSWORD
-    DEFAULT_FROM_EMAIL = HOST_USER
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
