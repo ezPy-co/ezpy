@@ -1,4 +1,4 @@
-# ezPy
+# ezPy [![Build Status](https://travis-ci.org/ezPy-co/ezpy.svg?branch=master)](https://travis-ci.org/ezPy-co/ezpy)
 A website that provides a user with a customized Python development environment.
 
 ## Looking to contribute?
