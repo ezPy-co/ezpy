@@ -47,10 +47,8 @@ def execute(command_line):
         command_line.insert(0, 'sudo')
     call(command_line)
 
-{% for choice in choices %}
-{% spaceless %}# For choice: {{choice.name}}
-{% for step in choice.ordered_steps %}
-{% spaceless %}
+{% for choice in choices %}{% spaceless %}# For choice: {{choice.name}}
+{% for step in choice.ordered_steps %}{% spaceless %}
 {% if step.step_type == 'dl' %}# Download and run: {{step}}
 url = '{{step.url}}'
 scan_result = None
@@ -131,8 +129,6 @@ os.putenv(key, val)
 {% endif %}
 
 {% if step.step_type == 'pip' %}
-# Pip install, assuming the exact name of the package as used for 'pip install [package]'
-# is given in the args field for a step
 execute(['pip', 'install', "{{step.args}}"])
 {% endif %}
 
