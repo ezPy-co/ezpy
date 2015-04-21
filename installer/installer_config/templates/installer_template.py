@@ -1,4 +1,4 @@
-#!usr/bin/env python
+#!/usr/bin/env python
 from subprocess import call
 import urllib2
 import os
@@ -48,22 +48,16 @@ def execute(command_line):
     call(command_line)
 
 {% for choice in choices %}
-{% spaceless %}
-# For choice {{choice.name}}
+{% spaceless %}# For choice: {{choice.name}}
 {% for step in choice.ordered_steps %}
 {% spaceless %}
-
-{% if step.step_type == 'dl' %}
-
-# Download and run {{step}}
+{% if step.step_type == 'dl' %}# Download and run: {{step}}
 url = '{{step.url}}'
 scan_result = None
 not_linux = True
-
-{% if choice.category == 'git' %}
-# Detect OS and change url accordingly...
+{% if choice.category == 'git' %}# Detect OS and change url accordingly...
 if 'win' in sys.platform:
-    # The url for git will be the url used for the windows exe
+    # The url for Git will be the url used for the Windows exe
     print 'Windows detected'
 elif 'darwin' in sys.platform:
     print 'Mac detected'
@@ -74,30 +68,21 @@ elif 'linux' in sys.platform:
 else:
     print 'WARNING: Failed to determine OS'
 {% endif %}
-
 if not_linux and url:
     print "Downloading from {}".format(url)
     response = urllib2.urlopen(url)
-    {% if step.args %}
-    scan_result = scan('{{step.args}}')
-
+    {% if step.args %}scan_result = scan('{{step.args}}')
     if scan_result:
         file_name = scan_result + os.path.basename('{{step.url}}')
     else:
         file_name = ""
-    {% else %}
-    file_name = os.path.basename(url)
-    {% endif %}
-
+    {% else %}file_name = os.path.basename(url){% endif %}
     if not "{{step.args}}" or scan_result:
         with open(file_name, 'wb') as f:
             f.write(response.read())
-
         if os.path.splitext(file_name)[1] == '.py':
             execute([sys.executable, file_name])
-            {% if choice.category == 'git' %}
-            raw_input('Enter anything to continue when finished installing Git.')
-            {% endif %}
+            {% if choice.category == 'git' %}raw_input('Press Enter to continue when finished installing Git.'){% endif %}
         else:
             print "Running file_name"
             execute(['./'+file_name])
@@ -105,15 +90,14 @@ if not_linux and url:
 {% if choice.category == 'git' %}
 elif url is None:
     call(['sudo', 'xcode-select', '--install'])
-    raw_input('Enter anything to continue when finished installing Xcode and Git.')
+    raw_input('Press Enter to continue when finished installing Xcode.')
 else:
     # This will prompt user for sudo password
     call(['sudo', 'apt-get', 'install', 'git'])
 {% endif %}
 {% endif %}
 
-{% if step.step_type == 'edprof' %}
-# Edit a profile
+{% if step.step_type == 'edprof' %}# Edit a profile
 profile_name = os.path.expanduser('~/')+'.bashrc'
 print 'Adding {{step.args|safe}} to ~/.bashrc'
 with open(profile_name, 'a') as f:
@@ -130,23 +114,18 @@ else:
     file_name = ""
 
 if file_name:
-{% if choice.category == 'subl' %}
-    with open(file_name, 'w+') as f:
+    {% if choice.category == 'subl' %}with open(file_name, 'w+') as f:
         settings_as_json = json.loads(f.read())
         key, val = "{{step.args}}".split(',')
         settings_as_json[key] = val
         f.write(json.dumps(settings_as_json))
-{% else %}
-    with open(file_name, 'a') as f:
-        f.write('{{step.args}}')
-{% endif %}
+    {% else %}with open(file_name, 'a') as f:
+        f.write('{{step.args}}'){% endif %}
 else:
-    print "file not found"
-
+    print "File not found"
 {% endif %}
 
-{% if step.step_type == 'env' %}
-# Add a key, value pair for a subsequent call([])
+{% if step.step_type == 'env' %}# Add a key, value pair for a subsequent call([])
 key, val = "{{step.args}}".split(',')
 os.putenv(key, val)
 {% endif %}
