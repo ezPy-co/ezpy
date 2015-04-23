@@ -12,5 +12,6 @@ factory-boy==2.5.1
 paramiko==1.15.2
 psycopg2==2.6
 pycrypto==2.6.1
+python-coveralls==2.5.0
 selenium==2.45.0
 wsgiref==0.1.2
