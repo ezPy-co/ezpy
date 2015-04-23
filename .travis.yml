@@ -7,7 +7,12 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 # command to install dependencies
 install: "pip install -r requirements.txt"
+# cd into directory with manage.py module
+before_script:
+  - cd installer
 # command to run tests
 script:
-  - "cd installer"
-  - "python manage.py test"
+  - coverage run --source=installer,installer_config manage.py test
+# command to run Coveralls
+after_success:
+  - coveralls

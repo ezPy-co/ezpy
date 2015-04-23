@@ -1,4 +1,4 @@
-# ezPy [![Build Status](https://travis-ci.org/ezPy-co/ezpy.svg?branch=master)](https://travis-ci.org/ezPy-co/ezpy)
+# ezPy [![Build Status](https://travis-ci.org/ezPy-co/ezpy.svg?branch=master)](https://travis-ci.org/ezPy-co/ezpy) [![Coverage Status](https://coveralls.io/repos/ezPy-co/ezpy/badge.svg?branch=jwarren-coveralls)](https://coveralls.io/r/ezPy-co/ezpy?branch=jwarren-coveralls)
 A website that provides a user with a customized Python development environment.
 
 ## Looking to contribute?
