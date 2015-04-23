@@ -16,7 +16,7 @@ env.myhost = 'ec2-54-149-69-177.us-west-2.compute.amazonaws.com'
 env.remote_directory = '~/installer'
 
 # local app directory
-env.local_directory = '~/projects/Package_Installer/'
+env.local_directory = '~/projects/ezpy/'
 
 
 def active():
