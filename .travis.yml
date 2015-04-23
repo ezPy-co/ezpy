@@ -12,7 +12,7 @@ before_script:
   - cd installer
 # command to run tests
 script:
-  - python manage.py test
+  - coverage run --source=installer,installer_config manage.py test
 # command to run Coveralls
 after_success:
   - coveralls
