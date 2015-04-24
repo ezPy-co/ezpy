@@ -7,8 +7,8 @@ ezPy runs on a variety of systems with many different configurations. If you fin
 For more information, please visit [ezpy.co](http://www.ezpy.co/).
 
 Collaborators: 
-* Alicija Bulota
-* Henry Grantham
-* Henry Howes
-* Matthew Lee
-* James Warren
+* [Alicija Bulota](https://github.com/alibulota)
+* [Henry Grantham](https://github.com/henry808)
+* [Henry Howes](https://github.com/henrykh)
+* [Matthew Lee](https://github.com/jefimenko)
+* [James Warren](https://github.com/jwarren116)
