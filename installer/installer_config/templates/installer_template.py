@@ -98,7 +98,7 @@ else:
 profile_name = os.path.expanduser('~/')+'.bashrc'
 print 'Adding {{step.args|safe}} to ~/.bashrc'
 with open(profile_name, 'a') as f:
-    f.write('\n'+'export {{step.args|safe}}')
+    f.write('\n{{step.args|safe}}')
     print 'Restart your terminal session for changes to take effect'
 {% endif %}
 
